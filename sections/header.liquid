@@ -63,7 +63,7 @@
             <img class="logo__image" src="{{ section.settings.logo | img_url: img_size }}" alt="{{ section.settings.logo.alt | escape }}" itemprop="logo" width="{{ section.settings.logo.width }}" height="{{ section.settings.logo.height }}" />
 
             {%- if section.settings.enable_transparent and template.name == 'index' and section.settings.transparent_logo != blank -%}
-              <img class="logo__image-transparent" src="{{ section.settings.transparent_logo | img_url: img_size }}" alt="{{ section.settings.transparent_logo.alt | escape }}" itemprop="logo" width="{{ section.settings.transparent_logo.width }}" height="{{ section.settings.transparent_logo.height }}" />
+              <img width="100%" height="100%" class="logo__image-transparent" src="{{ section.settings.transparent_logo | img_url: img_size }}" alt="{{ section.settings.transparent_logo.alt | escape }}" itemprop="logo" width="{{ section.settings.transparent_logo.width }}" height="{{ section.settings.transparent_logo.height }}" />
             {%- endif -%}
 
           {%- else -%}
