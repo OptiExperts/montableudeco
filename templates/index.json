@@ -137,7 +137,7 @@
         "show_vendor": false,
         "enable_carousel": true,
         "grid": 4,
-        "rows": 2,
+        "rows": 1,
         "use_alt_bg": false,
         "show_view_all": true,
         "full_width": false
@@ -168,7 +168,7 @@
         "show_vendor": false,
         "enable_carousel": true,
         "grid": 4,
-        "rows": 2,
+        "rows": 1,
         "use_alt_bg": true,
         "show_view_all": true,
         "full_width": false
@@ -199,7 +199,7 @@
         "show_vendor": false,
         "enable_carousel": true,
         "grid": 4,
-        "rows": 2,
+        "rows": 1,
         "use_alt_bg": false,
         "show_view_all": true,
         "full_width": false
@@ -213,7 +213,7 @@
         "show_vendor": false,
         "enable_carousel": true,
         "grid": 4,
-        "rows": 2,
+        "rows": 1,
         "use_alt_bg": true,
         "show_view_all": true,
         "full_width": false
@@ -268,7 +268,7 @@
         "show_vendor": false,
         "enable_carousel": true,
         "grid": 4,
-        "rows": 2,
+        "rows": 1,
         "use_alt_bg": true,
         "show_view_all": true,
         "full_width": false
@@ -282,7 +282,7 @@
         "show_vendor": false,
         "enable_carousel": true,
         "grid": 4,
-        "rows": 2,
+        "rows": 1,
         "use_alt_bg": true,
         "show_view_all": true,
         "full_width": false
