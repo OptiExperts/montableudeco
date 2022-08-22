@@ -267,6 +267,8 @@
     {% section 'popup' %}
     {% endif %}
 
+    <link rel="stylesheet" href="{{ 'styles.css' | asset_url }}">
+
     <script type="lazyload2" data-src="{{ 'vendor.min.js'  | asset_url }}"></script>
     <script type="lazyload2" data-src="{{ 'theme.js'  | asset_url }}"></script>
 
@@ -279,6 +281,9 @@
     <!-- Symmetry 5.4.1 -->
     
     {%- render 'cartDrawer-maxdesign' -%}
+    
+
     {% include '__footerhash' %}
+
   </body>
 </html>
