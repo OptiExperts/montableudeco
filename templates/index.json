@@ -232,20 +232,6 @@
         "autoplay_speed": 7
       }
     },
-    "1655631121fd3b1e9a": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Artiste Peintre",
-        "collection": "tableau-artiste-peintre",
-        "show_vendor": false,
-        "enable_carousel": false,
-        "grid": 4,
-        "rows": 1,
-        "use_alt_bg": true,
-        "show_view_all": true,
-        "full_width": false
-      }
-    },
     "16535768658b1605c8": {
       "type": "custom-row",
       "blocks": {
@@ -299,7 +285,6 @@
     "1655026793b257a89f",
     "16590925758a886849",
     "1653576172595c120c",
-    "1655631121fd3b1e9a",
     "16535768658b1605c8"
   ]
 }
