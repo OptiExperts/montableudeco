@@ -1,0 +1,305 @@
+{% comment %}
+⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS. Il est interdit de copier ou revendre cette section pour de l'usage commercial sans l'accord de l'auteur. Pour toute demande d'information, veuillez me contacter : maxime.crouin@gmail.com
+⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS. It is forbidden to resell or duplicate this ressource for commercial use without permission of the author. Thank you to contact me: maxime.crouin@gmail.com
+{% endcomment %}
+<!--
+⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS. Il est interdit de copier ou revendre cette section pour de l'usage commercial sans l'accord de l'auteur. Pour toute demande d'information, veuillez me contacter : maxime.crouin@gmail.com / MaxDesign
+⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS. It is forbidden to resell or duplicate this ressource for commercial use without permission of the author. Thank you to contact me: maxime.crouin@gmail.com / MaxDesign
+-->
+
+{% assign img_ratio = 1 | divided_by: section.settings.banner_img.aspect_ratio | times: 100 %}
+{% capture btn_brightness %}{{ section.settings.input_color | color_brightness | round }}{% endcapture %}
+{% assign btn_brightness = btn_brightness | plus:0 %}
+{% if btn_brightness > 40 %}{% assign btn_color_hover = section.settings.input_color | color_darken: 10 %}{% else %}{% assign btn_color_hover = section.settings.input_color | color_lighten: 15 %}{% endif %}
+
+<style>
+  /* maxdesign page fixes */
+  main.main-content, .main-content, .mono-produit-true .main-content, .content-for-layout{padding:0!important;margin:0;max-width:none}
+  #shopify-section-{{ section.id }} {margin:0; max-width:none;padding:0;font-size:0.9em}
+  #shopify-section-{{ section.id }} .pagewidth{max-width:1280px;margin:30px auto;padding:20px;text-align:left}
+  #shopify-section-{{ section.id }} .page-container {background-color: #fff;}
+  #shopify-section-{{ section.id }} h3,#shopify-section-{{ section.id }} .h3{font-size:1.5em!important;color:#1d1d1d;font-weight:400!important;margin-bottom:25px!important;padding:0 !important; line-height:1.3em}
+  #shopify-section-{{ section.id }} form{margin:0}
+  #shopify-section-{{ section.id }} ::-webkit-input-placeholder {/* Edge */color: #bdbdbd!important;}
+  #shopify-section-{{ section.id }} :-ms-input-placeholder {/* Internet Explorer 10-11 */color:#bdbdbd!important;}
+  #shopify-section-{{ section.id }} ::placeholder {color:#bdbdbd!important;}
+  #shopify-section-{{ section.id }} a {text-decoration:underline}
+
+  /* bannière settings */
+  #shopify-section-{{ section.id }} .trackingpage-cover{position:relative;display:flex;{% if section.settings.banner_color == true %}filter:grayscale(1){% endif %};align-items:center;background-image:url("{{ section.settings.banner_img | img_url: '900x' }}");background-position:0% {{section.settings.banner_img_mtop}}%;background-repeat:no-repeat;{% if section.settings.banner_mfull %}height:0;padding-top:{{ img_ratio}}%;background-size:contain;{% else %}height:{{section.settings.banner_img_mheight}}px;background-size:cover;padding-top:0{% endif %}}
+  #shopify-section-{{ section.id }} h1.entry-title{margin:0; width:90vw;text-align:center;color:#fff;font-size:2em;text-shadow:1px 1px 2px #000;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+
+  /* main body image */
+  #shopify-section-{{ section.id }} .imageposition {display:none;}
+
+  /*  list style design */
+  #shopify-section-{{ section.id }} .listdesign p {display: block;margin-left: 28px;margin-top: -25px;margin-bottom: 15px;}
+  #shopify-section-{{ section.id }} .listdesign ol {list-style: none;counter-reset: item;padding: 0;margin: 10px 0;}
+  #shopify-section-{{ section.id }} .listdesign li {counter-increment: item;margin-bottom: 9px;list-style:none}
+  #shopify-section-{{ section.id }} .listdesign li:first-child {padding-top:10px;}
+  #shopify-section-{{ section.id }} .listdesign li:before {margin-right: 7px;content: counter(item);border-radius: 100%;color: white;background-color: {{ section.settings.list_color }};width: 21px;height: 21px;line-height: 21px;text-align: center;display: inline-block;}
+
+  /* input bar */
+  #shopify-section-{{ section.id }} .tracking__container {width:100%}
+  #shopify-section-{{ section.id }} .TM_input-group {margin-top:30px;}
+  #shopify-section-{{ section.id }} .TM_my_search_button_style {background-color:{{ section.settings.input_color }} }
+  #shopify-section-{{ section.id }} .TM_my_search_button_style:hover {background-color:{{ btn_color_hover }} }
+  #shopify-section-{{ section.id }} .TM_my_search_button_style, .TM_my_search_input_style {font-size:14px; height:45px!important;box-sizing:border-box}
+
+  /*media queries*/
+  @media screen and (max-width: 480px){
+    #shopify-section-{{ section.id }} .content-block {padding: 20px 20px 30px;}
+  }
+  @media (min-width:900px) {    
+    #shopify-section-{{ section.id }} .trackingpage-cover{background-image:url("{{ section.settings.banner_img | img_url: '1500x' }}");background-position:0% {{section.settings.banner_img_dtop}}%;{% if section.settings.banner_dfull %}height:0;padding-top:{{ img_ratio}}%;background-size:contain; {% else %}height:{{section.settings.banner_img_dheight}}px;background-size:cover;padding-top:0{% endif %}}
+    #shopify-section-{{ section.id }} h1.entry-title{font-size:4.5em!important}
+    #shopify-section-{{ section.id }} .flex-blocks{display:flex;align-items:center;justify-content:center;}
+    #shopify-section-{{ section.id }} .imageposition {height: auto;position: relative;display: flex;align-items:center;justify-content: center;min-width:33%}
+    #shopify-section-{{ section.id }} .imageposition img {padding: 30px 40px 30px 0}
+    #shopify-section-{{ section.id }} .listdesign p {display:contents}
+    #shopify-section-{{ section.id }} .tracking__container {min-width:750px}
+    #shopify-section-{{ section.id }} .TM_my_search_button_style, .TM_my_search_input_style {font-size:initial;}
+  }
+</style>
+<body>
+  <div class="trackingpage-cover"> 
+    <h1 class="entry-title">{{ section.settings.title }}</h1>  
+  </div>
+  <div class="pagewidth">
+    <div class="flex-blocks"> 
+      {% if section.settings.img != blank %}
+      <div class="imageposition">
+        <img style="width:{{section.settings.img_width }}px" src="{{ section.settings.img | img_url: '800x' }}" alt="suivi livraison"/>
+      </div>
+      {% endif %}
+      <div>  
+        <h3 style="color:{{ section.settings.color_hn }}">{{ section.settings.h3 }}</h3>
+        <div style="color:{{ section.settings.color_text }}">    
+          {{ section.settings.text }}
+          <div class="listdesign"> 
+            <ol>
+              {% for block in section.blocks %}
+              <li>{{ block.settings.list }}</li>
+              {% endfor %}          
+            </ol>
+          </div>    	
+        </div>
+        <div class="tracking__container">
+          <form role="form" action="//track.trackingmore.com" method="get" onsubmit="return false">
+            <div class="TM_input-group" style="display:inline-table!important">
+              <input value="" class="TM_my_search_input_style " id="button_tracking_number" placeholder="Numéro de suivi" name="button_tracking_number" value="" autocomplete="off" maxlength="100" style="border-color:{{ section.settings.input_color }}">
+              <span class="TM_input-group-btn">
+                <button class="TM_my_search_button_style" id="query" type="button" {% unless section.settings.external_tracking %}onclick="return doTrack()" {% endunless %}>Suivre</button>
+              </span>
+            </div>
+            <input type="hidden" name="lang" value="fr" />
+            <input id="button_express_code" type="hidden" name="lang" value="{{ section.settings.transporteur | downcase | remove: ' ' }}" />
+          </form>
+          <div id="TRNum"></div>
+        </div>
+      </div>
+    </div> 
+  </div>
+  <script type="text/javascript" src="//s.trackingmore.com/plugins/v1/buttonCurrent.js"></script>
+  {% if section.settings.external_tracking %}
+  <script>
+    document.querySelector('#query').addEventListener('click', function(e) {
+      e.preventDefault();
+      let trackNum = document.querySelector('#button_tracking_number').value
+      window.open(`http://parcelsapp.com/fr/tracking/${trackNum}`, '_blank');
+    })
+  </script>
+  {% endif %}
+  {% comment %}
+  <script>    
+    var trackurl = window.location.search.substring(1);
+    document.getElementById('button_tracking_number').value = trackurl;
+  </script>
+  {% endcomment %}
+</body>
+
+
+{% schema %}
+{
+   "name":"Tracking Page",
+   "settings":[
+      {
+         "type":"header",
+         "content":"©MaxDesign. All Rights Reserved."
+      },
+      {
+         "type":"paragraph",
+         "content":{
+            "en":"It is forbidden to resell or duplicate this ressource without permission of the author. Thank you to [contact me](https://5euros.com/profil/maxdesign) for additional information.",
+            "fr":"Il est interdit de copier ou revendre cette section sans l'accord de l'auteur. Pour toute demande d'information, veuillez [me contacter](https://5euros.com/profil/maxdesign). "
+         }
+      },
+      {
+         "type":"header",
+         "content":"Paramètres bannière"
+      },
+      {
+         "type":"text",
+         "id":"title",
+         "label":"Texte de la bannière"
+      },
+      {
+         "type":"image_picker",
+         "id":"banner_img",
+         "label":"Image en bannière",
+         "info":"Utiliser une image panoramique pour un résultat optimal."
+      },
+      {
+         "type":"checkbox",
+         "id":"banner_color",
+         "label":"Bannière noire et blanche",
+         "default":true
+      },
+      {
+         "type":"paragraph",
+         "content":"-------- Paramètres bureau --------"
+      },
+      {
+         "type":"checkbox",
+         "id":"banner_dfull",
+         "label":"Image plein format",
+         "info":"Si décoché, vous pouvez utiliser les contrôles manuels suivants.",
+         "default":false
+      },
+      {
+         "type":"range",
+         "id":"banner_img_dheight",
+         "min":250,
+         "max":500,
+         "step":5,
+         "unit":"px",
+         "label":"Hauteur de la bannière",
+         "default":400
+      },
+      {
+         "type":"range",
+         "id":"banner_img_dtop",
+         "min":0,
+         "max":100,
+         "step":1,
+         "unit":"%",
+         "label":"Positionnement en hauteur",
+         "default":60
+      },
+      {
+         "type":"paragraph",
+         "content":"-------- Paramètres mobile ---------"
+      },
+      {
+         "type":"checkbox",
+         "id":"banner_mfull",
+         "label":"Image plein format",
+         "info":"Si décoché, vous pouvez utiliser les contrôles manuels suivants.",
+         "default":true
+      },
+      {
+         "type":"range",
+         "id":"banner_img_mheight",
+         "min":100,
+         "max":300,
+         "step":5,
+         "unit":"px",
+         "label":"Hauteur de la bannière",
+         "default":160
+      },
+      {
+         "type":"range",
+         "id":"banner_img_mtop",
+         "min":0,
+         "max":100,
+         "step":1,
+         "unit":"%",
+         "label":"Positionnement en hauteur",
+         "default":80
+      },
+      {
+         "type":"header",
+         "content":"Corps de la page"
+      },
+      {
+         "type":"image_picker",
+         "id":"img",
+         "label":"Image de gauche (mode bureau)"
+      },
+      {
+         "type":"range",
+         "id":"img_width",
+         "min":10,
+         "max":1000,
+         "step":10,
+         "unit":"px",
+         "label":"Taille de l'image",
+         "default":300
+      },
+      {
+         "type":"text",
+         "id":"h3",
+         "label":"Titre du texte",
+         "default":"Suivez votre colis"
+      },
+      {
+         "type":"richtext",
+         "id":"text",
+         "label":"Texte",
+         "default":"<p>En un simple clic et à tout moment, vous avez la possibilité de tracer votre colis. C'est ici que tout se passe ! Pour suivre l'état de votre commande en temps réél, c'est très simple :</p>",
+      	 "info":"Maj + Entrer pour passer une ligne"
+	  },
+      {
+         "type":"color",
+         "id":"list_color",
+         "label":"Couleur liste",
+         "default":"#202020"
+      },
+      {
+         "type":"color",
+         "id":"input_color",
+         "label":"Couleur barre de suivi",
+         "default":"#55b947"
+      },
+      {
+         "type":"color",
+         "id":"color_hn",
+         "label":"Couleur des titres"
+      },
+      {
+         "type":"color",
+         "id":"color_text",
+         "label":"Couleur du texte"
+      },
+      {
+         "type":"header",
+         "content":"TrackingMore settings"
+      },
+      {
+         "type":"text",
+         "id":"transporteur",
+         "label":"Transporteur par défaut",
+         "info":"Si vous utilisez un transporteur régulier, vous pouvez insérer son nom ici (exemple : UPS, La Poste, Fedex). Sinon, laisser le champs vide mais la recherche automatique ne fonctionne pas dans 100% des cas. Vous avez aussi la possibilité de rediriger le suivi vers la plateforme parcelsapp (le suivi se lancera automatiquement). [Voir Parcelsapp](http://parcelsapp.com/fr)."
+      },
+      {
+         "type":"checkbox",
+         "id":"external_tracking",
+         "label":"Tracking via Parcelsapp"
+      }
+   ],
+   "blocks":[
+      {
+         "type":"list",
+         "name":"Liste numérique",
+         "settings":[
+            {
+               "type":"richtext",
+               "id":"list",
+               "label":"Liste",
+               "default":"<p>Étape 1 : nous expédions votre colis...</p>"
+            }
+         ]
+      }
+   ]
+}
+{% endschema %}

@@ -1,0 +1,277 @@
+{% comment %}
+⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS. Il est interdit de copier du contenu ou de revendre cette section pour de l'usage commercial sans l'accord de l'auteur. Pour toute demande d'information, veuillez me contacter : maxime.crouin@gmail.com
+⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS. It is forbidden to resell or duplicate this ressource for commercial use without permission of the author. Thank you to contact me: maxime.crouin@gmail.com
+{% endcomment %}
+<style>
+  #shopify-section-{{ section.id }} {font-size:0.9em}
+  {% if section.settings.show_author and page.handle contains 'faq' %}
+    .faq-title {margin:0px 0 20px;}
+  {%else%}
+  	.faq-title {margin:0 auto;}
+  {% endif%}
+  .accordionX{list-style-type:none;margin:0 auto 30px;text-align:left;user-select:none}
+  .accordionX li{border-bottom:1px solid #e7e7e7;position:relative;margin:0;list-style:none}
+  .accordionX li p{color:#3C3C3B;line-height:1.8}
+  .accordionX li > a{text-decoration:none}
+  .accordionX .in-accordion a[href] {color:inherit} 
+  .accordionX a span{position:relative;color:#3C3C3B;padding-right:5%;display:block;cursor:pointer;font-weight:600;line-height:3;text-indent:15px;user-select:none;-webkit-tap-highlight-color:transparent;border:none!important}
+  .accordionX a span:after{width:8px;height:8px;border-right:1px solid {{section.settings.textcolor_p}};border-bottom:1px solid {{section.settings.textcolor_p}};position:absolute;right:18px;top:25px;content:" ";top:50%;transform:translate(0,-50%) rotate(-45deg);-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;transition:all .2s ease-in-out}
+  .accordionX p{font-size:1em;padding:10px 20px 0}
+  .accordionX a span.active:after{transform:translate(0,-75%) rotate(45deg);-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;transition:all .2s ease-in-out}
+  .accordionX .in-accordion{display:none}
+  .accordionX .in-accordion p:last-child{padding-bottom:20px}
+  @media screen and (max-width:480px) {
+    .accordionX a span{text-indent:inherit;display:flex;padding:10px 40px 10px 10px;line-height:1.5;font-size:1em;min-height:45px;align-items:center}
+    .accordionX a span:after{right:15px}
+    .accordionX p{padding:10px 10px 0}
+  }
+  ul.accordionX li span, ul.accordionX li p {color:{{section.settings.textcolor_p}}}
+</style>
+
+{% assign count = 0 %}
+<ul style="list-style-type: none;" class="accordionX">
+  {% for block in section.blocks %}    
+  {% if block.type == 'faqtab' or block.type == 'faqtabtext' %}
+  <li><a><span>{{ block.settings.title }}</span></a>
+    <div class="in-accordion" {{ block.shopify_attributes }}>
+      {{ block.settings.answer }}
+    </div>
+  </li> 
+  {% elsif block.type == 'sectiontitle' %}
+  {% assign count = count | plus: 1 %}
+  <div class="section-title-custom" style="background-color:{{ section.settings.bgcolor_section }}" {{ block.shopify_attributes }}>
+    <h4 class="faq-title">
+     <span><img width="{{section.settings.faq_imgsize }}px" src="{{ block.settings.faq_img | img_url: '60x' }}"></span>
+      <span style="color:{{ section.settings.textcolor_section }}"><strong>{{ block.settings.title }}</strong></span>
+    </h4>
+    {% if section.settings.show_author and page.handle contains 'faq' %}
+    <div class="faq-author">
+      {% if block.settings.author_img != blank %}<img src="{{ block.settings.author_img | img_url: '32x' }}">{%endif %}
+       <div style="{% if block.settings.text2 == blank %}line-height:32px{% else %}line-height:17px{% endif %}">
+        <span style="color:{{ section.settings.subtextcolor_section }}">{{ block.settings.text1 }}</span><br>
+        <span style="color:{{ section.settings.subtextcolor_section }}">{{ block.settings.text2 }}</span>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+  {% endfor %}
+  {% comment %}this is for the contact page in order to display the faq under all main faq sections{% endcomment %}
+  <div class="section-title-custom" style="display:none">
+  </div>
+</ul> 
+<style>
+  {% if page.handle contains 'contact' %}
+    @media (min-width:900px){
+      {% if count == 1 %}
+      ul.accordionX > div {width: 100%;}
+      {% elsif count == 2 %}        
+      ul.accordionX > div {width: 47%;}
+      {% elsif count == 3 %}
+      ul.accordionX > div {width: 31%;}
+      {% elsif count == 4 %}
+      ul.accordionX > div {width: 23%;}
+      {% elsif count == 5 %}
+      ul.accordionX > div {width: 31%;}  
+      ul.accordionX > div:nth-last-of-type(2), ul.accordionX > div:nth-last-of-type(3) {width: 47.5%;}
+      {% elsif count == 6 %}
+      ul.accordionX > div {width: 31%;}
+      {% elsif count == 7 %}
+      ul.accordionX > div {width: 23%;}
+      ul.accordionX > div:nth-last-of-type(2), ul.accordionX > div:nth-last-of-type(3), ul.accordionX > div:nth-last-of-type(4) {width: 31%;}
+      {% elsif count == 8 %}
+      ul.accordionX > div {width: 23%;}
+      {% elsif count == 9 %}
+      ul.accordionX > div {width: 31%;}
+      {% else %}
+      ul.accordionX > div {width: 46%;}
+      {% endif %}
+    }
+  {% endif %}
+</style>
+<script>
+  {% unless section.blocks.last.shopify_attributes != blank %}
+  var waitForJQuery = setInterval(function () {
+    if (typeof $ != 'undefined') {
+      //$('.accordionX > li:eq(0) a').addClass('active').next().slideDown();
+      $('.accordionX a span').click(function(j) {
+        var dropDown = $(this).closest('li').find('.in-accordion');
+        $(this).closest('.accordionX').find('.in-accordion').not(dropDown).slideUp();//.closest('li').css('background-color','');
+        if ($(this).hasClass('active')) {
+          $(this).removeClass('active');//.closest('li').css('background-color','');      
+        } else {
+          $(this).closest('.accordionX').find('a span.active').removeClass('active');
+          $(this).addClass('active');//.closest('li').css('background-color','#f7f7f7');
+        }
+        dropDown.stop(false, true).slideToggle();//.prev('li').css('background-color','');
+        j.preventDefault();
+      });
+      clearInterval(waitForJQuery);
+    }
+  }, 10);
+  {% endunless %}
+  {% if section.blocks.last.shopify_attributes != blank %}
+  document.addEventListener('shopify:section:select', function(event) {
+    var waitForJQuery = setInterval(function () {
+      if (typeof $ != 'undefined') {
+        //$('.accordionX > li:eq(0) a').addClass('active').next().slideDown();
+        $('.accordionX a span').click(function(j) {
+          var dropDown = $(this).closest('li').find('.in-accordion');
+          $(this).closest('.accordionX').find('.in-accordion').not(dropDown).slideUp();//.closest('li').css('background-color','');
+          if ($(this).hasClass('active')) {
+            $(this).removeClass('active');//.closest('li').css('background-color','');      
+          } else {
+            $(this).closest('.accordionX').find('a span.active').removeClass('active');
+            $(this).addClass('active');//.closest('li').css('background-color','#f7f7f7');
+          }
+          dropDown.stop(false, true).slideToggle();//.prev('li').css('background-color','');
+          j.preventDefault();
+        });
+        clearInterval(waitForJQuery);
+      }
+    }, 10);
+  });
+  {% endif %}
+
+</script>
+
+{% schema %}
+  {
+    "name": "FAQ tabs",
+    "settings": [
+    {
+      "type": "header",
+      "content": "©MaxDesign. All Rights Reserved."
+    },
+    {
+      "type": "paragraph",
+      "content": {
+        "en" : "It is forbidden to resell or duplicate this ressource without permission of the author. Thank you to [contact me](https://5euros.com/profil/maxdesign) for additional information.",
+        "fr" : "Il est interdit de copier ou revendre cette section sans l'accord de l'auteur. Pour toute demande d'information, veuillez [me contacter](https://5euros.com/profil/maxdesign). "
+      }
+    },
+	{
+      "type": "header",
+      "content": "Paramètres principaux"
+    },
+	{
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Afficher l'auteur des sections",
+	  "info": "Page de FAQ uniquement",
+	  "default" : true
+	},
+	{
+      "type": "range",
+      "id": "faq_imgsize",
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Taille des images (section)",
+      "default": 30
+     },
+     {
+        "type":"color",
+        "id":"bgcolor_section",
+        "label":"Section background color"
+     },
+     {
+        "type":"color",
+        "id":"textcolor_section",
+        "label":"Section text color"
+     },
+	 {
+        "type":"color",
+        "id":"subtextcolor_section",
+        "label":"Section subtext color"
+     },
+	 {
+      "type":"color",
+      "id":"textcolor_p",
+      "label":"Main text color"
+	 }
+   ],
+   "blocks": [
+	  {
+        "type": "sectiontitle",
+        "name": "FAQ Section",
+        "settings": [
+		  {
+			"type": "image_picker",
+            "id": "faq_img",
+            "label": "Image section",
+		    "info": "Upload 1:1 ratio for optimal result."
+		  },          
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Section title",
+			"default": "Section title here"
+          },
+		  {
+			"type":"header",
+			"content":"Author"
+		  },
+		  {
+            "type": "text",
+            "id": "text1",
+            "label": "Text line 1",
+			"default": "Écrit par Sandra"
+          },
+		  {
+            "type": "text",
+            "id": "text2",
+            "label": "Text line 2",
+			"default": "8 articles dans cette section"
+          },
+		  {
+			"type": "image_picker",
+            "id": "author_img",
+            "label": "Author picture",
+		    "info": "Upload 1:1 ratio for optimal result."
+		  }          
+        ]
+      },
+	  {
+        "type": "faqtabtext",
+        "name": "FAQ Tab (richtext)",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Question",
+            "default": "Your question here"
+          },
+          {
+            "type": "richtext",
+            "id": "answer",
+            "label": "Answer",
+		    "default": "<p>This is your answer.</p>",
+			"info": "Press shift + enter to skip one line."
+          }                  		  
+        ]
+      },
+	  {
+        "type": "faqtab",
+        "name": "FAQ Tab (html)",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Question",
+            "default": "Your question here"
+          },
+          {
+            "type": "html",
+            "id": "answer",
+            "label": "Answer",
+		    "default": "<p>This is your answer.</p>",
+			"info": "Press shift + enter to skip one line."
+          }                  		  
+        ]
+      }
+    ]
+}
+{% endschema %}
+

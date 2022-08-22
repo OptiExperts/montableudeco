@@ -1,0 +1,233 @@
+{% capture eddLiquidData %} 
+
+{% assign custom = shop.metafields.deliveryEstimation.Settings %}
+{% assign is_install = custom.is_install %}
+
+<!-- set product date -->
+{% assign edd_options = custom.edd_options %}
+{% assign is_enable = edd_options.is_enabled %}
+{% assign message = edd_options.message %}
+{% assign cutoff_time = edd_options.cutoff_time %}
+{% assign off_day = edd_options.off_day %}
+{% assign msg_preview = edd_options.msg_preview %}
+{% assign display_on_other_page = edd_options.display_on_other_page %}
+{% assign date_format = edd_options.date_format %}
+{% assign cutofftime_enable = edd_options.cutofftime_enable %}
+{% assign detail_page_class = edd_options.detail_page_class %}
+{% assign additional_script = edd_options.additional_script %}
+{% assign delivery_icon = edd_options.delivery_icon %}
+{% assign date_option = edd_options.date_option %}
+{% assign is_all_products = edd_options.is_all_products %}
+{% assign custom_cart_label = edd_options.custom_cart_label %}
+{% assign custom_date_format = edd_options.custom_date_format %}
+{% assign countdown_formate = edd_options.countdown_formate %}
+{% assign cart_msg_apperance = edd_options.cart_msg_apperance %}
+{% assign trial_active = edd_options.trial_active %}
+{% assign trial_end_date = edd_options.trial_end_date %}
+{% assign random_string = custom.random_string %}
+{% assign edd_for_customer_or_admin = edd_options.edd_for_customer_or_admin %}
+{% if edd_options.edd_for_customer_or_admin == blank %}
+{% assign edd_for_customer_or_admin = 'admin' %}
+{% endif %}
+<!-- set product date -->
+
+{% assign plan_info = custom.plan_info %}
+{% assign is_active = plan_info.is_active %}
+{% assign plan = plan_info.plan %}
+
+{% if template contains 'product' %}
+{% assign available = product.available  %}
+{% assign product_id = product.id  %}
+{% assign product_handle = product.handle  %}
+{% assign product_tag = product.tags  %}
+{% assign product_type = product.type  %}
+{% assign product_vendor = product.vendor  %}
+{% assign collection = collections %}
+{% assign tagCount = 0 %}
+{% assign collectionCount = 0 %}
+
+<div class='sb_info metafield_update' style='display:none'>
+<div class='sb_store_date'>{{ "now" | date: "%b %d, %Y %H:%M" }}</div>
+<div >Product available : <span class='product_available'>{{available}}</span></div>
+<div >Product Id : <span class='product_id'>{{product_id}}</span></div>
+<div >Product Handle : <span class='product_handle'>{{product_handle}}</span></div>
+<div >Product Vendor : <span class='product_vendor'>{{product_vendor}}</span></div>
+<div >Product Type : <span class='product_type'>{{product_type}}</span></div>
+<div >Product Tag : 
+{% for getproduct_tag in product_tag %} 
+<div> {{tagCount}} : 
+<span class='product_tag product_tag_{{tagCount}}'>{{getproduct_tag}}</span>
+  {% assign tagCount = tagCount | plus: 1 %}
+  </div>
+{% endfor %}
+  </div>
+
+</div>
+{% endif %}
+
+<!-- cart calendar data --> 
+{% assign edd_customer_option = custom.edd_customer_option %} 
+{% assign c_min_day = edd_customer_option.min_day %}
+{% assign c_max_day = edd_customer_option.max_day %}
+{% assign c_calender_alignment = edd_customer_option.calender_alignment %}
+{% assign c_cart_calendar_heading = edd_customer_option.cart_calendar_heading %}
+{% assign c_cart_calendar_err_msg = edd_customer_option.cart_calendar_err_msg %}
+{% assign c_order_delivery_date_label = edd_customer_option.order_delivery_date_label %}
+{% assign c_order_delivery_day_label = edd_customer_option.order_delivery_day_label %}
+{% assign c_weekday_translation = edd_customer_option.weekday_translation %}
+{% assign c_month_translation = edd_customer_option.month_translation %}
+{% assign c_off_day = edd_customer_option.off_day %}
+{% assign c_date_format = edd_customer_option.date_format %}
+<!-- cart calendar data -->
+
+<script>
+        msg_preview = `{{msg_preview}}`;
+        msg_preview = msg_preview.replaceAll('=>',':');
+        random_string = `{{random_string}}`;
+        trial_active = `{{trial_active}}`;
+        if(trial_active ==1 ){
+          plan='premium';
+        }else{
+          plan = `{{plan}}`;
+        }
+        responseData_ode = 
+        {
+          "is_active":`{{is_active}}`,
+          "is_install":`{{is_install}}`,
+          "is_enable": `{{is_enable}}`,
+          "message":`{{message}}`,                   
+          "plan":plan,
+          "edd_options":{
+             "cutoff_time":`{{cutoff_time}}`,
+             "off_day":`{{off_day}}`,
+             "msg_preview":JSON.parse(msg_preview),
+             "date_format":`{{date_format}}`,
+             "is_all_products":`{{is_all_products}}`,
+             "display_on_other_page":`{{display_on_other_page}}`,
+             "cutofftime_enable":`{{cutofftime_enable}}`,
+             "detail_page_class":`{{detail_page_class}}`,
+             "additional_script":`{{additional_script}}`,
+             "delivery_icon":`{{delivery_icon}}`,
+             "countdown_formate":`{{countdown_formate}}`,
+             "custom_cart_label":`{{custom_cart_label}}`,
+             "cart_msg_apperance":`{{cart_msg_apperance}}`,
+             "date_option":`{{date_option}}`,
+             "custom_date_format":`{{custom_date_format}}`,
+             "trial_active":`{{trial_active}}`,
+             "trial_end_date":`{{trial_end_date}}`
+             },
+        }  
+        customer_responseData_ode = {
+        "is_enable":`{{is_enable}}`,
+        "min_day":`{{c_min_day}}`,
+         "max_day":`{{c_max_day}}`,
+         "calender_alignment":`{{c_calender_alignment}}`,
+         "cart_calendar_heading":`{{c_cart_calendar_heading}}`,
+         "cart_calendar_err_msg":`{{c_cart_calendar_err_msg}}`,
+         "order_delivery_date_label":`{{c_order_delivery_date_label}}`,
+         "order_delivery_day_label":`{{c_order_delivery_day_label}}`,
+         "month_translation":`{{c_month_translation}}`,
+        "weekday_translation":`{{c_weekday_translation}}`,
+        "off_day":`{{c_off_day}}`,
+        "date_format":`{{c_date_format}}`,
+        "holidays":`{{c_holidays}}`    
+      }                     
+</script>
+
+{%- assign templateBase = template | slice: 0, 4 -%}
+{%- if templateBase == 'cart' -%}
+
+{% if edd_for_customer_or_admin == "customer" %}
+<link href = "https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css" rel = "stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src='https://estimated-delivery-days.setubridgeapps.com/estimated-delivery-days/app/edd-proxy/main/edd_customer.js?v1' ></script>
+
+<style>
+  .ui-datepicker table{
+        background: #fff;
+  }
+  .input-group-btn,.order_delivery_date,.order-calendar-button-click{
+    cursor:pointer;
+  }
+  .order_delivery_date {  
+  padding: 6px 4px 3px;
+  border: 1px solid #ccc;
+  background-color: #eee;
+  }
+  .calendar_icon{
+    position: absolute;
+    height: 20px;
+    right: 6px;
+    top: 2px;
+    opacity: 0.7;
+    cursor: pointer;
+    border-left: 1px solid #eee;
+    background: #fff;
+    padding: 0px;
+  }
+  .calendar_icon img{
+    width:20px;
+  }
+  .calendar_input_wrap{
+    position: relative;
+    display: inline-block;
+  }
+</style>
+{%- endif -%}
+
+{%- else -%}
+{% if edd_for_customer_or_admin == "admin" %}
+<script src='https://estimated-delivery-days.setubridgeapps.com/estimated-delivery-days/app/edd-proxy/main/element_picker_for_change_message_position.js'> </script>
+<script src="https://estimated-delivery-days.setubridgeapps.com/estimated-delivery-days/app/edd-proxy/main/edd.js?02_06_2022_from_theme_file"></script>   
+{%- endif -%}
+{%- endif -%}
+
+{% endcapture %}
+<div class='edd_liquid_code'></div>
+
+
+<script>
+
+function EDDaddLiquidCode($){
+if(typeof check_theme_extention == 'undefined' ){
+console.log('add liquid code');
+var content = {{ eddLiquidData | json }};
+$(".edd_liquid_code").html(content);    /*  use class name where you want to show the layout data */
+}
+}
+  
+var loadScriptInLiquid = function (url, callback) {
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      if (script.readyState) {
+        script.onreadystatechange = function () {
+          if (script.readyState == 'loaded' || script.readyState == 'complete') {
+            script.onreadystatechange = null;
+            callback();
+          }
+        };
+      } else {
+        script.onload = function () {
+          callback();
+        };
+      }
+      script.src = url;
+      document.getElementsByTagName('head') [0].appendChild(script);
+    };
+
+    /* check Jquery loaded in theme or not */
+    if((typeof jQuery === 'undefined') || (parseFloat(jQuery.fn.jquery) < 1.7)){
+
+      loadScriptInLiquid('//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js', function () {
+        jQuery191 = jQuery.noConflict(true);
+        EDDaddLiquidCode(jQuery191);
+      });
+
+    }else{
+
+      EDDaddLiquidCode(jQuery);
+
+    }
+  
+</script>

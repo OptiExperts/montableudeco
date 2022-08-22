@@ -1,0 +1,7 @@
+{% capture faq-page %}{% section 'faqTabs-maxdesign' %}{% endcapture %}
+{% assign faq-page = faq-page | replace: 'data-shopify-editor-section', 'data-shopify-editor-section-nested' | replace: 'class="shopify-section"', 'class="shopify-section-nested"' %}
+{% capture contact-us-content %}
+{% section 'contact-maxdesign' %}
+{% endcapture %}
+{% assign contact-us-content = contact-us-content | replace: "%% SAUVEGARDER POUR CHARGER LA FAQ %%", faq-page %}
+{{ contact-us-content }}

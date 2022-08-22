@@ -1,0 +1,116 @@
+{%- comment -%}
+  Powered by MaxDesign.
+  ⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS (article L. 111-1 du code de la propriété intellectuelle). Cette ressource ne peut pas être utilisée, diffusée ou exploitée sans l'approbation de ses auteurs. Pour plus d'informations, veuillez contacter admin@maxdesign.expert
+  ⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS (section L. 111-1 of the intellectual property code). This resource may not be used, distributed or exploited without the approval of its authors. For any information request, please contact admin@maxdesign.expert
+{%- endcomment -%}
+
+
+
+{%- if template.name != 'cart' and settings.MD_cart_type == 'drawer' -%}
+
+  {%- comment -%}
+    #pragma ASSETS
+  {%- endcomment -%}
+
+  {%- capture script -%}cart-maxdesign{% if settings.MD_cart_minifed_files %}.min{% endif %}.js{%- endcapture -%}
+  {%- capture style -%}cart-maxdesign{% if settings.MD_cart_minifed_files %}.min{% endif %}.css{%- endcapture -%}
+  <link rel="stylesheet" property="stylesheet" data-href="{{ style | asset_url }}">
+  <script type="lazyload2" data-src="{{ script | asset_url }}" defer></script>
+
+
+
+  {%- comment -%}
+    #pragma MARKUP
+  {%- endcomment -%}
+  
+  <overlay-maxdesign></overlay-maxdesign>
+
+  <drawer-maxdesign>
+    <div class="cart-drawer__wrapper"></div>
+    <script type="application/json">
+      {
+        "drawerEnable": {{ settings.drawer_enable | json }},
+        "drawerTrigger": {{ settings.MD_drawer_trigger_selector | json }},
+        "drawerFormSubmit": {{ settings.MD_drawer_form_submit_selector | json }}
+      }
+    </script>
+  </drawer-maxdesign>
+
+  {% if request.design_mode %}
+    <aside hidden drawer-design-mode>
+      {% section 'cart-maxdesign' %}
+      {% if settings.MD_upsell_enable %}
+        {% section 'upsell-maxdesign' %}
+      {% endif %}
+    </aside>
+  {% endif %}
+
+{%- endif -%}
+
+
+
+{%- comment -%}
+  #pragma PRODUCT REDIRECT
+{%- endcomment -%}
+
+{%- if request.path contains '-hidden' -%}
+  {%- style -%}html{display:none}{%- endstyle -%}
+  <script>!function(){let n=window.location.pathname,t=n.lastIndexOf("-");"hidden"==n.substring(t+1)&&(document.location=n.substring(0,t))}()</script>
+{%- endif -%}
+
+
+
+{%- comment -%}
+  #pragma SHOPIFY EDITOR
+{%- endcomment -%}
+
+{%- if request.design_mode -%}
+  <script>
+    (function shopifyEditor() {
+      document.addEventListener('shopify:section:load', editorChange);
+      document.addEventListener('shopify:section:select', editorChange);
+      document.addEventListener('shopify:block:select', editorChange);
+      document.addEventListener('shopify:block:deselect', editorChange);
+  
+      function editorChange(e) {
+        const cart = MaxDesign.cart;
+        const drawer = MaxDesign.drawer;
+        const upsell = MaxDesign.upsell;
+
+        // > drawer
+        if (drawer) {
+          drawer.onCloseDrawer();
+          document.querySelector('[drawer-design-mode]')?.remove();
+          if (e.detail.sectionId == 'cart-maxdesign') {
+            if (document.querySelector(drawer.classes.drawerEmpty)) {
+              drawer.fetchCart();
+            } else {
+              drawer.openDrawer();
+            }
+          }
+        }
+
+        // > cart
+        if (cart && window.location.href.indexOf("/cart") != -1) {
+          e.target.classList.add('cart-type')
+        }
+        
+        // > upsell
+        if (upsell && e.detail.sectionId == 'upsell-maxdesign') {
+          e.target.classList.remove('shopify-section');
+          e.target.classList.add('shopify-section-nested');
+          e.target.setAttribute('data-shopify-editor-section-nested', e.target.getAttribute('data-shopify-editor-section'));
+          e.target.removeAttribute('data-shopify-editor-section');
+        }
+      }
+    })();
+  </script>
+{%- endif -%}
+
+  
+
+{%- comment -%}
+  Powered by MaxDesign.
+  ⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS (article L. 111-1 du code de la propriété intellectuelle). Cette ressource ne peut pas être utilisée, diffusée ou exploitée sans l'approbation de ses auteurs. Pour plus d'informations, veuillez contacter admin@maxdesign.expert
+  ⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS (section L. 111-1 of the intellectual property code). This resource may not be used, distributed or exploited without the approval of its authors. For any information request, please contact admin@maxdesign.expert
+{%- endcomment -%}

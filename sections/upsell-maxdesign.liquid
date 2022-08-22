@@ -1,0 +1,1134 @@
+{%- comment -%}
+  Powered by MaxDesign.
+  ⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS (article L. 111-1 du code de la propriété intellectuelle). Cette ressource ne peut pas être utilisée, diffusée ou exploitée sans l'approbation de ses auteurs. Pour plus d'informations, veuillez contacter admin@maxdesign.expert
+  ⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS (section L. 111-1 of the intellectual property code). This resource may not be used, distributed or exploited without the approval of its authors. For any information request, please contact admin@maxdesign.expert
+{%- endcomment -%}
+<!--
+  Powered by MaxDesign.
+  ⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS (article L. 111-1 du code de la propriété intellectuelle). Cette ressource ne peut pas être utilisée, diffusée ou exploitée sans l'approbation de ses auteurs. Pour plus d'informations, veuillez contacter admin(at)maxdesign.expert
+  ⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS (section L. 111-1 of the intellectual property code). This resource may not be used, distributed or exploited without the approval of its authors. For any information request, please contact admin(at)maxdesign.expert
+-->
+
+
+{%- assign upsell_cap = section.settings.upsell_cap | plus: 0 -%}
+{% if section.settings.show_upsell and cart.items.size < upsell_cap %}
+
+
+
+  {%- comment -%} <!---------------- LIQUID CSS UTILITIES ----------------> {%- endcomment -%}
+
+
+
+  {%- for block in section.blocks -%}{%- if block.type == 'developer' -%}{%- assign developer = forloop.index0 -%}{%- break -%}{%- endif -%}{%- endfor -%}
+  {% if developer != nil %}{% assign breakPoint = section.blocks[developer].settings.query | remove: 'px' | plus: 0 %}{% else %}{% assign breakPoint = 769 %}{% endif %}
+  {%- assign bg_opacity_desktop = section.settings.upsell_bg_opacity_desktop | divided_by: 100.0 -%}
+  {%- assign bg_opacity_mobile = section.settings.upsell_bg_opacity_mobile | divided_by: 100.0 -%}
+
+
+
+  {%- comment -%} <!---------------- UPSELL RENDERING RULES ----------------> {%- endcomment -%}
+
+
+
+  {%- capture arr -%}{%- for item in cart.items -%}{{-item.product.id-}},{%- endfor -%}{%- endcapture -%}
+  {%- assign cart_items_id_array = arr | split: ',' -%}
+
+
+  {%- for item in cart.items -%}
+    {%- capture collection_handle -%}{%- for collection in item.product.collections -%}{{ collection.handle }}{%- endfor -%}{%- endcapture -%}
+    {%- assign break_childloop = false -%}
+
+    {%- for block in section.blocks -%}
+      {%- assign index = forloop.index0 -%}
+
+      {%- unless block.type == 'developer' or block.settings.upsell_enable == false -%}
+        {%- if block.type == 'upsell1' -%}
+          {%- if block.settings.upsell_reference == blank -%}
+            {%- assign myref = block.settings.product_ref -%}{%- assign upsell_ref = all_products[myref].first_available_variant.id  -%}
+          {%- else -%}
+            {%- assign upsell_ref = block.settings.upsell_reference | times:1 -%}
+          {%- endif -%}
+        {%- elsif block.type == 'upsell2' -%}
+          {%- assign upsell_ref = block.settings.upsell_reference -%}
+        {%- endif -%}
+
+        {%- if item.id == upsell_ref or item.product.first_available_variant.id == upsell_ref or collection_handle contains upsell_ref -%}
+          {%- assign upsell_handle = block.settings.product_upsell -%}
+          {%- assign upsell_id = all_products[upsell_handle].id | times:1 -%}
+          {%- assign self_promo = false -%}
+        
+          {%- if block.settings.product_ref == block.settings.product_upsell and block.settings.upsell_reference == block.settings.variant_upsell -%}
+            {% assign cart_items_id_array_uniqs = cart_items_id_array | uniq %}
+            {%- if cart_items_id_array.size == cart_items_id_array_uniqs.size -%}
+              {%- assign self_promo = true -%}
+            {%- endif -%}
+          {%- endif -%}
+
+          {%- for id in cart_items_id_array -%} 
+            {%- assign cart_item_id = id | times: 1 -%}
+            {%- if cart_item_id == upsell_id and self_promo == false -%} 
+              {%- assign break_loop = false -%}
+              {%- assign break_childloop = false -%}
+              {%- assign upsell_match = false -%}
+              {%- break -%}                            
+            {%- else -%}
+              {%- assign break_loop = true -%}
+              {%- assign break_childloop = true -%}
+              {%- assign upsell_match = true -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+        {%- else -%}
+          {%- assign break_loop = false -%}	
+        {%- endif -%}              
+
+        {%- if break_childloop -%}{%- break -%}{%- endif -%}                         		                         
+      {%- endunless -%}
+    {%- endfor -%}
+
+    {%- if break_loop -%}{%- break -%}{%- endif -%} 	
+  {%- endfor -%}
+
+
+
+  {%- comment -%} <!---------------- MATCHING UPSELL START ----------------> {%- endcomment -%}
+
+
+
+  {% if upsell_match %}
+
+    {%- comment -%}
+    If upsell ID is left blank in editor, then use the first available variant as upsell.
+    {%- endcomment -%}
+    {%- if section.blocks[index].settings.variant_upsell != blank -%}
+      {%- assign upsell_id = section.blocks[index].settings.variant_upsell | plus: 0 -%}
+      {%- for variant in all_products[upsell_handle].variants -%}
+        {%- if variant.id == upsell_id -%}
+          {%- assign upsell_price = variant.price -%}{%- assign upsell_compare_at_price = variant.compare_at_price -%}
+          {% break %}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- assign upsell_id = all_products[upsell_handle].first_available_variant.id | plus: 0 -%}
+      {%- assign upsell_price = all_products[upsell_handle].price -%}
+      {%- assign upsell_compare_at_price = all_products[upsell_handle].compare_at_price -%}
+    {%- endif -%}
+    {%- capture priceTag -%}{%- if section.blocks[index].settings.price != 'disable' -%}&nbsp; • &nbsp;{%- if upsell_compare_at_price and section.blocks[index].settings.price == 'compare_at_price' -%}<s class="upsell__compare-price">{{ upsell_compare_at_price | money | strip }}</s>&nbsp;{%- endif -%}{{ upsell_price | money }}{%- endif -%}{%- endcapture -%}
+    {%- capture upsell_url -%}{%- if section.blocks[index].settings.product_upsell_original == blank -%}{{ all_products[upsell_handle].url }}{%- else -%}{%- assign product_upsell_original = true -%}{{ all_products[section.blocks[index].settings.product_upsell_original].url }}{%- endif -%}{%- endcapture -%}
+    {%- capture upsell_free -%}{%- if section.blocks[index].settings.product_upsell_free -%}true{% else %}false{% endif %}{% endcapture %}
+	  {%- capture upsell_topline -%}{%- if section.blocks[index].settings.upsell_topline == blank -%}{{ all_products[upsell_handle].title }}{%- else -%}{{ section.blocks[index].settings.upsell_topline }}{%- endif -%}{%- endcapture -%}
+    {%- if product_upsell_original -%}
+      {%- if section.blocks[index].settings.product_upsell_original_property contains ':' -%}
+        {%- assign p_first = section.blocks[index].settings.product_upsell_original_property | split: ':' | first -%}
+        {%- assign p_last = section.blocks[index].settings.product_upsell_original_property | split: ':' | last -%}
+      {%- else -%}
+        {%- assign p_first = 'Promo' -%}
+        {%- assign p_last = section.blocks[index].settings.product_upsell_original_property -%}
+      {%- endif -%}
+    {%- endif -%}
+    
+
+
+	{%- comment -%} <!---------------- CSS VARIABLES ----------------> {%- endcomment -%}
+
+
+
+    {%- style -%}
+      #shopify-section-{{ section.id }} {
+        --top-color-text-mobile: {{ section.settings.upsell_topcolor_text_mobile }};
+        --top-color-bg-mobile: {{ section.settings.upsell_topcolor_bg_mobile }};
+        --text-color-mobile: {{ section.settings.upsell_color_mobile }};
+        --bg-color-mobile: {{ section.settings.upsell_bg_color_mobile | color_modify: 'alpha', bg_opacity_mobile }};
+        --border-color-mobile: {{ section.settings.upsell_border_color_mobile }};
+        --img-flex-basis-mobile: {{ section.blocks[index].settings.upsell_img_width_mobile }}%;
+        --compare-price-color-mobile: {{ section.settings.upsell_atc_mobile | color_modify: 'alpha', 0.7 }};
+        --btn-color-text-mobile: {{ section.settings.upsell_atc_mobile }};
+        --btn-color-bg-mobile: {{ section.settings.upsell_atcbg_mobile }};
+        --btn-hover-color-bg-mobile: {{ section.settings.upsell_atcbg_hover_mobile }};
+
+        --top-color-text-desktop: {{ section.settings.upsell_topcolor_text_desktop }};
+        --top-color-bg-desktop: {{ section.settings.upsell_topcolor_bg_desktop }};
+        --title-color-desktop: {{ section.settings.upsell_title_color_desktop }};
+        --text-color-desktop: {{ section.settings.upsell_color_desktop }};
+        --bg-color-desktop: {{ section.settings.upsell_bg_color_desktop | color_modify: 'alpha', bg_opacity_desktop }};
+        --img-flex-basis-desktop: {{ section.blocks[index].settings.upsell_img_width_desktop }}%;
+        --btn-color-text-desktop: {{ section.settings.upsell_atc_desktop }};
+        --btn-color-compare-price-desktop: {{ section.settings.upsell_atc_desktop | color_modify: 'alpha', 0.7 }};
+        --btn-color-bg-desktop: {{ section.settings.upsell_atcbg_desktop }};
+        --btn-hover-color-bg-desktop: {{ section.settings.upsell_atcbg_hover_desktop }};
+      }
+    {%- endstyle -%}
+
+
+
+	{%- comment -%} <!---------------- STYLES ----------------> {%- endcomment -%}
+
+
+
+	  <style>
+      /* main styles
+      ======================= */
+      .upsell-MD .desktop__content {display:none!important;}
+      .upsell-MD .mobile__content {display:initial!important;}
+      /* header, wrapper & containers */
+      upsell-maxdesign {display:block;position:relative;text-align:center;padding:30px 0 20px;max-width:500px;margin:auto}
+      .upsell__header {display:table;font-size:0.9em;background-color:var(--top-color-bg-mobile);color:var(--top-color-text-mobile);padding:1px 8px;letter-spacing:1px;position:absolute;top:0;left:0;right:0;margin:auto;width:max-content;transform:translateY(-50%);}
+      .upsell__container {display:flex;flex-direction:column;font-size:0.85em;background-color:var(--bg-color-mobile);border:1px solid var(--border-color-mobile);padding:15px;position:relative;box-shadow: 0px 0px 7px -3px rgba(0,0,0,0.15);}
+      /* text content */
+      .upsell__content {display:flex;align-items:center}
+      .upsell__text {color:var(--text-color-mobile);text-align:left;padding-left:15px;flex:1 0 0;}
+      .upsell__topline {display:block;text-align:center;text-decoration:none;color:inherit;margin:10px 0;font-weight:600;font-size:1em;line-height:1.5em;}
+      .upsell__mainline, .upsell__mainline p {font-size:0.95em;max-width:400px;line-height:1.5em;margin-bottom:10px;}
+      .upsell__mainline .unset > * {all:unset}
+      /* image */
+      .upsell__image {position:relative;height:100%;flex-basis:var(--img-flex-basis-mobile);}
+      .upsell__image img {display:block;width:100%;height:auto;align-self:flex-start;}
+      /* button */
+      .upsell__compare-price {color:var(--compare-price-color-mobile);}
+      .upsell__submit {position:relative;margin:0;color:var(--btn-color-text-mobile);background-color:var(--btn-color-bg-mobile);border:1px solid var(--btn-color-text-mobile)!important;letter-spacing:1px;font-weight:600;font-size:0.85em;padding:10px 20px;text-decoration:none;text-align:center;vertical-align:middle;white-space:nowrap;cursor:pointer;user-select:none;outline:none;transition:all 0.2s ease-in-out}
+      .upsell__submit svg {position: absolute;fill:var(--btn-color-text-mobile);width: 20px;height:20px;left:calc(50% - 10px);top:calc(50% - 10px);transition: opacity 0.3s ease-in-out;opacity:0;}
+      .upsell__submit:hover, .upsell__submit:focus {background-color:var(--btn-hover-color-bg-mobile);box-shadow: 0px 0px 8px -3px rgba(0,0,0,0.15);}
+      .upsell__submit.upsell__submit--loading > span {display:block;transform:scale(0);}
+      .upsell__submit.upsell__submit--loading > svg {animation: rotate 0.5s linear infinite;opacity:1;}
+      @keyframes rotate {0% {-webkit-transform: rotate(0);transform: rotate(0);}100% {-webkit-transform: rotate(360deg);transform: rotate(360deg);}}
+
+      /* media queries
+      ======================= */
+      @media(min-width:1100px) {
+        .cart-type .upsell-MD .mobile__content {display:none!important;}
+        .cart-type .upsell-MD .desktop__content {display:initial!important;}
+        /* header, wrapper & containers */
+        .cart-type .upsell__header {font-size:0.8em;background-color:var(--top-color-bg-desktop);color:var(--top-color-text-desktop);position:static;display:inline-block;margin:0;transform:none}
+        .cart-type upsell-maxdesign {width:calc(100% + 40px);margin-left:-20px;max-width:none;padding:0;}
+        .cart-type .upsell__container {font-size:0.9em;padding:20px;border:none;flex-direction:row;box-shadow:none;background-color:var(--bg-color-desktop);border-radius:0 0 calc(var(--border-radius-desktop) - 1px) calc(var(--border-radius-desktop) - 1px);}
+        .cart-type .upsell__content {width:100%;line-height:1.3em}
+        /* text content */
+        .cart-type .upsell__topline {color:var(--title-color-desktop);margin-bottom:5px;}
+        .cart-type .upsell__text {display:flex;flex-direction:column;align-items:flex-start;color:var(--text-color-desktop);}
+        /* image */
+        .cart-type .upsell__image {flex-basis:var(--img-flex-basis-desktop)}
+        .cart-type .upsell__image img {position:absolute;width:100%;height:100%;object-fit:contain;object-position:100% 50%;display:block;}
+        /* button */
+        .cart-type .upsell__submit {color:var(--btn-color-text-desktop);background-color:var(--btn-color-bg-desktop);border:1px solid var(--btn-color-text-desktop);padding:12px 30px;width:auto}
+        .cart-type .upsell__submit:hover, .upsell__submit:focus {background-color:var(--btn-hover-color-bg-desktop);}
+      }
+	  </style>
+
+    {%- style -%}
+        /* CUSTOM CSS
+        ========================= */
+        @media (min-width:{{ breakPoint }}px) { {{ section.blocks[developer].settings.css_bureau }} }
+        @media (max-width:{{ breakPoint | minus: 1  }}px) { {{ section.blocks[developer].settings.css_mobile }} }
+    {%- endstyle -%}
+
+
+
+	  {%- comment -%} <!---------------- MARKUP ----------------> {%- endcomment -%}
+
+
+
+    <upsell-maxdesign>		
+      <div class="upsell__container">
+        <a href="{{ upsell_url }}" class="upsell__topline mobile__content">{{ upsell_topline }}{{ priceTag | strip }}</a> 
+        <div class="upsell__content">
+          <a href="{{ upsell_url }}" class="upsell__image">
+            {% assign img = section.blocks[index].settings.upsell_img | default: all_products[upsell_handle].featured_image %}
+            <img loading="lazy" src="{{ img | img_url: '300x' , crop: 'center' }}"
+                 srcset="{{ img | img_url: '300x' }} 300w, {{ img | img_url: '500x' }} 500w, {{ img | img_url: '750x' }} 750w, {{ img | img_url: '1000x' }} 1000w" 
+                 sizes="(min-width: 1100px) calc(1000px*{{ section.blocks[index].settings.upsell_img_width_desktop }}/100), 275px"
+                 alt="{{ img.alt }}"/>
+          </a>
+          <div class="upsell__text">
+            {%- if section.blocks[index].settings.upsell_header != blank -%}<div class="upsell__header"><span>{{ section.blocks[index].settings.upsell_header }}</span></div>{%- endif -%}
+            <a href="{{ upsell_url }}" class="upsell__topline desktop__content">{{ upsell_topline }}</a>
+            <div class="upsell__mainline">{% if section.blocks[index].settings.upsell_mainline == blank %}<span class="unset">{{ all_products[upsell_handle].content | strip_html | truncatewords: 10 }}</span>{% else %}{{ section.blocks[index].settings.upsell_mainline }}{% endif %}</div>	
+            <button type="button" class="upsell__submit">
+              <span>{{ section.blocks[index].settings.upsell_button }}<span class="desktop__content">{{ priceTag }}</span></span>
+              <svg viewBox="0 0 20 20"><path d="M20 10c0 5.523-4.477 10-10 10S0 15.523 0 10 4.477 0 10 0v2c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8h2z"></path></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <script type="application/json">
+        {
+           "location": "{% if section.settings.upsell_type == 'update_cart' -%}/cart{% else %}/checkout{% endif %}",
+           "replaceItem": {% if section.blocks[index].settings.replace_reference contains 'replace' %}true{% else %}false{% endif %},
+           "refID": "{% if section.blocks[index].settings.upsell_reference != blank -%}{{ section.blocks[index].settings.upsell_reference }}{%- else -%}{{ upsell_ref }}{%- endif -%}",
+           "upsellID": {{ upsell_id | json }},
+           "upsellProp": { "_upsell_maxdesign": "Bought with cart upsell" {% if product_upsell_original %}, "_url_original": "{{ upsell_url }};{{ upsell_free }}", "{{ p_first }}": "{{ p_last }}"{% endif %} }
+        }
+       </script>
+    </upsell-maxdesign>
+	{% endif %}
+{% endif %}
+
+
+
+{%- comment -%} <!---------------- SCHEMA SETTINGS ----------------> {%- endcomment -%}
+
+
+
+{%- schema -%}
+{
+  "name": "✪ Upsell by MaxDesign",
+  "tag": "section",
+  "class": "upsell-MD",
+  "settings": [
+    {
+      "type": "header",
+      "content": "©MaxDesign. All Rights Reserved."
+    },
+    {
+      "type": "paragraph",
+      "content": {
+        "en": "This resource may not be used, distributed or exploited without the approval of its authors. For more information, please [get in touch](mailto:admin@maxdesign.expert)",
+        "fr": "Cette ressource ne peut pas être utilisée, diffusée ou exploitée sans l'approbation de ses auteurs. Pour plus d'informations, veuillez [prendre contact](mailto:admin@maxdesign.expert)"
+      }
+    },
+    {
+      "type": "header",
+      "content": {
+        "en": "Main settings",
+        "fr": "Paramètres généraux"
+      }
+    },
+    {
+      "type": "checkbox",
+      "id": "show_upsell",
+      "label": {
+        "en": "Enable Upsell",
+        "fr": "Activer l'upsell"
+      },
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "upsell_cap",
+      "label": {
+        "en": "Hide upsell when cart already contains XX different products",
+        "fr": "Retirer l'upsell lorsque le panier contient déjà X produits différents"
+      },
+      "options": [
+        {
+          "value": "2",
+          "label": {
+            "en": "2",
+            "fr": "2"
+          }
+        },
+        {
+          "value": "3",
+          "label": {
+            "en": "3",
+            "fr": "3"
+          }
+        },
+        {
+          "value": "4",
+          "label": {
+            "en": "4",
+            "fr": "4"
+          }
+        },
+        {
+          "value": "5",
+          "label": {
+            "en": "5",
+            "fr": "5"
+          }
+        },
+        {
+          "value": "100",
+          "label": {
+            "en": "Always enabled",
+            "fr": "Toujours actif"
+          }
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "radio",
+      "id": "upsell_type",
+      "label": {
+        "en": "Choose upsell type",
+        "fr": "Choisir le type d'upsell"
+      },
+      "options": [
+        {
+          "value": "update_cart",
+          "label": {
+            "en": "Update cart",
+            "fr": "Mettre à jour le panier"
+          }
+        },
+        {
+          "value": "checkout",
+          "label": {
+            "en": "Go to checkout",
+            "fr": "Aller au checkout"
+          }
+        }
+      ],
+      "default": "update_cart"
+    },
+    {
+      "type": "header",
+      "content": {
+        "en": "Desktop settings",
+        "fr": "Paramètres bureau"
+      }
+    },
+    {
+      "type": "color",
+      "id": "upsell_bg_color_desktop",
+      "label": {
+        "en": "Background",
+        "fr": "Fond"
+      },
+      "default": "#f3f3f3"
+    },
+    {
+      "type": "range",
+      "id": "upsell_bg_opacity_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": {
+        "en": "Background opacity",
+        "fr": "Opacité du fond"
+      },
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "upsell_topcolor_text_desktop",
+      "label": {
+        "en": "Strip (text)",
+        "fr": "Bande (texte)"
+      },
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "upsell_topcolor_bg_desktop",
+      "label": {
+        "en": "Strip (background)",
+        "fr": "Bande (fond)"
+      },
+      "default": "#D27676"
+    },
+    {
+      "type": "color",
+      "id": "upsell_title_color_desktop",
+      "label": {
+        "en": "Title",
+        "fr": "Titre"
+      }
+    },
+    {
+      "type": "color",
+      "id": "upsell_color_desktop",
+      "label": {
+        "en": "Text",
+        "fr": "Texte"
+      }
+    },
+    {
+      "type": "color",
+      "id": "upsell_atc_desktop",
+      "label": {
+        "en": "Button (text)",
+        "fr": "Bouton (texte)"
+      }
+    },
+    {
+      "type": "color",
+      "id": "upsell_atcbg_desktop",
+      "label": {
+        "en": "Button (background)",
+        "fr": "Bouton (fond)"
+      }
+    },
+    {
+      "type": "color",
+      "id": "upsell_atcbg_hover_desktop",
+      "label": {
+        "en": "Button on hover (background)",
+        "fr": "Bouton au survol (fond)"
+      },
+      "default": "#fff"
+    },
+    {
+      "type": "header",
+      "content": {
+        "en": "Mobile / Drawer settings",
+        "fr": "Paramètres mobile / drawer"
+      }
+    },
+    {
+      "type": "color",
+      "id": "upsell_bg_color_mobile",
+      "label": {
+        "en": "Background",
+        "fr": "Fond"
+      },
+      "default": "#f3f3f3"
+    },
+    {
+      "type": "range",
+      "id": "upsell_bg_opacity_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": {
+        "en": "Background opacity",
+        "fr": "Opacité du fond"
+      },
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "upsell_border_color_mobile",
+      "label": {
+        "en": "Border",
+        "fr": "Bordure"
+      },
+      "default": "#dcdcdc"
+    },
+    {
+      "type": "color",
+      "id": "upsell_topcolor_text_mobile",
+      "label": {
+        "en": "Strip (text)",
+        "fr": "Bandeau (texte)"
+      },
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "upsell_topcolor_bg_mobile",
+      "label": {
+        "en": "Strip (background)",
+        "fr": "Bandeau (fond)"
+      },
+      "default": "#D27676"
+    },
+    {
+      "type": "color",
+      "id": "upsell_color_mobile",
+      "label": {
+        "en": "Text",
+        "fr": "Texte"
+      }
+    },
+    {
+      "type": "color",
+      "id": "upsell_atc_mobile",
+      "label": {
+        "en": "Button (text)",
+        "fr": "Bouton (texte)"
+      }
+    },
+    {
+      "type": "color",
+      "id": "upsell_atcbg_mobile",
+      "label": {
+        "en": "Button (background)",
+        "fr": "Bouton (fond)"
+      }
+    },
+    {
+      "type": "color",
+      "id": "upsell_atcbg_hover_mobile",
+      "label": {
+        "en": "Button on hover (background)",
+        "fr": "Bouton au survol (fond)"
+      },
+      "default": "#fff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "upsell1",
+      "name": {
+        "en": "Upsell (by product)",
+        "fr": "Upsell (par produit)"
+      },
+      "settings": [
+        {
+          "type": "header",
+          "content": {
+            "en": "Upsell by product",
+            "fr": "Upsell par produit"
+          }
+        },
+        {
+          "type": "checkbox",
+          "id": "upsell_enable",
+          "label": {
+            "en": "Enable",
+            "fr": "Activer"
+          },
+          "default": true
+        },
+        {
+          "type": "product",
+          "id": "product_ref",
+          "label": {
+            "en": "Reference product",
+            "fr": "Produit référence"
+          },
+          "info": {
+            "en": "This product will trigger the upsell. If you want a specific variant to trigger the upsell, complete the field below.",
+            "fr": "Ce produit déclenchera l'upsell. Si vous souhaitez qu'une variante spécifique déclenche l'upsell, remplissez le champs ci-dessous."
+          }
+        },
+        {
+          "type": "text",
+          "id": "upsell_reference",
+          "label": {
+            "en": "Variant ID (optional)",
+            "fr": "ID de la variante (optionnel)"
+          },
+          "info": {
+            "en": "Choose the variant that will trigger the upsell. [Where to find the ID](https://www.loom.com/share/33e11cbde9d1442cbe623f7169b4f42e).",
+            "fr": "Choisir la variante qui déclenchera l'upsell. [Où trouver l'ID](https://www.loom.com/share/33e11cbde9d1442cbe623f7169b4f42e)."
+          }
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Upsell product",
+            "fr": "Produit Upsell"
+          }
+        },
+        {
+          "type": "product",
+          "id": "product_upsell",
+          "label": {
+            "en": "Upsell product",
+            "fr": "Produit upsell"
+          },
+          "info": {
+            "en": "By default, the first variant available will be upselled. If you want a specific variant, fill in the field below.",
+            "fr": "Par défaut, la première variante disponible sera en upsell. Si vous souhaitez une variante spécifique, remplissez le champ ci-dessous."
+          }
+        },
+        {
+          "type": "text",
+          "id": "variant_upsell",
+          "label": {
+            "en": "Variant ID (optional)",
+            "fr": "ID de la variante (optionnel)"
+          },
+          "info": {
+            "en": "Choose the variant corresponding to the upsell.",
+            "fr": "Choisir la variante correspondant à l'upsell."
+          }
+        },
+        {
+          "type": "radio",
+          "id": "replace_reference",
+          "label": {
+            "en": "Upsell action:",
+            "fr": "Action de l'Upsell :"
+          },
+          "options": [
+            {
+              "value": "add",
+              "label": {
+                "en": "Add to cart",
+                "fr": "S'ajoute au panier"
+              }
+            },
+            {
+              "value": "replace",
+              "label": {
+                "en": "Replace reference product",
+                "fr": "Remplace le produit référence"
+              }
+            }
+          ],
+          "default": "add"
+        },
+        {
+          "type": "text",
+          "id": "upsell_header",
+          "label": {
+            "en": "Banner text",
+            "fr": "Texte bandereau"
+          },
+          "default": "Offre FLASH"
+        },
+        {
+          "type": "image_picker",
+          "id": "upsell_img",
+          "label": {
+            "en": "Upsell image",
+            "fr": "Image de l'upsell"
+          }
+        },
+        {
+          "type": "range",
+          "id": "upsell_img_width_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": {
+            "en": "Image width (desktop)",
+            "fr": "Largeur image (bureau)"
+          },
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "upsell_img_width_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": {
+            "en": "Image width (mobile)",
+            "fr": "Largeur image (mobile)"
+          },
+          "default": 30
+        },
+        {
+          "type": "html",
+          "id": "upsell_topline",
+          "label": {
+            "en": "Upsell title",
+            "fr": "Titre upsell"
+          }
+        },
+        {
+          "type": "html",
+          "id": "upsell_mainline",
+          "label": {
+            "en": "Upsell text 2",
+            "fr": "Texte upsell 2"
+          }
+        },
+        {
+          "type": "text",
+          "id": "upsell_button",
+          "label": {
+            "en": "ATC button",
+            "fr": "Bouton ATC"
+          },
+          "default": "AJOUTER AU PANIER"
+        },
+        {
+          "type": "select",
+          "id": "price",
+          "label": {
+            "en": "Price display mode",
+            "fr": "Affichage du prix"
+          },
+          "options": [
+            {
+              "value": "price",
+              "label": {
+                "en": "Show price",
+                "fr": "Afficher prix"
+              }
+            },
+            {
+              "value": "compare_at_price",
+              "label": {
+                "en": "Show price + compare at price",
+                "fr": "Afficher prix + prix comparatif"
+              }
+            },
+            {
+              "value": "disable",
+              "label": {
+                "en": "Don't show",
+                "fr": "Ne pas afficher"
+              }
+            }
+          ],
+          "default": "price"
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Upsell with discount",
+            "fr": "Promotion unique sur l'upsell"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "Method 1:",
+            "fr": "Méthode 1 :"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "You can create an automatic discount with Shopify and offer the product in upsell. When added, the discount will be calculated on the cart page. Advantages: native and quick to configure. Cons: limited to 1 automatic discount and cannot be combined with a promo code. [Create an automatic discount.](/admin/discounts/automatic)",
+            "fr": "Vous pouvez créer un discount automatique avec Shopify et proposer le produit en upsell. Lorsqu'il sera ajouté, la remise sera calculé en page panier. Avantages : natif et rapide à configurer. Inconvénients : limité à 1 discount automatique et non cumulable avec code promo. [Créer un discount automatique.](/admin/discounts/automatic)"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "Method 2:",
+            "fr": "Méthode 2 :"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "You can duplicate your \"upsell product\" and discount the duplicated product. Advantages: unlimited and combinable with discount codes. Cons: Longer to configure.",
+            "fr": "Vous pouvez dupliquer votre \"produit upsell\" et faire une remise sur le produit dupliqué. Avantages : illimité et cumulable avec code promo. Inconvénients : Plus long à configurer."
+          }
+        },
+        {
+          "type": "product",
+          "id": "product_upsell_original",
+          "label": {
+            "en": "Original upsell product (method 2)",
+            "fr": "Produit upsell original (méthode 2)"
+          },
+          "info": {
+            "en": "[Search engine metafields optimization](/admin/bulk?resource_name=Product&show=image%2Ctitle%2Cvariants&edit=metafields.seo.hidden%3Anumber)",
+            "fr": "[Search engine metafields optimization](/admin/bulk?resource_name=Product&show=image%2Ctitle%2Cvariants&edit=metafields.seo.hidden%3Anumber)"
+          }
+        },
+        {
+          "type": "text",
+          "id": "product_upsell_original_property",
+          "label": {
+            "en": "Promotional text (optional)",
+            "fr": "Texte promotionnel (optionnel)"
+          },
+          "default": {
+            "en": "Instant discount: $5",
+            "fr": "Remise immédiate : 5€"
+          },
+          "info": {
+            "en": "Include \":\" or it'll be done by default",
+            "fr": "Inclure \":\" ou cela sera fait par défaut"
+          }
+        },
+        {
+          "type": "checkbox",
+          "id": "product_upsell_free",
+          "label": "This upsell is Free",
+          "info": {
+            "en": "Remove quantity + price = free",
+            "fr": "Retirer les quantités + prix = gratuit"
+          }
+        }
+      ]
+    },
+    {
+      "type": "upsell2",
+      "name": {
+        "en": "Upsell (by collection)",
+        "fr": "Upsell (par collection)"
+      },
+      "settings": [
+        {
+          "type": "header",
+          "content": {
+            "en": "Upsell by collection",
+            "fr": "Upsell par collection"
+          }
+        },
+        {
+          "type": "checkbox",
+          "id": "upsell_enable",
+          "label": {
+            "en": "Enable",
+            "fr": "Activer"
+          },
+          "default": true
+        },
+        {
+          "type": "collection",
+          "id": "upsell_reference",
+          "label": {
+            "en": "Reference collection",
+            "fr": "Collection référence"
+          },
+          "info": {
+            "en": "The products in this collection will trigger the upsell. [New collection](/admin/collections/new).",
+            "fr": "Les produits de cette collection vont déclencher l'upsell. [New collection](/admin/collections/new)."
+          }
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Upsell product",
+            "fr": "Produit Upsell"
+          }
+        },
+        {
+          "type": "product",
+          "id": "product_upsell",
+          "label": {
+            "en": "Upsell product",
+            "fr": "Produit upsell"
+          },
+          "info": {
+            "en": "By default, the first variant available will be upselled. If you want a specific variant, fill in the field below.",
+            "fr": "Par défaut, la première variante disponible sera en upsell. Si vous souhaitez une variante spécifique, remplissez le champ ci-dessous."
+          }
+        },
+        {
+          "type": "text",
+          "id": "variant_upsell",
+          "label": {
+            "en": "Variant ID (optional)",
+            "fr": "ID de la variante (optionnel)"
+          },
+          "info": {
+            "en": "Choose the variant corresponding to the upsell. [Where to find the ID?](https://www.loom.com/share/33e11cbde9d1442cbe623f7169b4f42e)",
+            "fr": "Choisir la variante correspondant à l'upsell. [Où trouver l'ID ?](https://www.loom.com/share/33e11cbde9d1442cbe623f7169b4f42e)"
+          }
+        },
+        {
+          "type": "radio",
+          "id": "replace_reference",
+          "label": {
+            "en": "Upsell action:",
+            "fr": "Action de l'Upsell :"
+          },
+          "options": [
+            {
+              "value": "add",
+              "label": {
+                "en": "Add to cart",
+                "fr": "S'ajoute au panier"
+              }
+            }
+          ],
+          "default": "add"
+        },
+        {
+          "type": "text",
+          "id": "upsell_header",
+          "label": {
+            "en": "Banner text",
+            "fr": "Texte bandereau"
+          },
+          "default": "🔥 Offre FLASH 🔥"
+        },
+        {
+          "type": "image_picker",
+          "id": "upsell_img",
+          "label": {
+            "en": "Upsell image",
+            "fr": "Image de l'upsell"
+          }
+        },
+        {
+          "type": "range",
+          "id": "upsell_img_width_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": {
+            "en": "Image width (desktop)",
+            "fr": "Largeur image (bureau)"
+          },
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "upsell_img_width_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": {
+            "en": "Image width (mobile)",
+            "fr": "Largeur image (mobile)"
+          },
+          "default": 30
+        },
+        {
+          "type": "html",
+          "id": "upsell_topline",
+          "label": {
+            "en": "Upsell title",
+            "fr": "Titre upsell"
+          }
+        },
+        {
+          "type": "html",
+          "id": "upsell_mainline",
+          "label": {
+            "en": "Upsell text",
+            "fr": "Texte upsell"
+          }
+        },
+        {
+          "type": "text",
+          "id": "upsell_button",
+          "label": {
+            "en": "ATC button",
+            "fr": "Bouton ATC"
+          },
+          "default": "AJOUTER AU PANIER"
+        },
+        {
+          "type": "select",
+          "id": "price",
+          "label": {
+            "en": "Price display mode",
+            "fr": "Affichage du prix"
+          },
+          "options": [
+            {
+              "value": "price",
+              "label": {
+                "en": "Show price",
+                "fr": "Afficher prix"
+              }
+            },
+            {
+              "value": "compare_at_price",
+              "label": {
+                "en": "Show price + compare at price",
+                "fr": "Afficher prix + prix comparatif"
+              }
+            },
+            {
+              "value": "disable",
+              "label": {
+                "en": "Don't show",
+                "fr": "Ne pas afficher"
+              }
+            }
+          ],
+          "default": "price"
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Upsell with promotion",
+            "fr": "Promotion sur l'upsell"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "Method 1:",
+            "fr": "Méthode 1 :"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "You can create an automatic discount with Shopify and offer the product in upsell. When added, the discount will be calculated on the cart page. Advantages: native and quick to configure. Cons: limited to 1 automatic discount and cannot be combined with a promo code. [Create an automatic discount.](/admin/discounts/automatic)",
+            "fr": "Vous pouvez créer un discount automatique avec Shopify et proposer le produit en upsell. Lorsqu'il sera ajouté, la remise sera calculé en page panier. Avantages : natif et rapide à configurer. Inconvénients : limité à 1 discount automatique et non cumulable avec code promo. [Créer un discount automatique.](/admin/discounts/automatic)"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "Method 2:",
+            "fr": "Méthode 2 :"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "You can duplicate your \"upsell product\" and discount the duplicated product. Advantages: unlimited and combinable with discount codes. Cons: Longer to configure.",
+            "fr": "Vous pouvez dupliquer votre \"produit upsell\" et faire une remise sur le produit dupliqué. Avantages : illimité et cumulable avec code promo. Inconvénients : Plus long à configurer."
+          }
+        },
+        {
+          "type": "product",
+          "id": "product_upsell_original",
+          "label": {
+            "en": "Original upsell product (method 2)",
+            "fr": "Produit upsell original (méthode 2)"
+          },
+          "info": {
+            "en": "[Search engine metafields optimization](/admin/bulk?resource_name=Product&show=image%2Ctitle%2Cvariants&edit=metafields.seo.hidden%3Anumber)",
+            "fr": "[Search engine metafields optimization](/admin/bulk?resource_name=Product&show=image%2Ctitle%2Cvariants&edit=metafields.seo.hidden%3Anumber)"
+          }
+        },
+        {
+          "type": "text",
+          "id": "product_upsell_original_property",
+          "label": {
+            "en": "Promotional text (optional)",
+            "fr": "Texte promotionnel (optionnel)"
+          },
+          "default": {
+            "en": "Instant discount: $5",
+            "fr": "Remise immédiate : 5€"
+          },
+          "info": {
+            "en": "Include \":\" or it'll be done by default",
+            "fr": "Inclure \":\" ou cela sera fait par défaut"
+          }
+        },
+        {
+          "type": "checkbox",
+          "id": "product_upsell_free",
+          "label": "This upsell is Free",
+          "info": {
+            "en": "Remove quantity + price = free",
+            "fr": "Retirer les quantités + prix = gratuit"
+          }
+        }
+      ]
+    },
+    {
+      "type": "developer",
+      "name": {
+        "en": "Developer",
+        "fr": "Développeur"
+      },
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Mobile"
+        },
+        {
+          "type": "textarea",
+          "id": "css_mobile",
+          "label": "Custom CSS"
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Desktop",
+            "fr": "Bureau"
+          }
+        },
+        {
+          "type": "text",
+          "id": "query",
+          "label": "media-query line break",
+          "default": "769px"
+        },
+        {
+          "type": "textarea",
+          "id": "css_bureau",
+          "label": "Custom CSS"
+        }
+      ]
+    }
+  ]
+}
+{%- endschema -%}
+
+
+
+{%- comment -%}
+  Powered by MaxDesign.
+  ⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS (article L. 111-1 du code de la propriété intellectuelle). Cette ressource ne peut pas être utilisée, diffusée ou exploitée sans l'approbation de ses auteurs. Pour plus d'informations, veuillez contacter admin@maxdesign.expert
+  ⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS (section L. 111-1 of the intellectual property code). This resource may not be used, distributed or exploited without the approval of its authors. For any information request, please contact admin@maxdesign.expert
+{%- endcomment -%}

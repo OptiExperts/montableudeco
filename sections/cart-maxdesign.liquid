@@ -1,0 +1,2969 @@
+{%- comment -%}
+  Powered by MaxDesign.
+  ⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS (article L. 111-1 du code de la propriété intellectuelle). Cette ressource ne peut pas être utilisée, diffusée ou exploitée sans l'approbation de ses auteurs. Pour plus d'informations, veuillez contacter admin@maxdesign.expert
+  ⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS (section L. 111-1 of the intellectual property code). This resource may not be used, distributed or exploited without the approval of its authors. For any information request, please contact admin@maxdesign.expert
+{%- endcomment -%}
+<!--
+  Powered by MaxDesign.
+  ⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS (article L. 111-1 du code de la propriété intellectuelle). Cette ressource ne peut pas être utilisée, diffusée ou exploitée sans l'approbation de ses auteurs. Pour plus d'informations, veuillez contacter admin(at)maxdesign.expert
+  ⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS (section L. 111-1 of the intellectual property code). This resource may not be used, distributed or exploited without the approval of its authors. For any information request, please contact admin(at)maxdesign.expert
+-->
+
+
+{%- liquid
+  comment 
+    #pragma THEME SETTINGS
+  endcomment
+  if settings.MD_cart_type == 'cart' or template.suffix == nil
+    assign cart_type = 'cart'
+  elsif settings.MD_cart_type == 'drawer'
+    assign cart_type = 'drawer'
+  endif
+  comment 
+    #pragma ASSIGN BLOCK SETTINGS
+  endcomment
+  for block in section.blocks
+    case block.type
+      when 'bg' 
+        assign COLORS = section.blocks[forloop.index0]
+        assign COLORS = COLORS.settings
+      when 'badges'
+        assign BADGES = section.blocks[forloop.index0]
+        assign BADGES = BADGES.settings
+      when 'savings'
+        assign SAVINGS = section.blocks[forloop.index0]
+        assign SAVINGS = SAVINGS.settings
+      when 'timer'
+        assign TIMER = section.blocks[forloop.index0]
+        assign TIMER = TIMER.settings
+      when 'navigation'
+        assign NAVIGATION = section.blocks[forloop.index0]
+        assign NAVIGATION = NAVIGATION.settings
+      when 'announce'
+        assign BAR = section.blocks[forloop.index0]
+        assign BAR = BAR.settings
+      when 'offer'
+        assign OFFER = section.blocks[forloop.index0]
+        assign OFFER = OFFER.settings
+      when 'translations'
+        assign TRANSLATIONS = section.blocks[forloop.index0]
+        assign TRANSLATIONS = TRANSLATIONS.settings
+      when 'attribute'
+        assign ATTRIBUTE = section.blocks[forloop.index0]
+        assign ATTRIBUTE = ATTRIBUTE.settings
+    endcase
+  endfor
+  comment 
+    #pragma LIQUID UTILITIES
+  endcomment
+  assign breakPoint = settings.MD_cart_query
+  assign font_size_desktop = settings.MD_font_size_desktop | divided_by: 100.0 | plus: 1
+  assign font_size_drawer_desktop = settings.MD_font_size_drawer_desktop | divided_by: 100.0 | plus: 1
+  assign font_size_mobile = settings.MD_font_size_mobile | divided_by: 100.0 | plus: 1
+  assign btn_brightness = COLORS.button_bg_color | color_brightness | plus: 0 | round
+  if btn_brightness > 40
+    assign btn_color_hover = COLORS.button_bg_color | color_darken: 10 
+  else
+    assign btn_color_hover = COLORS.button_bg_color | color_lighten: 15
+  endif
+  assign wrapper_opacity_mobile = COLORS.bg_secondary_opacity | divided_by: 100.0
+  assign wrapper_opacity_desktop = COLORS.bg_secondary_opacity_desktop | divided_by: 100.0
+  comment 
+    #pragma CHECK FREE DELIVERY
+  endcomment
+  if section.settings.delivery_enable
+    assign delivery_enable = true
+  endif
+  comment 
+    #pragma CHECK PRODUCT / SHIPPING DISCOUNT THRESHOLD
+  endcomment
+  if OFFER.threshold_type != 'disable'
+    assign offer_threshold = true
+
+    assign product_ID = all_products[OFFER.product_upsell].selected_or_first_available_variant.id
+    assign product_threshold_value = OFFER.product_threshold_value | times: 100.0
+    assign product_goal_to_threshold = product_threshold_value | minus: cart.original_total_price | money | prepend: '<span>' | append: '</span>'
+    assign product_current_threshold = product_threshold_value | money_without_trailing_zeros | strip_html
+    if cart.original_total_price >= product_threshold_value
+      assign product_upsell_qualify = true
+    endif
+    if OFFER.product_original_property contains ':'
+      assign upsell_first = OFFER.product_original_property | split: ':' | first
+      assign upsell_last = OFFER.product_original_property | split: ':' | last
+    else
+      assign upsell_first = 'Promo'
+      assign upsell_last = OFFER.product_original_property
+    endif
+    if OFFER.product_icon != blank
+      assign product_icon = 'attr(data-icon-product)'
+    else
+      assign product_icon = 'attr()'
+    endif
+
+    assign shipping_threshold_value = OFFER.shipping_threshold_value | times: 100.0
+    assign shipping_goal_to_threshold = shipping_threshold_value | minus: cart.original_total_price | money | prepend: '<span>' | append: '</span>'
+    assign shipping_current_threshold = shipping_threshold_value | money_without_trailing_zeros | strip_html
+    if cart.original_total_price >= shipping_threshold_value
+      assign shipping_upsell_qualify = true
+    endif
+    if OFFER.shipping_icon != blank
+      assign shipping_icon = 'attr(data-icon-shipping)'
+    else
+      assign shipping_icon = 'attr()'
+    endif
+
+    if OFFER.threshold_type == 'shipping'
+      if shipping_upsell_qualify
+        assign offer_qualify = true
+        assign offer_text = OFFER.qualify_text
+      else
+        assign offer_text = OFFER.shipping_text
+        assign offer_goal_to_threshold = shipping_goal_to_threshold
+        assign offer_current_threshold = shipping_current_threshold
+        assign offer_icon_after = shipping_icon
+        assign offer_bar_progress = cart.original_total_price | times: 100.0 | divided_by: shipping_threshold_value
+      endif
+    elsif OFFER.threshold_type == 'product'
+      if product_upsell_qualify
+        assign offer_qualify = true
+        assign offer_text = OFFER.qualify_text
+      else
+        assign offer_text = OFFER.product_text
+        assign offer_goal_to_threshold = product_goal_to_threshold
+        assign offer_current_threshold = product_current_threshold
+        assign offer_icon_after = product_icon
+        assign offer_bar_progress = cart.original_total_price | times: 100.0 | divided_by: product_threshold_value
+      endif
+    else
+      if shipping_threshold_value < product_threshold_value
+        if product_upsell_qualify
+          assign offer_qualify = true
+          assign offer_text = OFFER.qualify_text
+        elsif shipping_upsell_qualify
+          assign offer_text = OFFER.product_text
+          assign offer_goal_to_threshold = product_goal_to_threshold
+          assign offer_current_threshold = product_current_threshold
+        else
+          assign offer_text = OFFER.shipping_text
+          assign offer_goal_to_threshold = shipping_goal_to_threshold
+          assign offer_current_threshold = shipping_current_threshold
+          endif
+        assign primary_threshold = 'shipping'
+        assign secondary_threshold = 'product'
+        assign offer_icon_before = shipping_icon
+        assign offer_icon_after = product_icon
+        assign offer_icon_progress = shipping_threshold_value | divided_by: OFFER.product_threshold_value
+        assign offer_bar_progress = cart.original_total_price | times: 100.0 | divided_by: product_threshold_value
+      else
+        if shipping_upsell_qualify
+          assign offer_qualify = true
+          assign offer_text = OFFER.qualify_text
+        elsif product_upsell_qualify
+          assign offer_text = OFFER.shipping_text
+          assign offer_goal_to_threshold = shipping_goal_to_threshold
+          assign offer_current_threshold = shipping_current_threshold
+        else
+          assign offer_text = OFFER.product_text
+          assign offer_goal_to_threshold = product_goal_to_threshold
+          assign offer_current_threshold = product_current_threshold
+        endif
+        assign primary_threshold = 'product'
+        assign secondary_threshold = 'shipping'
+        assign offer_icon_before = product_icon
+        assign offer_icon_after = shipping_icon
+        assign offer_icon_progress = product_threshold_value | divided_by: OFFER.shipping_threshold_value
+        assign offer_bar_progress = cart.original_total_price | times: 100.0 | divided_by: shipping_threshold_value
+      endif
+      assign offer_bar_icon_diff = offer_bar_progress | minus: offer_icon_progress
+      if offer_bar_icon_diff > 0 and offer_bar_icon_diff < 15
+        assign offset_bar_price = true
+      endif 
+    endif
+  endif
+  comment
+    #pragma CHECK AUTOMATIC DISCOUNT
+  endcomment
+  if cart.total_price != cart.original_total_price
+    assign automatic_discount = true
+  endif
+-%}
+
+{%- comment -%}
+  #pragma CHECK QUANTITY DISCOUNT
+{%- endcomment -%}
+{%- if SAVINGS.qty_discount -%}
+  {%- assign qty_discount_index = cart.item_count | minus: 1 | at_least: 0 | at_most: 3 -%}
+  {%- capture qty_discount_codes -%}","{{ SAVINGS.discount_quantity_2 | split: '/' | first | strip }}","{{ SAVINGS.discount_quantity_3 | split: '/' | first | strip }}","{{ SAVINGS.discount_quantity_max | split: '/' | first | strip }}{%- endcapture -%}{%- assign qty_discount_codes_array = qty_discount_codes | split: '","' -%}
+  {%- capture qty_discount_values -%}","{{ SAVINGS.discount_quantity_2 | split: '/' | last | remove: '%' | strip }}","{{ SAVINGS.discount_quantity_3 | split: '/' | last | remove: '%' | strip }}","{{ SAVINGS.discount_quantity_max | split: '/' | last | remove: '%' | strip }}{%- endcapture -%}{%- assign qty_discount_values_array = qty_discount_values | split: '","' -%}
+  {%- capture qty_discount_messages -%}","{{ SAVINGS.cart_message_text_discount_quantity_2 }}","{{ SAVINGS.cart_message_text_discount_quantity_3 }}","{{ SAVINGS.cart_message_text_discount_quantity_max }}{%- endcapture -%}{%- assign qty_discount_messages_array = qty_discount_messages | split: '","' -%}
+  {%- assign qty_discount_code = qty_discount_codes_array[qty_discount_index] -%}
+  {%- assign qty_discount_value = cart.original_total_price | times: qty_discount_values_array[qty_discount_index] | divided_by: 100 -%}
+  {%- assign qty_discount_message = qty_discount_messages_array[qty_discount_index] -%}
+  {%- if qty_discount_codes_array[qty_discount_index] != blank -%}{%- assign qty_discount_active = true -%}{%- endif -%}
+{%- endif -%}
+
+{%- liquid
+  comment
+    #pragma DISCOUNT & DISCOUNTED TOTAL
+  endcomment
+  capture cart_discount
+    if automatic_discount
+      echo cart.original_total_price | minus: cart.total_price
+    else
+      echo qty_discount_value
+    endif
+  endcapture
+  capture cart_total
+    if automatic_discount
+      echo cart.total_price
+    else
+      echo cart.original_total_price | minus: qty_discount_value
+    endif
+  endcapture
+  comment
+    #pragma DELIVERY PRICE
+  endcomment
+  if delivery_enable
+    if OFFER.threshold_type == 'shipping' or OFFER.threshold_type == 'both'
+      if shipping_upsell_qualify
+        if OFFER.delivery_price_text_after contains '.' or OFFER.delivery_price_text_after contains ','
+          assign delivery_price_text = OFFER.delivery_price_text_after | remove: '.' | remove: ',' | money
+          assign delivery_price_value = OFFER.delivery_price_text_after | remove: '.' | remove: ','
+        else
+          assign delivery_price_text = OFFER.delivery_price_text_after
+          assign delivery_price_value = 0
+        endif
+      else
+        if OFFER.delivery_price_text_before contains '.' or OFFER.delivery_price_text_before contains ','
+          assign delivery_price_text = OFFER.delivery_price_text_before | remove: '.' | remove: ',' | money
+          assign delivery_price_value = OFFER.delivery_price_text_before | remove: '.' | remove: ','
+        else
+          assign delivery_price_text = OFFER.delivery_price_text_before
+          assign delivery_price_value = 0
+        endif
+      endif
+    elsif TRANSLATIONS.delivery_price_text contains '.' or TRANSLATIONS.delivery_price_text contains ','
+      assign delivery_price_text = TRANSLATIONS.delivery_price_text | remove: '.' | remove: ',' | money
+      assign delivery_price_value = TRANSLATIONS.delivery_price_text | remove: '.' | remove: ','
+    else
+      assign delivery_price_text = TRANSLATIONS.delivery_price_text
+      assign delivery_price_value = 0
+    endif
+  endif
+-%}
+
+
+
+{%- comment -%} 
+  #pragma LIQUID STYLES VARIABLES
+{%- endcomment -%}
+
+{%- style -%}
+  /* VARIABLES
+  ========================= */
+  #shopify-section-{{ section.id }} {
+    --header-color: {{ NAVIGATION.header_color }};
+
+    --message-text-color: {{ BAR.message_color }};
+    --message-bg-color: {{ BAR.message_bgcolor }};
+
+    --stepper-bg-color-mobile: {{ NAVIGATION.stepper_bg_color_mobile }};
+    --stepper-main-color-mobile: {{ NAVIGATION.stepper_main_color }};
+    --stepper-secondary-color-mobile: {{ NAVIGATION.stepper_secondary_color }};
+    --stepper-secondary-color-mobile-lighten: {{ NAVIGATION.stepper_secondary_color | color_lighten: 50 }};
+    --stepper-bg-color-desktop: {{ NAVIGATION.stepper_bg_color_desktop }};
+
+    --upsell-order: {{ OFFER.mobile_order }};
+    --upsell-bar-color1: {{ OFFER.upsell_bar_color_1 }};
+    --upsell-bar-color2: {{ OFFER.upsell_bar_color_2 }};
+    --upsell-bar-bg-color: #f3f3f3;
+    --upsell-bar-display: {% if offer_qualify %}none{% else %}flex{% endif %};
+    --upsell-icon-progress: {{ offer_icon_progress }}%;
+    --upsell-icon-step1: {{ offer_icon_before }}; 
+    --upsell-icon-step2: {{ offer_icon_after }};
+    --upsell-price-transition: 0.4s 0.3s;
+
+    --labels-text-color-desktop: {{ COLORS.labels_text_color_desktop }};
+    --labels-bg-color-alpha-desktop: {{ COLORS.labels_bg_color_desktop | color_modify: 'alpha', wrapper_opacity_desktop }};
+
+    --cart-primary-color-mobile: {{ COLORS.primary_color_mobile }};
+    --cart-primary-color-lighten-mobile: {{ COLORS.primary_color_mobile | color_lighten: 25 }};
+    --cart-primary-color-desktop: {{ COLORS.primary_color_desktop }};
+    --border-color-mobile: {{ COLORS.borders_color_mobile }};
+    --border-radius-desktop: {{ COLORS.borders_radius_desktop }}px;
+    --border-color-desktop: {{ COLORS.borders_color_desktop }};
+
+    --bg-color-mobile: {{ COLORS.bg_color }};
+    --bg-pannels-bottom-color-alpha-mobile: {{ COLORS.bg_pannels_bottom_color_mobile | color_modify: 'alpha', wrapper_opacity_mobile }};
+    --bg-desktop: {% if COLORS.bg_img_desktop == blank %}{{ COLORS.bg_color_desktop }}{% else %}url('{{ COLORS.bg_img_desktop | img_url: '1400x', format: 'pjpg' }}'){% endif %};
+    --bg-pannels-left-color-alpha-darken-desktop: {{ COLORS.bg_pannels_left_color_desktop | color_darken:10 | color_modify: 'alpha', wrapper_opacity_desktop }};
+    --bg-opacity-desktop: {{ COLORS.bg_opacity_desktop | divided_by: 100.0 }};
+    --bg-pos-desktop: {{ COLORS.bg_poshorizontal_desktop }}% {{ COLORS.bg_posvertical_desktop}}%;
+    --bg-pannels-left-color-alpha-desktop: {{ COLORS.bg_pannels_left_color_desktop | color_modify: 'alpha', wrapper_opacity_desktop }};
+    --bg-pannels-right-color-alpha-desktop:{{ COLORS.bg_pannels_right_color_desktop | color_modify: 'alpha', wrapper_opacity_desktop }};	
+
+    --flash-text-color: {{ COLORS.flash_text_color }};
+    --total-text-color: {{ COLORS.total_text_color }};
+    --total-subtext-color: {{ COLORS.total_subtext_color }};
+    --total-price-color: {{ COLORS.total_price_color }};
+    --savings-text-color: {{ SAVINGS.savings_color }};
+
+    --discount-bg-color: {{ SAVINGS.discount_bg_color }};
+    --discount-bg-padding: {% if SAVINGS.discount_bg_color == nil %}4px 5px 4px 0{% else %}4px 5px{% endif %};
+    --discount-text-color: {{ SAVINGS.discount_text_color }};
+    --discount-applied-margin: {% if delivery_enable %}15px 0 -5px{% else %}15px 0{% endif %};
+    --discount-field-color: {{ SAVINGS.promofield_color }};
+
+    --timer-color1: {{ TIMER.cart_timer_color1 }};
+    --timer-color2: {{ TIMER.cart_timer_color2 }};
+
+    --badges-text-color: {{ BADGES.color }};
+    --continue-shopping-color:{{ NAVIGATION.continue_shopping_color }};
+
+    --button-height: {{ section.settings.button_height }}px;
+    --button-radius: {{ section.settings.button_radius }}px;
+    --express-button-min-height: {{ section.settings.button_radius | plus: 12 }}px;
+    --button-text-color: {{ COLORS.button_text_color }};
+    --button-bg-color: {{ COLORS.button_bg_color }};
+    --button-bg-color-hover: {{ btn_color_hover }};
+
+    --img-width-mobile: {{ 95 | times: font_size_mobile }}px;
+
+    --font-size-mobile: {{ font_size_mobile }}em;
+    --font-size-desktop: {{ font_size_desktop }}em;
+    --font-size-drawer-desktop: {{ font_size_drawer_desktop }}em;
+  }
+  /* RESETS
+  ========================= */
+  {% if template.suffix == nil %}
+    body, html, .page-container {background:none}
+    body .main-content.main-content, main, .main, main .container, main .wrapper, .page-container {padding:0!important;margin:0!important;max-width:none;width:auto}
+    header .sticky, header .sticky--active, header.sticky, header.sticky--active {position: relative}
+    footer {margin-top:0!important}
+  {% endif %}
+  /* CUSTOM CSS
+  ========================= */
+  @media (min-width:{{ breakPoint }}px) { {{ settings.MD_cart_css_desktop }} }
+  @media (max-width:{{ breakPoint | minus: 1 }}px) { {{ settings.MD_cart_css_mobile }} }
+{%- endstyle -%}
+
+
+
+{%- comment -%}
+   #pragma MARKUP
+{%- endcomment -%}
+
+<cart-maxdesign>
+  {%- if cart.item_count > 0 -%}
+
+    {%- comment -%} 
+      #pragma CART MESSAGE
+    {%- endcomment -%}
+
+    {%- if SAVINGS.qty_discount and automatic_discount == nil and qty_discount_messages_array[qty_discount_index] != blank -%}
+      <div class="cartMessage__wrapper">
+        <div class="cartMessage__text">{{ qty_discount_messages_array[qty_discount_index] }}</div>
+      </div>
+    {%- elsif BAR.message_text != blank  -%}
+      <div class="cartMessage__wrapper {% unless BAR.enable %}cartMessage__wrapper--hidden{% endunless %}">
+        <div class="cartMessage__text">{{ BAR.message_text }}</div>
+      </div>
+    {%- endif -%}
+  
+    {%- comment -%}
+      #pragma CART STEPPER
+    {%- endcomment -%}
+
+    {%- if NAVIGATION.stepper_enable -%}
+      <div class="cart__steps--wrapper">
+        <ul class="cart__steps">
+          {%- for i in (1..4) -%}
+            {%- capture step -%}stepper_step{{ i }}_text{%- endcapture -%}
+            <li {% if forloop.first %}class="cart__steps--completed"{% endif %}>
+              <span>{{ NAVIGATION[step] }}</span>
+            </li>
+            {%- unless forloop.last -%}
+              <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path d="M2 1l1-1 4 4 1 1-1 1-4 4-1-1 4-4"></path></svg></li>
+            {%- endunless -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  
+  	{%- comment -%}
+      #pragma DRAWER HEADER
+    {%- endcomment -%}
+  
+    <h1>
+      <span>{{ NAVIGATION.header_text }}</span>
+      <span class="cart__close">
+        <svg viewBox="0 0 13 13"><path d="M1.5 1.5l10.05 10.05M11.5 1.5L1.45 11.55" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round"></path></svg>
+      </span>
+    </h1>
+  
+  	{%- comment -%}
+      #pragma CUSTOM CONTENT - TOP POSITION 
+    {%- endcomment -%}
+  
+    {%- for block in section.blocks -%}
+      {%- if block.settings.block_pos == 'top' -%}
+  	  	{%- if block.type == 'custom' -%}
+          <div class="custom__text" style="--custom-text-color:{{ block.settings.custom_content_color }}">
+            {{ block.settings.custom_content }}
+          </div>
+  		  {%- elsif block.type == 'timer' -%}
+          <div id="cdTimerCart">
+            <p>{{ TIMER.cart_timer_innerText | replace: 'XX', '<span class="cdTimerCart--color"><span id="cart_minutes">&nbsp;&nbsp;</span>:<span id="cart_seconds">&nbsp;&nbsp;</span></span>' }}</p>
+          </div>
+  		  {%- endif -%}
+  		  <hr class="summary__divider" style="margin:10px auto 0;width:calc(100% - 40px);max-width:700px;">
+      {%- endif -%}
+    {%- endfor -%}
+  
+  	{%- comment -%}
+      CART FORM WRAPPER 
+    {%- endcomment -%}
+  
+    <div class="cartForm__wrapper">
+      <form name="cartForm" action="/cart" method="POST">
+
+        {%- comment -%} 
+          #pragma SHIPPING / PRODUCT UPSELL
+        {%- endcomment -%}
+
+        {%- if offer_threshold -%}
+          <div class="upsell-threshold__wrapper {% if OFFER.mobile_order == '1' %}upsell-threshold__wrapper--top{% endif %}">
+            <div class="upsell-threshold__text">
+              {{- offer_text | replace: 'XX', offer_goal_to_threshold | replace: 'YY', offer_current_threshold -}}
+            </div>
+            <div class="upsell-threshold__bar--container">
+              <div class="upsell-threshold__bar" data-icon-shipping="{{ OFFER.shipping_icon | slice: 0 }}" data-icon-product="{{ OFFER.product_icon | slice: 0 }}">
+                <span 
+                  class="upsell-threshold__progress {% if offset_bar_price %}upsell-threshold__progress--offset{% endif %}" 
+                  data-progress-min="{{ 0 | money_without_trailing_zeros | strip_html }}" 
+                  data-progress="{{ cart.original_total_price | money_without_trailing_zeros | strip_html }}" 
+                  style="width:{{ offer_bar_progress }}%">
+                </span>
+                {%- if OFFER.info_text != blank -%}
+                  <span class="upsell-threshold__details--trait"></span>
+                {%- endif -%}
+              </div>
+              <span style="font-size:12px;margin-left:6px;">
+                {% if OFFER.threshold_type != 'both' %}
+                  {{ offer_current_threshold }}
+                {%- else -%}
+                  {{ shipping_threshold_value | at_least: product_threshold_value | money_without_trailing_zeros | strip_html }}
+                {%- endif -%}
+              </span>
+            </div>
+            {%- if OFFER.info_text != blank -%}
+              <div class="upsell-threshold__details">{{ OFFER.info_text }}</div>
+            {%- endif -%}
+            <hr class="summary__divider mobile__content">
+          </div>
+        {%- endif -%}
+
+        {%- comment -%}
+          #pragma CART ITEMS CONTAINER
+        {%- endcomment -%}
+
+        <div class="cartItems__wrapper {% if section.settings.labels_enable %}cartItems__wrapper--labels{% endif %}">
+        {%- for item in cart.items -%}
+
+          {%- liquid
+            comment
+              RESET LOOP VARIABLES
+            endcomment
+            assign lastloop = forloop.last
+            assign original_item_url = item.url
+            assign hide_quantities = false
+            assign enable_compare_at_price = false
+            assign properties_count = 0
+            assign discount_property = nil
+            assign is_mobile_absolute = false
+            comment 
+              #pragma MANUAL QTY BREAKS OFFER
+            endcomment
+            assign qty_offer = false
+            if item.product.options_by_name['discount'] != blank
+              assign qty_offer = true
+              assign option_discounts = item.product.options_by_name['discount'].values | join: ','
+              assign option_position = item.product.options_by_name['discount'].position | minus: 1
+            endif
+            comment
+              #pragma GET COMPARE AT PRICE SAVINGS
+            endcomment
+            if SAVINGS.enable
+              if SAVINGS.compare_price_enable
+                if item.variant.compare_at_price > item.variant.price
+                  assign total_saving = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity | plus: total_saving
+                endif
+              elsif discounted_item_id == item.id
+                assign total_saving = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity | plus: total_saving
+              endif
+            endif
+            comment
+              #pragma HIDE / SHOW CART ATTRIBUTE FOR SOME PRODUCTS
+            endcomment
+            if ATTRIBUTE
+              if ATTRIBUTE.collection == blank
+                assign show_cart_attribute = true
+              else
+                for product in collections[ATTRIBUTE.collection].products
+                  if item.product_id == product.id
+                    assign show_cart_attribute = true
+                    break
+                  endif
+                endfor
+              endif
+            endif
+          -%}
+
+          {%- comment -%}
+            #pragma HANDLE LINE ITEM PROPERTIES
+          {%- endcomment -%}
+        
+          {%- capture item_properties -%}
+            {%- for p in item.properties -%}
+              {%- assign first_character_in_key = p.first | truncate: 1, '' -%}
+              {%- if enable_compare_at_price -%}
+                {%- capture discount_property -%}
+                  {%- assign p_size = p.first.size | plus: p.last.size -%}
+                  {%- if p_size > 35 -%}
+                    {%- assign is_mobile_absolute = true -%}
+                  {%- endif -%}
+                  <span class="cartItems__prices--discount {% if is_mobile_absolute %}cartItems__prices--discount-mobile-absolute{% endif %} {% if SAVINGS.discount_bg_color != 'rgba(0,0,0,0)' %}cartItems__prices--discount-color{% endif %}">
+                    <li>{{ p.first | remove: ':' }} : {{ p.last }}</li>
+                  </span>
+                {%- endcapture -%}
+              {%- elsif p.last != blank and first_character_in_key != '_' -%}
+                {% assign properties_count = properties_count | plus: 1 %}
+                <p class="cartItems__properties">
+                  <span class="cartItems__properties--first">{{ p.first | remove: ':' }} : </span>
+                  <span class="cartItems__properties--last">
+                    {% if p.last contains '/uploads/' %}
+                      <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                    {% else %}
+                      {{ p.last }}
+                    {% endif %}
+                  </span>
+                </p>
+              {% elsif p.first == '_url_original' %}
+                {%- assign original_item_url = p.last | split: ';' | first -%}
+                {%- assign enable_compare_at_price = true -%}
+                {%- assign is_hide_quantities = p.last | split: ';' | last -%}
+                {%- if is_hide_quantities == 'true' -%}
+                  {%- assign hide_quantities = true -%}
+                {%- endif -%}
+                {% assign discounted_item_id = item.id %}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+        
+          {%- comment -%} 
+            #pragma REMOVE ITEM WITH CONDITIONS
+            > if last item with discount property or hidden type
+          {%- endcomment -%}
+        
+          {%- if cart.item_count == 1 and discount_property != nil or item.product.type == 'hidden' -%}
+            {%- style -%}.btnCart {background-color:#c8c8c8;cursor:default;pointer-events:none}{%- endstyle -%}
+            <script type="module">MaxDesign.cart.changeCart(0, '{{ forloop.index }}')</script>
+          {%- endif -%}
+        
+          {%- comment -%} 
+            #pragma CHANGE QTY POSITION IN MOBILE WHEN MULTIPLE PROPERTIES
+          {%- endcomment -%}
+        
+          {%- if properties_count > 0 -%}
+            {% style %}#shopify-section-{{ section.id }} .cartItems__container[data-item-line="{{ forloop.index }}"] .cartItems__quantity {top:calc(var(--img-width-mobile) - 12px)}{% endstyle %}
+          {%- endif -%}
+
+          {%- comment -%} 
+            #pragma ENABLE COMPARE PRICE WHEN ITEM SHOPIFY DISCOUNT
+          {%- endcomment -%}
+
+          {%- if item.line_level_discount_allocations != nil -%}
+            {%- assign enable_compare_at_price = true -%}
+            {%- if item.message > 35 or item.product.variants.size > 0 -%}
+              {%- assign is_mobile_absolute = true -%}
+            {%- endif -%}
+          {%- endif -%}
+          
+          {%- comment -%} 
+            #pragma CAPTURE MARKUP CLASSES & ATTRIBUTES
+          {%- endcomment -%}
+
+          {%- capture items_container_classes -%}
+            {%- if enable_compare_at_price -%}{%- if lastloop %} discounted-lastRow{%- elsif is_mobile_absolute %} discounted{%- endif -%}{%- else -%}{%- for discount in item.discounts -%}{%- if lastloop %} discounted-lastRow{%- elsif discount.title.size > 30 %} discounted{%- endif -%}{%- endfor -%}{%- endif -%}
+          {%- endcapture -%}
+          {%- capture items_container_attributes -%}
+            data-item-line="{{ forloop.index }}" data-item-id="{{ item.variant.id }}" data-item-qty="{{ item.quantity }}" {% if qty_offer %}data-offer-id="{{ item.product.id }}" data-item-discounts="{{ option_discounts }}" data-discount-position="{{ option_position }}" data-discount-value="{{ item.variant.options[option_position] }}"{% endif %}
+          {%- endcapture -%}
+        
+          {%- comment -%}
+            #pragma LABELS ON CART PAGE
+          {%- endcomment -%}
+        
+          {%- if forloop.first and section.settings.labels_enable -%}
+            <div class="cartItems__labels">
+              <span class="cartItems__labels--product">{{ TRANSLATIONS.product_text }}</span>
+              <span class="cartItems__labels--qty">{{ TRANSLATIONS.qty_text }}</span>
+              <span class="cartItems__labels--price">
+                <span>{{ TRANSLATIONS.price_text }}</span>
+                <span class="cartItems__labels--price--hidden">{{ item.line_price | money }}</span>
+              </span>
+            </div>
+          {%- endif -%} 
+        
+          {%- comment -%}
+            #pragma ITEMS CONTAINER
+          {%- endcomment -%}
+        
+          <div class="cartItems__container {{- items_container_classes -}}" {{ items_container_attributes }}>          
+            <div class="cartItems__image">
+              <a href="{% if section.settings.product_disable_link %}javascript:void(0){% else %}{{ original_item_url }}{% endif %}">
+                <img loading="lazy" src="{{ item | image_url: width: 200 }}" {% if COLORS.img_border %}class="cartItems__image--border"{% endif %} alt="{{ item.title | escape }}">
+              </a>
+            </div>
+            <div class="cartItems__infos {% if TRANSLATIONS.flash_text != blank or item.product.metafields.cart.cart_info != blank %}cartItems__infos--space-between{% endif %}">
+              <div class="cartItems__title {% unless item.variant.title contains 'Default' %}cartItems__title--height{% endunless %}">
+                <a href="{% if section.settings.product_disable_link %}#{% else %}{{ original_item_url }}{% endif %}" {% if hide_quantities %}style="padding-right:0"{% endif %}>
+                  <span {% if section.settings.ellipsis %}class="cartItems__title--ellipsis" title="{{ item.product.title }}"{% endif %}>{{ item.product.title }}</span>
+                  {% unless hide_quantities %}
+                    <span class="cartItems__close mobile__content drawer__content">×</span>
+                  {% endunless %}
+                </a>
+                {% unless item.variant.title contains 'Default' %}
+                  <p>{{ item.variant.title }}</p>
+                {% endunless %}
+                {% for discount in item.discounts %}
+                  {% if SAVINGS.discount_text_enable %}
+                    <span class="cartItems__prices--discount {% if discount.title.size > 30 %}cartItems__prices--discount-mobile-absolute{% endif %}">
+                      <li>{{ discount.title }}</li>
+                    </span>
+                  {% endif %}
+                {% endfor %}
+                {{ discount_property }}
+                {% if item.product.metafields.cart.cart_info != blank or TRANSLATIONS.flash_text != blank and enable_compare_at_price == false %}
+                <div class="flash__text {% if item.product.metafields.cart.cart_info_blink == 1 %}flash__text--blinking{% endif %}">
+                  <p>{{ item.product.metafields.cart.cart_info | default: TRANSLATIONS.flash_text }}</p>
+                </div>
+                {% endif %}
+              </div>
+              <div class="cartItems__quantity" {% if hide_quantities %}disabled{% endif %}>
+                <div class="cartItems__quantity--controls">
+                  <button {% if hide_quantities %} disabled {% endif %} type="button" data-decrement>−</button>
+                  <input {% if hide_quantities %} disabled {% endif %} readonly name="updates[]" class="quantity-selector" value="{{ item.quantity }}" min="0">
+                  <button {% if hide_quantities %} disabled {% endif %} type="button" data-increment {% if item.variant.inventory_management != nil and item.variant.inventory_policy != 'continue' %}data-quantity-max="{{ item.variant.inventory_quantity }}"{% endif %}>＋</button>
+                </div>
+                <select {% if hide_quantities %} disabled {% endif %} class="quantity-dropdown" name="updates[]" {% if item.variant.inventory_management != nil and item.variant.inventory_policy != 'continue' %}data-quantity-max="{{ item.variant.inventory_quantity }}"{% endif %} value="{{ item.quantity }}">
+                  {% for i in (0..10) %}
+                  <option {% if i == item.quantity %}selected="selected"{% endif %} value="{{ i }}">{{ i }}</option>
+                  {% endfor %}
+                </select>   
+                <svg class="cartItems__bin desktop__content" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.813 17"><defs/><defs/><path d="M15.369 2.308h-4.784v-.826A1.473 1.473 0 009.103 0H6.478a1.473 1.473 0 00-1.482 1.482v.826H.423A.424.424 0 000 2.731a.424.424 0 00.423.423h1.058l.931 12.279A1.706 1.706 0 004.106 17h7.389a1.69 1.69 0 001.694-1.567l.931-12.279h1.27a.424.424 0 00.423-.423.442.442 0 00-.444-.423zm-9.527-.826a.624.624 0 01.635-.635h2.646a.624.624 0 01.635.635v.826H5.842zm6.479 13.868a.852.852 0 01-.847.784H4.106a.852.852 0 01-.847-.784L2.328 3.133h10.945z"/><path d="M7.79 5.339a.424.424 0 00-.423.423v7.812a.424.424 0 00.423.423.424.424 0 00.423-.423V5.759a.425.425 0 00-.423-.42zM10.119 5.739l-.423 7.81a.425.425 0 00.4.445h.021a.42.42 0 00.423-.4l.423-7.812a.425.425 0 00-.4-.445.439.439 0 00-.444.4zM5.016 5.339a.44.44 0 00-.4.445l.423 7.812a.42.42 0 00.423.4h.021a.44.44 0 00.4-.445l-.422-7.812a.438.438 0 00-.444-.4z"/></svg>
+              </div>
+              <div class="cartItems__prices--container">
+                <div class="cartItems__prices">
+                  <div class="cartItems__prices-total" data-price="{{ item.final_price }}">
+                    {% unless item.final_line_price == 0 %}{{ item.final_line_price | money }}{% else %}{{ TRANSLATIONS.free_text }}{% endunless %}
+                  </div>
+                  {%- if item.unit_price_measurement -%}
+                  <span class="cartItems__prices-unit">
+                    {%- capture unit_price_base_unit -%}
+                      {%- if item.unit_price_measurement.reference_value != 1 -%}
+                        {{- item.unit_price_measurement.reference_value -}}
+                      {%- endif -%}
+                      {{- item.unit_price_measurement.reference_unit -}}
+                    {% endcapture %}
+                    <span data-unit-price>({{ item.unit_price | money }}</span>/{{ unit_price_base_unit }})
+                  </span>
+                  {%- endif -%}
+                  {%- if SAVINGS.compare_price_enable -%}
+                    {%- if item.variant.compare_at_price > item.variant.price or item.line_level_total_discount > 0 -%}
+                      {%- assign item_compare_price = item.variant.compare_at_price | default: item.original_price -%}
+                      <del class="cartItems__prices--compare" data-compare-price="{{ item_compare_price }}">{{ item_compare_price | times: item.quantity | money }}</del>
+                    {%- endif -%}
+                  {%- elsif enable_compare_at_price -%}
+                    {%- if item.line_level_total_discount > 0 -%}
+                      {%- assign item_compare_price = item.original_price -%}
+                    {%- else -%}
+                      {%- assign item_compare_price = item.variant.compare_at_price -%}
+                    {%- endif -%}
+                    <del class="cartItems__prices--compare" data-compare-price="{{ item_compare_price }}">{{ item_compare_price | times: item.quantity | money }}</del>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+            {{ item_properties | remove: discount_property }}
+            {%- if qty_offer -%}
+              <script type="application/json" data-variant>
+                {
+                  "currentOptions": {{ item.variant.options | json }},
+                  "variants": {{ item.product.variants | json }}
+                }
+              </script>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+              
+        {%- comment -%}
+          #pragma UPSELL MODULE
+        {%- endcomment -%}
+        
+        {%- if settings.MD_upsell_enable -%}
+          <upsell-maxdesign></upsell-maxdesign>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} 
+        #pragma SUMMARY CONTAINER 
+      {%- endcomment -%}
+    
+      <div class="summary__wrapper">
+        <div class="summary__container">
+          <div class="summary__total--details {%- if automatic_discount or qty_discount_active %} summary__total--details-discount{%- endif -%}{%- if delivery_enable %} summary__total--details-delivery{%- endif -%}">
+            <p class="summary__total summary__total--subtotal">
+              <span>{{ TRANSLATIONS.subtotal_text }}</span>
+              <span class="summary__price summary__price--subtotal" data-subtotal-price="{{ cart.original_total_price }}">{{ cart.original_total_price | money }}</span>
+            </p>
+            <p class="summary__total summary__total--discount">
+              <span class="summary__total--discount-tag">
+                <svg viewBox="0 0 18 18"><path d="M17.8 3.1c-.3-.7-1-1.1-1.8-1.1h-5.2c-.5 0-1 .2-1.4.6L2.6 9.5c-.3.2-.4.5-.5.9L.7 8.1c-.6-1-.2-2.2.7-2.7L9.8.5c.5-.3 1-.3 1.5-.2l5 1.3c.8.2 1.3.8 1.5 1.5z" fill-opacity=".55"/><path d="M10.8 2H16c1.1 0 2 .9 2 2v5.2c0 .5-.2 1-.6 1.4l-6.8 6.8c-.8.8-2 .8-2.8 0l-5.2-5.1c-.8-.8-.8-2 0-2.8l6.8-6.9c.4-.4.9-.6 1.4-.6zm2.7 6c.8 0 1.5-.7 1.5-1.5S14.3 5 13.5 5 12 5.7 12 6.5 12.7 8 13.5 8z"/></svg>
+                <span class="summary__total--discount-title">
+                  {%- if automatic_discount -%}
+                    {%- for discount_application in cart.discount_applications -%}{{ discount_application.title | truncate: 20 }}{%- endfor -%}
+                  {%- else -%}
+                    {{ qty_discount_code | truncate: 20 }}
+                  {%- endif -%}
+                </span>
+                {%- if automatic_discount == nil -%}
+                  <svg class="summary__total--discount-close" viewBox="0 0 13 13"><path d="M1.5 1.5l10.05 10.05M11.5 1.5L1.45 11.55" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round"></path></svg>
+                {%- endif -%}
+              </span>
+              <span class="summary__price summary__price--discount">- {{ cart_discount | money }}</span>
+            </p>
+            {%- if delivery_enable -%}
+              <p class="summary__total summary__total--delivery">
+                <span>{{ TRANSLATIONS.delivery_text }}</span>
+                <span class="summary__price summary__price--delivery">
+                  {{ delivery_price_text }}
+                </span>
+              </p>
+            {%- endif -%}
+          </div>
+          <p class="summary__total summary__total--total">
+            <span>{{ TRANSLATIONS.total_text }}</span>
+            <span class="summary__price--total">{{ cart_total | plus: delivery_price_value | money }}</span>
+          </p>
+          
+          <hr class="summary__divider">
+          <div class="cart__notes">          
+          {% comment %}Scalapay widget. To disable set enabled to false{% endcomment %}
+		  {% render 'scalapay-widget', price: cart.total_price, enabled: true %}
+          </div>
+
+          
+          {%- if TRANSLATIONS.total_subtext != blank -%}
+            <p class="summary__info">{{ TRANSLATIONS.total_subtext }}</p>
+          {%- endif -%}
+          <hr class="summary__divider">
+          {%- for block in section.blocks -%}
+            {%- if block.settings.block_pos == 'bottom' -%}
+              {%- if block.type == 'custom' -%}
+                <div class="custom__text" style="--custom-text-color: {{ block.settings.custom_content_color }};">
+                  {{ block.settings.custom_content }}
+                  <hr class="summary__divider">
+                </div>
+              {%- elsif block.type == 'timer' -%}
+                <div id="cdTimerCart">
+                  <p>{{ TIMER.cart_timer_innerText | replace: 'XX', '<span class="cdTimerCart--color"><span id="cart_minutes">&nbsp;&nbsp;</span>:<span id="cart_seconds">&nbsp;&nbsp;</span></span>' }}</p>
+                  <hr class="summary__divider">
+                </div>
+              {%- endif -%}	
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if show_cart_attribute -%}
+            <div class="cart__attribute">
+              {%- assign attribute_name = ATTRIBUTE.label | handleize -%}
+              <label>{{ ATTRIBUTE.label }}</label>
+              <select required class="required" name="attributes[{{ attribute_name }}]">
+                {%- assign attr_options = ATTRIBUTE.options | newline_to_br | split: '<br />' -%}
+                {%- for option in attr_options -%}
+                  <option value="{{ option }}" {% if cart.attributes.attribute_name == option %}selected{% endif %}>{{ option }}</option>
+                {%- endfor -%}
+              </select>
+              <hr class="summary__divider">          
+            </div>
+          {%- endif -%}
+          <div class="cartDiscount {% if automatic_discount or qty_discount_active or SAVINGS.promofield == false %}cartDiscount__hidden{% endif %} {% unless SAVINGS.custom_discount %}cartDiscount__btn--hidden{% endunless %}">
+            <span>
+              <svg viewBox="0 0 18 18"><path d="M17.8 3.1c-.3-.7-1-1.1-1.8-1.1h-5.2c-.5 0-1 .2-1.4.6L2.6 9.5c-.3.2-.4.5-.5.9L.7 8.1c-.6-1-.2-2.2.7-2.7L9.8.5c.5-.3 1-.3 1.5-.2l5 1.3c.8.2 1.3.8 1.5 1.5z" fill-opacity=".55"/><path d="M10.8 2H16c1.1 0 2 .9 2 2v5.2c0 .5-.2 1-.6 1.4l-6.8 6.8c-.8.8-2 .8-2.8 0l-5.2-5.1c-.8-.8-.8-2 0-2.8l6.8-6.9c.4-.4.9-.6 1.4-.6zm2.7 6c.8 0 1.5-.7 1.5-1.5S14.3 5 13.5 5 12 5.7 12 6.5 12.7 8 13.5 8z"/></svg>
+              <input type="hidden" value="{{ qty_discount_code }}" name="discount">
+              <input placeholder="{{ TRANSLATIONS.promo_code }}" autocomplete="off" type="text" value="" oninput="this.value = this.value.toUpperCase()"/>
+              <button name="button" type="button" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M16 8.1l-8.1 8.1-1.1-1.1L13 8.9H0V7.3h13L6.8 1.1 7.9 0 16 8.1z"></path></svg>
+                <svg class="discount__svg--loader" viewBox="0 0 20 20"><path d="M20 10c0 5.523-4.477 10-10 10S0 15.523 0 10 4.477 0 10 0v2c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8h2z"></path></svg>
+              </button>
+            </span>
+            <p class="cartDiscount__text">{{ TRANSLATIONS.promofield_text }}</p>
+            <hr class="summary__divider">
+          </div>
+          {%- if section.settings.show_notes -%}
+            <div class="cart__notes">
+              <label for="CartInstructions">{{ TRANSLATIONS.cart_notes }}</label>
+              <textarea name="note" id="CartInstructions" placeholder="{{ TRANSLATIONS.cart_notes_text }}" class="cart__note">{{ cart.note }}</textarea>
+            </div>
+          {%- endif -%}
+          {%- if SAVINGS.enable -%}
+            {%- assign total_saving = total_saving | plus: cart.total_discount -%}
+            {%- if total_saving > 0 -%}
+              <div class="summary__savings">
+                <p>{{ TRANSLATIONS.you_save }} <span class="summary__savings--price">{{ total_saving | round | money }}</span></p>
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+          {%- if section.settings.cart_terms -%}
+            <label class="cart__terms">
+              <input type="checkbox" name="terms" required>
+              {{ TRANSLATIONS.cart_terms_text | replace: '<p', '<span' | replace: '</p>', '</span>' }}
+            </label>
+          {%- endif -%}
+          <div class="btnCart__sticky">
+            <button type="submit" disabled hidden style="display:none"></button>
+            <button type="submit" name="checkout" class="btnCart" {% if SAVINGS.discount_quantity_manual_enable %}disabled{% endif %}>
+              <span>{{ TRANSLATIONS.button_text }}</span>
+              <svg class="btn__svg--loader" viewBox="0 0 20 20"><path d="M20 10c0 5.523-4.477 10-10 10S0 15.523 0 10 4.477 0 10 0v2c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8h2z"></path></svg>
+            </button>
+            <div class="cart__sentinel--bottom"></div>
+          </div>
+          {%- if section.settings.paypal_mode != 'show_checkout' and additional_checkout_buttons -%}
+            <div class="additional-checkout-buttons" style="{% if section.settings.paypal_mode == 'show_cart' %}display:block!important;height:auto{% elsif section.settings.paypal_mode == 'hide' %}visibility:hidden!important;height:0;overflow:hidden;padding:0{% endif %}">
+              {{ content_for_additional_checkout_buttons }}
+            </div>
+          {%- endif -%}
+          {%- if BADGES.enable -%}
+            <div class="cart__badges">
+              <span class="cart__badges--lock" {% if BADGES.text == blank %}style="visibility:hidden;height:0;margin-top:-10px"{% endif %}>
+                <svg viewBox="0 0 1792 1792"><path d="M640 768h512v-192q0-106-75-181t-181-75-181 75-75 181v192zm832 96v576q0 40-28 68t-68 28h-960q-40 0-68-28t-28-68v-576q0-40 28-68t68-28h32v-192q0-184 132-316t316-132 316 132 132 316v192h32q40 0 68 28t28 68z"/></svg>          
+                <span>{{ BADGES.text }}</span>
+              </span>
+              <span class="cart__badges--svg">
+                {%- if BADGES.cb -%}<svg class="cb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 53.34 39.29"><style>.st1011{fill:#fff}</style><linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="1.123" y1="45.292" x2="1.83" y2="44.585"><stop offset="0" stop-color="#259e2e"/><stop offset=".983" stop-color="#1c381d"/></linearGradient><linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="-158.507" y1="-149.61" x2="-157.051" y2="-149.61" gradientTransform="matrix(0 26.9963 -.8337 0 -98.062 4279.094)"><stop offset="0" stop-color="#1b1f46"/><stop offset=".351" stop-color="#1b1f46"/><stop offset=".474" stop-color="#2e467e"/><stop offset=".551" stop-color="#3665a9"/><stop offset=".593" stop-color="#3665a8"/><stop offset=".631" stop-color="#3565a2"/><stop offset=".67" stop-color="#369"/><stop offset=".707" stop-color="#30668c"/><stop offset=".745" stop-color="#2d667a"/><stop offset=".782" stop-color="#296663"/><stop offset=".818" stop-color="#256449"/><stop offset=".849" stop-color="#216230"/><stop offset="1" stop-color="#216230"/></linearGradient><path fill="url(#SVGID_2_)" d="M0 0h53.34v39.29H0z"/><path class="st1011" d="M16.37 18.77h11.44c-.1-2.26-.68-4.59-2.43-6.08-2.08-1.78-5.73-2.44-8.98-2.44-3.39 0-7.14.73-9.23 2.64-1.8 1.65-2.19 4.3-2.19 6.68 0 2.49.76 5.39 2.72 7.07 2.08 1.78 5.45 2.25 8.71 2.25 3.16 0 6.58-.53 8.65-2.22 2.06-1.69 2.78-4.53 2.78-7.09v-.01H16.37v-.8zM28.58 19.55v8.91h15.91v-.01a4.396 4.396 0 0 0 4.18-4.39c0-2.36-1.85-4.4-4.18-4.51H28.58zM48.37 14.69c0-2.27-1.8-4.07-4.07-4.07-.16 0-.35-.03-.5-.01H28.58v8.17h16.04c2.1-.19 3.75-1.94 3.75-4.09z"/></svg>{% endif %}
+                {%- if BADGES.applepay -%}<svg class="applepay" xmlns="http://www.w3.org/2000/svg" viewBox="0.9 1.001 105.913 49.583"><path d="M28.036 21.536c.056 5.849 5.297 7.795 5.355 7.82-.044.138-.837 2.774-2.76 5.498-1.664 2.354-3.39 4.7-6.109 4.749-2.672.048-3.53-1.534-6.586-1.534-3.054 0-4.009 1.485-6.538 1.582-2.624.096-4.623-2.547-6.3-4.893-3.427-4.8-6.046-13.56-2.529-19.474 1.747-2.937 4.868-4.797 8.257-4.844 2.577-.048 5.01 1.679 6.586 1.679 1.574 0 4.531-2.077 7.64-1.772 1.3.053 4.952.509 7.297 3.834-.19.114-4.359 2.465-4.313 7.355M23.014 7.172C24.407 5.538 25.346 3.264 25.09 1c-2.009.078-4.438 1.296-5.878 2.929-1.292 1.446-2.422 3.76-2.117 5.979 2.24.168 4.526-1.102 5.92-2.737m20.168-2.796a62.54 62.54 0 0 1 3.418-.47 37.158 37.158 0 0 1 4.112-.208c2.136 0 3.977.252 5.525.756 1.55.504 2.821 1.226 3.817 2.165a8.894 8.894 0 0 1 2.003 2.972c.48 1.147.718 2.469.718 3.964 0 1.808-.327 3.39-.986 4.746a9.868 9.868 0 0 1-2.696 3.416c-1.14.92-2.492 1.607-4.058 2.06-1.567.451-3.275.677-5.127.677-1.672 0-3.078-.121-4.216-.364v15.02h-2.51V4.375zm2.51 17.524c.605.173 1.281.295 2.029.364.748.07 1.548.104 2.402.104 3.203 0 5.686-.73 7.448-2.19 1.761-1.46 2.643-3.599 2.643-6.415 0-1.356-.231-2.539-.694-3.547a6.374 6.374 0 0 0-1.975-2.477c-.854-.644-1.868-1.13-3.043-1.461-1.176-.33-2.475-.495-3.9-.495-1.138 0-2.117.043-2.936.13-.818.087-1.477.183-1.975.287v15.7zm37.045 11.266c0 1.008.017 2.017.053 3.025a19.13 19.13 0 0 0 .32 2.92h-2.349l-.373-3.547h-.109c-.32.488-.729.974-1.227 1.46s-1.076.93-1.734 1.33c-.659.4-1.406.722-2.243.965a9.857 9.857 0 0 1-2.75.365c-1.245 0-2.34-.2-3.285-.6-.943-.4-1.717-.921-2.322-1.564a6.383 6.383 0 0 1-1.36-2.217 7.298 7.298 0 0 1-.454-2.503c0-2.955 1.272-5.232 3.817-6.832 2.545-1.6 6.381-2.365 11.508-2.295v-.678c0-.662-.063-1.419-.187-2.27a7.012 7.012 0 0 0-.829-2.425c-.427-.764-1.067-1.407-1.921-1.928-.854-.522-2.012-.783-3.47-.783-1.105 0-2.198.165-3.284.495-1.086.33-2.073.79-2.963 1.382l-.801-1.826c1.138-.764 2.314-1.311 3.523-1.641a14.348 14.348 0 0 1 3.791-.495c1.78 0 3.23.295 4.352.886 1.121.591 2.002 1.356 2.643 2.294a8.448 8.448 0 0 1 1.308 3.156 17.83 17.83 0 0 1 .348 3.468v9.858zm-2.51-7.458a35.361 35.361 0 0 0-4.246.156c-1.476.138-2.838.444-4.083.912-1.247.47-2.278 1.156-3.096 2.06s-1.229 2.104-1.229 3.6c0 1.771.516 3.076 1.55 3.91 1.03.834 2.187 1.252 3.469 1.252 1.032 0 1.958-.138 2.776-.418.819-.278 1.529-.652 2.135-1.12s1.112-1 1.522-1.59c.41-.593.721-1.2.936-1.827.178-.696.268-1.2.268-1.514v-5.421zm7.418-11.632l6.512 16.272a56.4 56.4 0 0 1 1.016 2.79c.32.956.605 1.835.854 2.634h.107c.25-.764.534-1.625.854-2.582.321-.955.677-1.938 1.068-2.948l6.088-16.167h2.668l-7.42 18.36a210.246 210.246 0 0 1-2.11 5.293 49.701 49.701 0 0 1-2.002 4.276 30.451 30.451 0 0 1-2.057 3.365 14.147 14.147 0 0 1-2.322 2.555c-.995.868-1.913 1.504-2.75 1.904-.836.4-1.396.652-1.681.756l-.856-2.034a21.445 21.445 0 0 0 2.137-1.095 11.617 11.617 0 0 0 2.295-1.773c.642-.626 1.345-1.45 2.11-2.478.765-1.025 1.45-2.268 2.056-3.729.213-.556.32-.922.32-1.096 0-.242-.106-.608-.32-1.095l-9.238-23.21h2.671z"/></svg>{% endif %}
+                {%- if BADGES.visa -%}<svg class="visa" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000.046 323.653"><path fill="#00579f" d="M433.352 318.984h-81.01l50.67-313.305h81.006zM727.023 13.339c-15.978-6.34-41.322-13.34-72.66-13.34-80 0-136.336 42.661-136.682 103.653-.664 45 40.335 69.994 71 84.998 31.341 15.332 41.995 25.34 41.995 39.006-.319 20.989-25.326 30.664-48.65 30.664-32.343 0-49.673-4.988-76.009-16.666l-10.667-5.005-11.337 70.33c19 8.656 54.006 16.337 90.35 16.674 85.002 0 140.34-42 140.996-106.997.324-35.666-21.326-62.994-68-85.325-28.334-14.336-45.686-24.002-45.686-38.67.332-13.334 14.677-26.991 46.661-26.991 26.336-.67 45.686 5.661 60.345 11.996l7.327 3.327 11.017-67.654zM834.694 207.991c6.671-17.999 32.343-87.66 32.343-87.66-.337.669 6.658-18.331 10.658-29.995l5.662 26.996s15.34 74.995 18.672 90.66h-67.335zM934.69 5.68H872.03c-19.323 0-34.004 5.662-42.341 25.995L709.357 318.98h85.002s13.994-38.669 17.002-46.997h104.011c2.326 11 9.666 46.997 9.666 46.997h75.008L934.691 5.68zM284.678 5.68l-79.336 213.643-8.67-43.33C182.006 125.997 136.005 71.677 84.67 44.667l72.669 273.985h85.667L370.34 5.679h-85.662z"/><path d="M131.672 5.68H1.333L0 12.01c101.672 25.999 169.008 88.67 196.673 163.997L168.339 32.015c-4.665-20.01-19-25.676-36.667-26.336z" fill="#faa61a"/></svg>{% endif -%}
+                {%- if BADGES.mastercard -%}<svg class="mastercard" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 131.39 86.9"><defs></defs><path fill="#ff5f00" d="M48.37 15.14h34.66v56.61H48.37z"/><path d="M51.94 43.45a35.94 35.94 0 0 1 13.75-28.3 36 36 0 1 0 0 56.61 35.94 35.94 0 0 1-13.75-28.31z" fill="#eb001b"/><path fill="#f79e1b" d="M120.5 65.76V64.6h.5v-.24h-1.19v.24h.47v1.16zm2.31 0v-1.4h-.36l-.42 1-.42-1h-.36v1.4h.26V64.7l.39.91h.27l.39-.91v1.06zM123.94 43.45a36 36 0 0 1-58.25 28.3 36 36 0 0 0 0-56.61 36 36 0 0 1 58.25 28.3z"/></svg>{% endif -%}
+                {%- if BADGES.paypal -%}<svg class="paypal" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 33"><path fill="#253B80" d="M46.211 6.749h-6.839a.95.95 0 0 0-.939.802l-2.766 17.537a.57.57 0 0 0 .564.658h3.265a.95.95 0 0 0 .939-.803l.746-4.73a.95.95 0 0 1 .938-.803h2.165c4.505 0 7.105-2.18 7.784-6.5.306-1.89.013-3.375-.872-4.415-.972-1.142-2.696-1.746-4.985-1.746zM47 13.154c-.374 2.454-2.249 2.454-4.062 2.454h-1.032l.724-4.583a.57.57 0 0 1 .563-.481h.473c1.235 0 2.4 0 3.002.704.359.42.469 1.044.332 1.906zM66.654 13.075h-3.275a.57.57 0 0 0-.563.481l-.145.916-.229-.332c-.709-1.029-2.29-1.373-3.868-1.373-3.619 0-6.71 2.741-7.312 6.586-.313 1.918.132 3.752 1.22 5.031.998 1.176 2.426 1.666 4.125 1.666 2.916 0 4.533-1.875 4.533-1.875l-.146.91a.57.57 0 0 0 .562.66h2.95a.95.95 0 0 0 .939-.803l1.77-11.209a.568.568 0 0 0-.561-.658zm-4.565 6.374c-.316 1.871-1.801 3.127-3.695 3.127-.951 0-1.711-.305-2.199-.883-.484-.574-.668-1.391-.514-2.301.295-1.855 1.805-3.152 3.67-3.152.93 0 1.686.309 2.184.892.499.589.697 1.411.554 2.317zM84.096 13.075h-3.291a.954.954 0 0 0-.787.417l-4.539 6.686-1.924-6.425a.953.953 0 0 0-.912-.678h-3.234a.57.57 0 0 0-.541.754l3.625 10.638-3.408 4.811a.57.57 0 0 0 .465.9h3.287a.949.949 0 0 0 .781-.408l10.946-15.8a.57.57 0 0 0-.468-.895z"/><path fill="#179BD7" d="M94.992 6.749h-6.84a.95.95 0 0 0-.938.802l-2.766 17.537a.569.569 0 0 0 .562.658h3.51a.665.665 0 0 0 .656-.562l.785-4.971a.95.95 0 0 1 .938-.803h2.164c4.506 0 7.105-2.18 7.785-6.5.307-1.89.012-3.375-.873-4.415-.971-1.142-2.694-1.746-4.983-1.746zm.789 6.405c-.373 2.454-2.248 2.454-4.062 2.454h-1.031l.725-4.583a.568.568 0 0 1 .562-.481h.473c1.234 0 2.4 0 3.002.704.359.42.468 1.044.331 1.906zM115.434 13.075h-3.273a.567.567 0 0 0-.562.481l-.145.916-.23-.332c-.709-1.029-2.289-1.373-3.867-1.373-3.619 0-6.709 2.741-7.311 6.586-.312 1.918.131 3.752 1.219 5.031 1 1.176 2.426 1.666 4.125 1.666 2.916 0 4.533-1.875 4.533-1.875l-.146.91a.57.57 0 0 0 .564.66h2.949a.95.95 0 0 0 .938-.803l1.771-11.209a.571.571 0 0 0-.565-.658zm-4.565 6.374c-.314 1.871-1.801 3.127-3.695 3.127-.949 0-1.711-.305-2.199-.883-.484-.574-.666-1.391-.514-2.301.297-1.855 1.805-3.152 3.67-3.152.93 0 1.686.309 2.184.892.501.589.699 1.411.554 2.317zM119.295 7.23l-2.807 17.858a.569.569 0 0 0 .562.658h2.822c.469 0 .867-.34.939-.803l2.768-17.536a.57.57 0 0 0-.562-.659h-3.16a.571.571 0 0 0-.562.482z"/><path fill="#253B80" d="M7.266 29.154l.523-3.322-1.165-.027H1.061L4.927 1.292a.316.316 0 0 1 .314-.268h9.38c3.114 0 5.263.648 6.385 1.927.526.6.861 1.227 1.023 1.917.17.724.173 1.589.007 2.644l-.012.077v.676l.526.298a3.69 3.69 0 0 1 1.065.812c.45.513.741 1.165.864 1.938.127.795.085 1.741-.123 2.812-.24 1.232-.628 2.305-1.152 3.183a6.547 6.547 0 0 1-1.825 2c-.696.494-1.523.869-2.458 1.109-.906.236-1.939.355-3.072.355h-.73c-.522 0-1.029.188-1.427.525a2.21 2.21 0 0 0-.744 1.328l-.055.299-.924 5.855-.042.215c-.011.068-.03.102-.058.125a.155.155 0 0 1-.096.035H7.266z"/><path fill="#179BD7" d="M23.048 7.667c-.028.179-.06.362-.096.55-1.237 6.351-5.469 8.545-10.874 8.545H9.326c-.661 0-1.218.48-1.321 1.132L6.596 26.83l-.399 2.533a.704.704 0 0 0 .695.814h4.881c.578 0 1.069-.42 1.16-.99l.048-.248.919-5.832.059-.32c.09-.572.582-.992 1.16-.992h.73c4.729 0 8.431-1.92 9.513-7.476.452-2.321.218-4.259-.978-5.622a4.667 4.667 0 0 0-1.336-1.03z"/><path fill="#222D65" d="M21.754 7.151a9.757 9.757 0 0 0-1.203-.267 15.284 15.284 0 0 0-2.426-.177h-7.352a1.172 1.172 0 0 0-1.159.992L8.05 17.605l-.045.289a1.336 1.336 0 0 1 1.321-1.132h2.752c5.405 0 9.637-2.195 10.874-8.545.037-.188.068-.371.096-.55a6.594 6.594 0 0 0-1.017-.429 9.045 9.045 0 0 0-.277-.087z"/><path fill="#253B80" d="M9.614 7.699a1.169 1.169 0 0 1 1.159-.991h7.352c.871 0 1.684.057 2.426.177a9.757 9.757 0 0 1 1.481.353c.365.121.704.264 1.017.429.368-2.347-.003-3.945-1.272-5.392C20.378.682 17.853 0 14.622 0h-9.38c-.66 0-1.223.48-1.325 1.133L.01 25.898a.806.806 0 0 0 .795.932h5.791l1.454-9.225 1.564-9.906z"/></svg>{% endif -%}
+                {%- if BADGES.alma -%}<svg class="alma" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 70 38"><path d="M11.17 16.3v-.18H8.62c-1.2 0-2.1.12-2.68.36-.56.22-.84.71-.84 1.48 0 1.15.8 1.72 2.4 1.72 1.35 0 2.3-.28 2.83-.85.56-.58.84-1.42.84-2.53ZM6.52 23c-1.89 0-3.28-.46-4.18-1.39a5.08 5.08 0 0 1-1.36-3.65c0-1.8.59-3.08 1.75-3.86 1.16-.8 2.93-1.21 5.32-1.21h3.12v-.67c0-1.48-.94-2.23-2.82-2.23-1.68 0-2.62.64-2.8 1.93h-4.2a5.82 5.82 0 0 1 1.92-3.9C4.4 6.99 6.13 6.47 8.44 6.47c2.28 0 4 .51 5.17 1.54 1.16 1.02 1.74 2.47 1.74 4.35v10.29h-3.78v-1.75c-.9 1.4-2.59 2.11-5.05 2.11ZM24.95 18.96v3.65c-.42.06-.86.09-1.33.09-1.66 0-2.84-.35-3.54-1.06-.7-.72-1.05-1.88-1.05-3.47V0h4.26v17.87c0 .38.07.66.21.84.14.18.43.28.88.28h.33l.24-.03ZM41.81 13.64v9h-4.26v-9.39c0-2.07-.85-3.1-2.53-3.1-.98 0-1.74.3-2.28.9-.52.6-.78 1.44-.78 2.5v9.09h-4.27V6.82h3.93v1.93c.83-1.53 2.34-2.3 4.54-2.3 2.09 0 3.61.75 4.57 2.24a6.71 6.71 0 0 1 5.23-2.23c1.85 0 3.26.57 4.24 1.72a6.81 6.81 0 0 1 1.47 4.59v9.87h-4.26v-9.39c0-2.07-.85-3.1-2.53-3.1-1 0-1.76.3-2.28.93a3.8 3.8 0 0 0-.79 2.56ZM64.8 16.3v-.18h-2.55c-1.2 0-2.1.12-2.67.36-.57.22-.85.71-.85 1.48 0 1.15.8 1.72 2.4 1.72 1.35 0 2.3-.28 2.83-.85.57-.58.85-1.42.85-2.53ZM60.16 23c-1.89 0-3.28-.46-4.18-1.39a5.08 5.08 0 0 1-1.35-3.65c0-1.8.58-3.08 1.74-3.86 1.16-.8 2.93-1.21 5.32-1.21h3.13v-.67c0-1.48-.95-2.23-2.83-2.23-1.68 0-2.61.64-2.8 1.93h-4.2a5.82 5.82 0 0 1 1.92-3.9c1.14-1.04 2.87-1.56 5.17-1.56 2.29 0 4 .51 5.17 1.54 1.16 1.02 1.74 2.47 1.74 4.35v10.29H65.2v-1.75c-.9 1.4-2.59 2.11-5.05 2.11Z" fill="#00425E"/><path fill="#FF414D" d="M0 33h70v5H0z"/></svg>{% endif -%}
+                {%- if BADGES.amex -%}<svg class="amex" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 291.764 291.764"><path d="M18.235 41.025h255.294c10.066 0 18.235 8.169 18.235 18.244v173.235c0 10.066-8.169 18.235-18.235 18.235H18.235C8.16 250.74 0 242.57 0 232.505V59.269c0-10.075 8.169-18.244 18.235-18.244z" fill="#26a6d1"/><path d="M47.047 113.966l-28.812 63.76h34.492l4.276-10.166h9.774l4.276 10.166h37.966v-7.759l3.383 7.759h19.639l3.383-7.923v7.923h78.959l9.601-9.902 8.99 9.902 40.555.082-28.903-31.784 28.903-32.058h-39.926l-9.346 9.719-8.707-9.719h-85.897l-7.376 16.457-7.549-16.457h-34.42v7.495l-3.829-7.495H47.047zm6.674 9.054h16.813l19.111 43.236V123.02h18.418l14.761 31 13.604-31h18.326v45.752h-11.151l-.091-35.851-16.257 35.851h-9.975l-16.348-35.851v35.851h-22.94l-4.349-10.257H50.147l-4.34 10.248H33.516l20.205-45.743zm111.235 0h45.342L224.166 138l14.315-14.98h13.868l-21.071 22.995 21.071 22.73h-14.497l-13.868-15.154-14.388 15.154h-44.64V123.02zM61.9 130.761l-7.741 18.272h15.473L61.9 130.761zm114.253 1.732v8.352h24.736v9.309h-24.736v9.118h27.745l12.892-13.43-12.345-13.357h-28.292v.008z" fill="#fff"/></svg>{% endif -%}
+                {%- if BADGES.ideal -%}<svg class="ideal" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88.668 79.598"><path fill="none" d="M0 0h88.668v79.598H0z"/><path d="M7.375 7.38v64.877h37.824c24.951 0 35.771-13.973 35.771-32.502 0-18.457-10.82-32.375-35.771-32.375H7.375z" fill="#fff"/><path d="M11.463 11.472h33.741c22.901 0 31.679 12.506 31.679 28.282 0 18.917-12.258 28.409-31.679 28.409H11.463V11.472zm3.271 3.271v50.151h30.47c18.396 0 28.405-8.572 28.405-25.14 0-17.027-10.85-25.012-28.405-25.012h-30.47z"/><path d="M18.822 43.442h9.754v17.36h-9.754z"/><circle cx="23.698" cy="34.695" r="6.062"/><path d="M49.031 37.531v2.811h-6.95v-11.28h6.728v2.81h-3.918v1.306h3.705v2.811h-3.705v1.543l4.14-.001zm1.216 2.813l3.401-11.286h3.998l3.4 11.286h-2.925l-.638-2.183h-3.676l-.639 2.183h-2.921zm4.384-4.991h2.034l-.933-3.188h-.17l-.931 3.188zm7.828-6.294h2.812v8.473h4.162c-1.142-15.374-13.234-18.696-24.228-18.696H33.488v10.229h1.734c3.162 0 5.125 2.144 5.125 5.594 0 3.56-1.916 5.685-5.125 5.685h-1.734V60.81h11.718c17.866 0 24.088-8.298 24.308-20.468h-7.055V29.059zm-28.973 2.816v5.657h1.736c1.203 0 2.315-.348 2.315-2.874 0-2.467-1.237-2.783-2.315-2.783h-1.736z" fill="#d50072"/></svg>{% endif -%}
+                {%- if  BADGES.klarna -%}<svg class="klarna" viewBox="4.413 5.7685 37.5528 11.4705" xmlns="http://www.w3.org/2000/svg"><g fill="none"><rect fill="#ffb3c7" height="25" rx="4.321" width="45"/><path d="M40.794 14.646a1.07 1.07 0 00-1.066 1.076 1.07 1.07 0 001.066 1.076c.588 0 1.066-.482 1.066-1.076a1.07 1.07 0 00-1.066-1.076zm-3.508-.831c0-.814-.689-1.473-1.539-1.473s-1.539.66-1.539 1.473.69 1.472 1.54 1.472 1.538-.659 1.538-1.472zm.006-2.863h1.698v5.725h-1.698v-.366a2.96 2.96 0 01-1.684.524c-1.653 0-2.993-1.352-2.993-3.02s1.34-3.02 2.993-3.02c.625 0 1.204.193 1.684.524zm-13.592.746v-.745h-1.739v5.724h1.743v-2.673c0-.902.968-1.386 1.64-1.386h.02v-1.665c-.69 0-1.323.298-1.664.745zm-4.332 2.117c0-.814-.689-1.473-1.539-1.473s-1.539.66-1.539 1.473.69 1.472 1.54 1.472 1.538-.659 1.538-1.472zm.006-2.863h1.699v5.725h-1.699v-.366c-.48.33-1.059.524-1.684.524-1.653 0-2.993-1.352-2.993-3.02s1.34-3.02 2.993-3.02c.625 0 1.204.193 1.684.524zm10.223-.153c-.678 0-1.32.212-1.75.798v-.644h-1.691v5.724h1.712v-3.008c0-.87.578-1.297 1.275-1.297.746 0 1.176.45 1.176 1.285v3.02h1.696v-3.64c0-1.332-1.05-2.238-2.418-2.238zm-17.374 5.878h1.778V8.402h-1.778zm-7.81.002h1.883V8.4H4.414zM10.999 8.4c0 1.792-.692 3.46-1.926 4.699l2.602 3.58H9.35l-2.827-3.89.73-.552A4.768 4.768 0 009.155 8.4h1.842z" fill="#0a0b09"/></g></svg>{%- endif -%}
+              </span>
+            </div>
+          {%- endif -%}
+        </div>
+        {%- if NAVIGATION.continue_shopping_text != blank -%}
+          <a href="{{ NAVIGATION.continue_shopping_url }}" class="cart__continue--shopping">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M492 236H68.442l70.164-69.824c7.829-7.792 7.859-20.455.067-28.284-7.792-7.83-20.456-7.859-28.285-.068l-104.504 104-.018.019c-7.809 7.792-7.834 20.496-.002 28.314l.018.019 104.504 104c7.828 7.79 20.492 7.763 28.285-.068 7.792-7.829 7.762-20.492-.067-28.284L68.442 276H492c11.046 0 20-8.954 20-20s-8.954-20-20-20z"/></svg>
+            <span>{{ NAVIGATION.continue_shopping_text }}</span>
+          </a>
+        {%- endif -%}
+      </div>
+    </form>
+  {%- else -%}
+    <h1>
+      <span>{{ NAVIGATION.header_text }}</span>
+      <span class="cart__close">
+        <svg viewBox="0 0 13 13"><path d="M1.5 1.5l10.05 10.05M11.5 1.5L1.45 11.55" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round"></path></svg>
+      </span>
+    </h1>
+    <div class="cart__empty">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 446.853 446.853" style="width:120px;height: 100%;padding-bottom:20px"><path d="M444.274 93.36a14.332 14.332 0 00-11.145-6.123L155.942 75.289c-7.953-.348-14.599 5.792-14.939 13.708-.338 7.913 5.792 14.599 13.707 14.939l258.421 11.14L362.32 273.61H136.205L95.354 51.179a14.336 14.336 0 00-8.861-10.753L19.586 14.141c-7.374-2.887-15.695.735-18.591 8.1-2.891 7.369.73 15.695 8.1 18.591l59.491 23.371 41.572 226.335a14.341 14.341 0 0014.104 11.746h6.896l-15.747 43.74a11.927 11.927 0 001.468 10.916 11.947 11.947 0 009.772 5.078h11.045c-6.844 7.617-11.045 17.646-11.045 28.675 0 23.718 19.299 43.012 43.012 43.012s43.012-19.294 43.012-43.012c0-11.028-4.201-21.058-11.044-28.675h93.777c-6.847 7.617-11.047 17.646-11.047 28.675 0 23.718 19.294 43.012 43.012 43.012 23.719 0 43.012-19.294 43.012-43.012 0-11.028-4.2-21.058-11.042-28.675h13.432c6.6 0 11.948-5.349 11.948-11.947 0-6.6-5.349-11.948-11.948-11.948H143.651l12.902-35.843h216.221a14.332 14.332 0 0013.651-9.96l59.739-186.387a14.306 14.306 0 00-1.89-12.573zm-274.61 316.454c-10.543 0-19.117-8.573-19.117-19.116s8.574-19.117 19.117-19.117 19.116 8.574 19.116 19.117-8.573 19.116-19.116 19.116zm157.709 0c-10.543 0-19.116-8.573-19.116-19.116s8.573-19.117 19.116-19.117 19.116 8.574 19.116 19.117-8.573 19.116-19.116 19.116z"/></svg>
+      <p style="margin-bottom:8px">{{ TRANSLATIONS.empty_cart }}</p>
+      <p style="text-decoration:underline">
+        <a class="cart__back--shopping" href="{{ NAVIGATION.continue_shopping_url }}">{{ TRANSLATIONS.continue_shopping }}</a>
+      </p>
+    </div>
+    {%- if settings.MD_upsell_enable -%}
+      <upsell-maxdesign></upsell-maxdesign>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+{%- comment -%}
+  #pragma JSON CART SETTINGS
+{%- endcomment -%}
+<script type="application/json">
+  {
+    "cart": {{ cart | json }},
+    "cartType": {{ cart_type | json }},
+    "cartCountSelector": {{ settings.MD_cart_count_selector | default: '.NA' | json }},
+    "cartIndicationSelector": {{ settings.MD_cart_count_indication | split: '/' | first | default: '.NA' | json }},
+    "cartIndicationOn": {{ settings.MD_cart_count_indication | split: '/' | last | split: ';' | first | strip | default: 'show' | json }},
+    "cartIndicationOff": {{ settings.MD_cart_count_indication | split: '/' | last | split: ';' | last | strip | default: 'hide' | json }},
+    "free": {{ TRANSLATIONS.free_text | json }},
+    "inventoryAlert": {{ TRANSLATIONS.inventory_alert | json }},
+    "appsDisable": {{ settings.MD_apps_disable | json }},
+    "moneyFormat": {{ shop.money_format | json }},
+    "discount": {
+      "auto": {{ automatic_discount | default: false }},
+      "qty": {
+          "enabled": {{ SAVINGS.qty_discount | default: false }},
+          "values": ["{{ qty_discount_values }}"],
+          "codes": ["{{ qty_discount_codes }}"],
+          "messages": ["{{ qty_discount_messages }}"]
+        },
+        "qtyManual": {{ SAVINGS.discount_quantity_manual_enable | default: false }}, 
+        "custom": {{ SAVINGS.custom_discount | default: false }},
+        "promoField": {{ SAVINGS.promofield | default: false }},
+        "discounts": { "10" : ["{{ SAVINGS.discount_code_10 | strip | replace: ', ', ',' | replace: ',', '","' }}"], "15" : ["{{ SAVINGS.discount_code_15 | strip | replace: ', ', ',' | replace: ',', '","' }}"], "20" : ["{{ SAVINGS.discount_code_20 | strip | replace: ', ', ',' | replace: ',', '","' }}"], "25" : ["{{ SAVINGS.discount_code_25 | strip | replace: ', ', ',' | replace: ',', '","' }}"], "30" : ["{{ SAVINGS.discount_code_30 | strip | replace: ', ', ',' | replace: ',', '","' }}"], "35" : ["{{ SAVINGS.discount_code_35 | strip | replace: ', ', ',' | replace: ',', '","' }}"], "40" : ["{{ SAVINGS.discount_code_40 | strip | replace: ', ', ',' | replace: ',', '","' }}"], "45" : ["{{ SAVINGS.discount_code_45 | strip | replace: ', ', ',' | replace: ',', '","' }}"], "50" : ["{{ SAVINGS.discount_code_50 | strip | replace: ', ', ',' | replace: ',', '","' }}"]}
+      },
+      "announce" : {
+        "enabled": {{ BAR.enable | default: false }},
+        "text": {{ BAR.message_text | json }}
+      },
+      "offer" : {
+        "type": {{ OFFER.threshold_type | json }},
+        "enable": {{ offer_threshold | default: false }},
+        "qualify": {{ OFFER.qualify_text | json }},
+        "product": {
+          "id": {{ product_ID  | default: false }},
+          "prop": {"_upsell_maxdesign": "Bought with cart threshold upsell", "_url_original": "{% if OFFER.hide_qty %}{{ all_products[OFFER.product_upsell_original].url | default: '#' }}{% else %}{{ all_products[OFFER.product_upsell_original].url | default: all_products[OFFER.product_upsell].url }}{% endif %};{{ OFFER.hide_qty }}" {% if OFFER.product_original_property != blank %}, "{{ upsell_first }}": "{{ upsell_last }}"{% endif %} },
+          "thresholdValue": {{ product_threshold_value | remove: '.0' | default: 0 }},
+          "text": {{ OFFER.product_text | json }},
+          "icon": {{ product_icon | json }}
+        },
+        "shipping": {
+          "defaultPrice": {{ delivery_price_value | default: 0 }},
+          "priceBefore": {{ OFFER.delivery_price_text_before | json }},
+          "priceAfter": {{ OFFER.delivery_price_text_after | json }},
+          "thresholdValue": {{ shipping_threshold_value | remove: '.0' | default: 0 }},
+          "text": {{ OFFER.shipping_text | json }},
+          "icon": {{ shipping_icon | json }}
+        },
+        "both": {
+          "step_1": {{ primary_threshold | json }},
+          "step_2": {{ secondary_threshold | json }},
+          "iconProgress": {{ offer_icon_progress | json }}
+        }
+      },
+      "cdTimer": {
+        "enabled": {% if TIMER %}true{% else %}false{% endif %},
+        "time": {{ TIMER.cart_timer_time | default: 0 }},
+        "expiry": {{ TIMER.cart_timer_renew | default: 0 }}
+      }
+    }
+  </script>
+</cart-maxdesign>
+
+
+
+{%- comment -%} 
+  #pragma SHOPIFY EDITOR
+{%- endcomment -%}
+
+{%- if request.design_mode -%}
+
+{%- liquid
+  capture theme_settings
+    echo settings.MD_cart_type
+    echo settings.MD_upsell_enable
+    echo settings.MD_apps_disable
+    echo settings.MD_font_size_desktop
+    echo settings.MD_font_size_drawer_desktop
+    echo settings.MD_font_size_mobile
+    echo settings.MD_cart_count_selector
+    echo settings.MD_drawer_form_submit_selector
+    echo settings.MD_drawer_trigger_selector
+  endcapture
+-%}
+
+{%- endif -%}
+
+
+
+{%- comment -%}
+  #pragma SCHEMA SETTINGS
+{%- endcomment -%}
+
+{%- schema -%}
+{
+  "name": "✪ Cart by MaxDesign",
+  "class": "cart-MD",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "©MaxDesign. All Rights Reserved."
+    },
+    {
+      "type": "paragraph",
+      "content": {
+        "en": "This resource may not be used, distributed or exploited without the approval of its authors. For more information, please [get in touch](mailto:admin@maxdesign.expert)",
+        "fr": "Cette ressource ne peut pas être utilisée, diffusée ou exploitée sans l'approbation de ses auteurs. Pour plus d'informations, veuillez [prendre contact](mailto:admin@maxdesign.expert)"
+      }
+    },
+    {
+      "type": "header",
+      "content": {
+        "en": "Product pannel",
+        "fr": "Panneau produits"
+      }
+    },
+    {
+      "type": "checkbox",
+      "id": "labels_enable",
+      "label": {
+        "en": "Show labels (desktop)",
+        "fr": "Afficher les labels (bureau)"
+      },
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "ellipsis",
+      "label": {
+        "en": "Truncate titles (mobile/drawer)",
+        "fr": "Tronquer les titres (mobile/drawer)"
+      },
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "product_disable_link",
+      "label": {
+        "en": "Disable product link",
+        "fr": "Désactiver le lien sur les produits"
+      }
+    },
+    {
+      "type": "header",
+      "content": {
+        "en": "Order summary pannel",
+        "fr": "Panneau récapitulatif de commande"
+      }
+    },
+    {
+      "type": "checkbox",
+      "id": "delivery_enable",
+      "label": {
+        "en": "Add delivery price",
+        "fr": "Ajouter le prix de la livraison"
+      },
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_notes",
+      "label": {
+        "en": "Show cart notes",
+        "fr": "Afficher les notes de panier"
+      }
+    },
+    {
+      "type": "checkbox",
+      "id": "cart_terms",
+      "label": {
+        "en": "Accept TOS",
+        "fr": "Accepter les CGU"
+      }
+    },
+    {
+      "type": "select",
+      "id": "paypal_mode",
+      "label": {
+        "en": "Express checkout buttons",
+        "fr": "Boutons checkout express"
+      },
+      "options": [
+        {
+          "value": "show_checkout",
+          "label": {
+            "en": "Show in checkout",
+            "fr": "Afficher au checkout"
+          }
+        },
+        {
+          "value": "show_cart",
+          "label": {
+            "en": "Show in cart page",
+            "fr": "Afficher page panier"
+          }
+        },
+        {
+          "value": "hide",
+          "label": {
+            "en": "Hide",
+            "fr": "Cacher"
+          }
+        }
+      ],
+      "default": "hide",
+      "info": {
+        "en": "Paypal will always be available in last step of checkout",
+        "fr": "Paypal sera toujours disponible en dernière étape du checkout"
+      }
+    },
+    {
+      "type": "range",
+      "id": "button_height",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": {
+        "en": "Button height",
+        "fr": "Hauteur du bouton"
+      },
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": {
+        "en": "Border radius",
+        "fr": "Bordure arrondie"
+      },
+      "default": 5
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bg",
+      "name": {
+        "en": "Main colors",
+        "fr": "Couleurs principales"
+      },
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": {
+            "en": "Common settings",
+            "fr": "Paramètres communs"
+          }
+        },
+        {
+          "type": "color",
+          "id": "flash_text_color",
+          "label": {
+            "en": "Product info/scarcity text",
+            "fr": "Texte produit info/urgence"
+          },
+          "default": "#008B8B"
+        },
+        {
+          "type": "color",
+          "id": "total_text_color",
+          "label": {
+            "en": "Total text",
+            "fr": "Texte total"
+          },
+          "default": "#353535"
+        },
+        {
+          "type": "color",
+          "id": "total_price_color",
+          "label": {
+            "en": "Total price",
+            "fr": "Prix Total"
+          },
+          "default": "#353535"
+        },
+        {
+          "type": "color",
+          "id": "total_subtext_color",
+          "label": {
+            "en": "Info. text",
+            "fr": "Texte info."
+          },
+          "default": "#767676"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": {
+            "en": "ATC button text",
+            "fr": "Texte bouton ATC"
+          },
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "button_bg_color",
+          "label": {
+            "en": "ATC button background",
+            "fr": "Fond du bouton ATC"
+          },
+          "default": "#000"
+        },
+        {
+          "type": "checkbox",
+          "id": "img_border",
+          "label": {
+            "en": "Show images outline",
+            "fr": "Bordure autour des images"
+          }
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Mobile / Drawer settings",
+            "fr": "Paramètres mobile / Drawer"
+          }
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": {
+            "en": "Background color",
+            "fr": "Couleur de fond"
+          },
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "primary_color_mobile",
+          "label": {
+            "en": "Text primary color",
+            "fr": "Couleur primaire du texte"
+          },
+          "default": "#191919"
+        },
+        {
+          "type": "color",
+          "id": "borders_color_mobile",
+          "label": {
+            "en": "Borders color",
+            "fr": "Couleur des bordures"
+          },
+          "default": "#e9e9e9"
+        },
+        {
+          "type": "color",
+          "id": "bg_pannels_bottom_color_mobile",
+          "label": {
+            "en": "Bottom pannel color",
+            "fr": "Couleur panneau bas"
+          },
+          "default": "#f9f9f9"
+        },
+        {
+          "type": "range",
+          "id": "bg_secondary_opacity",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": {
+            "en": "Pannels opacity",
+            "fr": "Opacité des panneaux"
+          },
+          "default": 100
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Desktop settings (cart page)",
+            "fr": "Paramètres bureau (page panier)"
+          }
+        },
+        {
+          "type": "color",
+          "id": "bg_color_desktop",
+          "label": {
+            "en": "Background color",
+            "fr": "Couleur de fond"
+          },
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "primary_color_desktop",
+          "label": {
+            "en": "Text primary color",
+            "fr": "Couleur primaire du texte"
+          },
+          "default": "#202020"
+        },
+        {
+          "type": "color",
+          "id": "labels_bg_color_desktop",
+          "label": {
+            "en": "Labels background color",
+            "fr": "Couleur fond labels"
+          },
+          "default": "#f9f9f9"
+        },
+        {
+          "type": "color",
+          "id": "labels_text_color_desktop",
+          "label": {
+            "en": "Labels text color",
+            "fr": "Couleur texte labels"
+          },
+          "default": "#767676"
+        },
+        {
+          "type": "color",
+          "id": "borders_color_desktop",
+          "label": {
+            "en": "Borders color",
+            "fr": "Couleur des bordures"
+          },
+          "default": "#e9e9e9"
+        },
+        {
+          "type": "color",
+          "id": "bg_pannels_left_color_desktop",
+          "label": {
+            "en": "Left pannel color",
+            "fr": "Couleur panneau gauche"
+          },
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "bg_pannels_right_color_desktop",
+          "label": {
+            "en": "Right pannel color",
+            "fr": "Couleur panneau droite"
+          },
+          "default": "#f9f9f9"
+        },
+        {
+          "type": "range",
+          "id": "bg_secondary_opacity_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": {
+            "en": "Pannels opacity",
+            "fr": "Opacité des panneaux"
+          },
+          "default": 100
+        },
+        {
+          "type": "range",
+          "id": "borders_radius_desktop",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": {
+            "en": "Pannels border radius",
+            "fr": "Arrondi des panneaux"
+          },
+          "default": 6
+        },
+        {
+          "type": "image_picker",
+          "id": "bg_img_desktop",
+          "label": {
+            "en": "Background image",
+            "fr": "Image de fond"
+          }
+        },
+        {
+          "type": "range",
+          "id": "bg_opacity_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": {
+            "en": "Image or color opacity",
+            "fr": "Opacité de l'image ou de la couleur"
+          },
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "bg_poshorizontal_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": {
+            "en": "Horizontal positionning",
+            "fr": "Positionnement horizontal"
+          },
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "bg_posvertical_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": {
+            "en": "Vertical positionning",
+            "fr": "Positionnement vertical"
+          },
+          "default": 50
+        }
+      ]
+    },
+    {
+      "type": "badges",
+      "name": {
+        "en": "Payment badges",
+        "fr": "Badges de paiement"
+      },
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "enable",
+          "label": {
+            "en": "Enable",
+            "fr": "Activer"
+          },
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "color",
+          "label": {
+            "en": "Text color",
+            "fr": "Couleur texte"
+          },
+          "default": "#989898"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": {
+            "en": "Text",
+            "fr": "Texte"
+          }
+        },
+        {
+          "type": "checkbox",
+          "id": "cb",
+          "label": {
+            "en": "Carte bleue",
+            "fr": "Carte Bancaire"
+          },
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "applepay",
+          "label": {
+            "en": "Apple pay",
+            "fr": "Apple Pay"
+          },
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "visa",
+          "label": {
+            "en": "Visa",
+            "fr": "Visa"
+          },
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "mastercard",
+          "label": {
+            "en": "Mastercard",
+            "fr": "Mastercard"
+          },
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "paypal",
+          "label": {
+            "en": "Paypal",
+            "fr": "Paypal"
+          },
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "alma",
+          "label": "Alma"
+        },
+        {
+          "type": "checkbox",
+          "id": "amex",
+          "label": {
+            "en": "American express",
+            "fr": "American Express"
+          }
+        },
+        {
+          "type": "checkbox",
+          "id": "ideal",
+          "label": {
+            "en": "Ideal",
+            "fr": "Ideal"
+          }
+        },
+        {
+          "type": "checkbox",
+          "id": "klarna",
+          "label": {
+            "en": "Klarna",
+            "fr": "Klarna"
+          }
+        }
+      ]
+    },
+    {
+      "type": "savings",
+      "name": {
+        "en": "Savings & discounts",
+        "fr": "Économies et promotions"
+      },
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": {
+            "en": "Savings",
+            "fr": "Économies réalisées"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "This will show the saved amount based on discounts and whether you enable compare at prices in cart.",
+            "fr": "Affiche le montant économisé à partir des codes promos et/ou de l'affichage des prix comparatifs en page panier."
+          }
+        },
+        {
+          "type": "checkbox",
+          "id": "enable",
+          "label": {
+            "en": "Enable",
+            "fr": "Activer"
+          },
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "savings_color",
+          "label": {
+            "en": "Text color",
+            "fr": "Couleur texte"
+          },
+          "default": "#008B8B"
+        },
+        {
+          "type": "checkbox",
+          "id": "compare_price_enable",
+          "label": {
+            "en": "Show compare at prices",
+            "fr": "Afficher les prix comparatifs"
+          },
+          "info": {
+            "en": "Bar automatic discount",
+            "fr": "Hors discounts automatiques"
+          },
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Coupon code field",
+            "fr": "Champ code promo"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "Enable to allow user to pre-apply or apply discount codes in cart page.",
+            "fr": "Activer pour permettre aux utilisateurs de pré-appliquer ou d'appliquer leur code promo en page panier."
+          }
+        },
+        {
+          "type": "checkbox",
+          "id": "promofield",
+          "label": {
+            "en": "Enable coupon code",
+            "fr": "Activer le champ code promo"
+          }
+        },
+        {
+          "type": "color",
+          "id": "promofield_color",
+          "label": {
+            "en": "Color in focus",
+            "fr": "Couleur lors du focus"
+          },
+          "default": "#000"
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Automatic discount (Shopify)",
+            "fr": "Discount automatique (Shopify)"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "If a specific product is eligible to automatic discount (limited to one), its title will display under the item.",
+            "fr": "Si un produit spécifique du panier est concerné par le discount automatique (limité à 1), le titre de l'offre s'affichera sous l'article."
+          }
+        },
+        {
+          "type": "checkbox",
+          "id": "discount_text_enable",
+          "label": {
+            "en": "Show text",
+            "fr": "Afficher le texte"
+          },
+          "info": {
+            "en": "Default text can be changed [here](/admin/discounts/automatic).",
+            "fr": "Texte affiché modifiable [ici](/admin/discounts/automatic)."
+          },
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "discount_bg_color",
+          "label": {
+            "en": "Background color",
+            "fr": "Couleur de fond"
+          },
+          "default": "#191919"
+        },
+        {
+          "type": "color",
+          "id": "discount_text_color",
+          "label": {
+            "en": "Text color",
+            "fr": "Couleur du texte"
+          },
+          "default": "#fff"
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Automatic discount (Custom)",
+            "fr": "Discount automatique (Custom)"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "If a discount code applies to all products, user can apply it on cart page. You need to reference all discount codes bellow, separated by commas.",
+            "fr": "Si un code promo s'applique à tous les produits, l'utilisateur peut l'appliquer sur la page du panier. Vous devez référencer tous les codes de réduction ci-dessous, séparés par des virgules."
+          }
+        },
+        {
+          "type": "checkbox",
+          "id": "custom_discount",
+          "label": {
+            "en": "Enable feature",
+            "fr": "Activer la fonctionnalité"
+          },
+          "info": {
+            "en": "Manage discounts in your [admin](/admin/discounts)",
+            "fr": "Gérer vos promos dans votre [admin](/admin/discounts)"
+          }
+        },
+        {
+          "type": "text",
+          "id": "discount_code_10",
+          "label": {
+            "en": "Discount codes of 10%",
+            "fr": "Codes promo de 10%"
+          },
+          "default": "SAVE10, PROMO10"
+        },
+        {
+          "type": "text",
+          "id": "discount_code_15",
+          "label": {
+            "en": "Discount codes of 15%",
+            "fr": "Codes promo de 15%"
+          }
+        },
+        {
+          "type": "text",
+          "id": "discount_code_20",
+          "label": {
+            "en": "Discount codes of 20%",
+            "fr": "Codes promo de 20%"
+          }
+        },
+        {
+          "type": "text",
+          "id": "discount_code_25",
+          "label": {
+            "en": "Discount codes of 25%",
+            "fr": "Codes promo de 25%"
+          }
+        },
+        {
+          "type": "text",
+          "id": "discount_code_30",
+          "label": {
+            "en": "Discount codes of 30%",
+            "fr": "Codes promo de 30%"
+          }
+        },
+        {
+          "type": "text",
+          "id": "discount_code_35",
+          "label": {
+            "en": "Discount codes of 35%",
+            "fr": "Codes promo de 35%"
+          }
+        },
+        {
+          "type": "text",
+          "id": "discount_code_40",
+          "label": {
+            "en": "Discount codes of 40%",
+            "fr": "Codes promo de 40%"
+          }
+        },
+        {
+          "type": "text",
+          "id": "discount_code_45",
+          "label": {
+            "en": "Discount codes of 45%",
+            "fr": "Codes promo de 45%"
+          }
+        },
+        {
+          "type": "text",
+          "id": "discount_code_50",
+          "label": {
+            "en": "Discount codes of 50%",
+            "fr": "Codes promo de 50%"
+          }
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Discount by quantities (manual)",
+            "fr": "Discount par quantités (manuel)"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "Use to apply a discount on targeted products without a discount code. It requires manual configuration of variants and a Bundle module I can provide.",
+            "fr": "Permet d'appliquer une remise sur des produits ciblés sans code promo. Cela nécessite une configuration manuelle des variantes et un module Bundle que je peux fournir."
+          }
+        },
+        {
+          "type": "checkbox",
+          "id": "discount_quantity_manual_enable",
+          "label": {
+            "en": "Enable",
+            "fr": "Activer"
+          }
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Discount by quantities (auto)",
+            "fr": "Discount par quantités (auto)"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "Use to add a discount based on quantity of items added to cart. It requires to create discount codes in your [admin](/admin/discounts) and then here.",
+            "fr": "Permet de créer une remise sur l'ensemble du panier en fonction des quantités ajoutées. Cela nécessite de créer les codes promos dans votre [admin](/admin/discounts) et de les renseigner ici."
+          }
+        },
+        {
+          "type": "checkbox",
+          "id": "qty_discount",
+          "label": {
+            "en": "Enable",
+            "fr": "Activer"
+          }
+        },
+        {
+          "type": "text",
+          "id": "discount_quantity_2",
+          "label": {
+            "en": "Quantity = 2",
+            "fr": "Quantité = 2"
+          },
+          "info": {
+            "en": "Syntax : DISCOUNT CODE / XX%",
+            "fr": "Syntaxe : CODE PROMO / XX%"
+          },
+          "default": {
+            "en": "QTY(2X) / 10%",
+            "fr": "QTY(2X) / 10%"
+          }
+        },
+        {
+          "type": "richtext",
+          "id": "cart_message_text_discount_quantity_2",
+          "label": {
+            "en": "Announcement bar message",
+            "fr": "Message barre d'annonce"
+          },
+          "info": {
+            "en": "Maj + Enter to skip one line",
+            "fr": "Maj + Entrer pour sauter une ligne"
+          },
+          "default": {
+            "en": "<p>Congratulations, you save 10% + Free shipping!</p>",
+            "fr": "<p>Félicitations, vous bénéficiez de -10% supplémentaire et de la Livraison Gratuite !</p>"
+          }
+        },
+        {
+          "type": "text",
+          "id": "discount_quantity_3",
+          "label": {
+            "en": "Quantity = 3",
+            "fr": "Quantité = 3"
+          },
+          "info": {
+            "en": "Syntax : DISCOUNT CODE / XX%",
+            "fr": "Syntaxe : CODE PROMO / XX%"
+          },
+          "default": {
+            "en": "QTY(3X) / 20%",
+            "fr": "QTY(3X) / 20%"
+          }
+        },
+        {
+          "type": "richtext",
+          "id": "cart_message_text_discount_quantity_3",
+          "label": {
+            "en": "Announcement bar message",
+            "fr": "Message barre d'annonce"
+          },
+          "info": {
+            "en": "Maj + Enter to skip one line",
+            "fr": "Maj + Entrer pour sauter une ligne"
+          },
+          "default": {
+            "en": "<p>Congratulations, you save 20% + Free shipping!</p>",
+            "fr": "<p>Félicitations, vous bénéficiez de -20% supplémentaire et de la Livraison Gratuite !</p>"
+          }
+        },
+        {
+          "type": "text",
+          "id": "discount_quantity_max",
+          "label": {
+            "en": "Quantity = 4+",
+            "fr": "Quantité = 4+"
+          },
+          "info": {
+            "en": "Syntax : DISCOUNT CODE / XX%",
+            "fr": "Syntaxe : CODE PROMO / XX%"
+          },
+          "default": "PRIME50 / 50%"
+        },
+        {
+          "type": "richtext",
+          "id": "cart_message_text_discount_quantity_max",
+          "label": {
+            "en": "Announcement bar message",
+            "fr": "Message barre d'annonce"
+          },
+          "info": {
+            "en": "Maj + Enter to skip one line",
+            "fr": "Maj + Entrer pour sauter une ligne"
+          },
+          "default": {
+            "en": "<p>Congratulations, you save 50% + Free shipping!</p>",
+            "fr": "<p>Félicitations, vous bénéficiez de -50% supplémentaire et de la Livraison Gratuite !</p>"
+          }
+        }
+      ]
+    },
+    {
+      "type": "timer",
+      "name": {
+        "en": "Countdown timer",
+        "fr": "Compte à rebours"
+      },
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "cart_timer_time",
+          "min": 0,
+          "max": 500,
+          "step": 5,
+          "label": {
+            "en": "Minutes:",
+            "fr": "Minutes :"
+          },
+          "default": 10
+        },
+        {
+          "type": "select",
+          "id": "block_pos",
+          "label": {
+            "en": "Position",
+            "fr": "Emplacement"
+          },
+          "options": [
+            {
+              "value": "top",
+              "label": {
+                "en": "Top",
+                "fr": "Haut"
+              }
+            },
+            {
+              "value": "bottom",
+              "label": {
+                "en": "Bottom",
+                "fr": "Bas"
+              }
+            }
+          ],
+          "default": "bottom"
+        },
+        {
+          "type": "select",
+          "id": "cart_timer_renew",
+          "label": {
+            "en": "When timer expires:",
+            "fr": "Lorsque le timer expire :"
+          },
+          "options": [
+            {
+              "value": "",
+              "label": {
+                "en": "Trigger in next session",
+                "fr": "Déclencher à la prochaine session"
+              }
+            },
+            {
+              "value": "1",
+              "label": {
+                "en": "Trigger after 1 minute",
+                "fr": "Déclencher après 1 minute"
+              }
+            },
+            {
+              "value": "15",
+              "label": {
+                "en": "Trigger after 15 minutes",
+                "fr": "Déclencher après 15 minutes"
+              }
+            },
+            {
+              "value": "30",
+              "label": {
+                "en": "Trigger after 30 minutes",
+                "fr": "Déclencher après 30 minutes"
+              }
+            },
+            {
+              "value": "60",
+              "label": {
+                "en": "Trigger after 1 hour",
+                "fr": "Déclencher après 1 heure"
+              }
+            },
+            {
+              "value": "180",
+              "label": {
+                "en": "Trigger after 3 hours",
+                "fr": "Déclencher après 3 heures"
+              }
+            },
+            {
+              "value": "360",
+              "label": {
+                "en": "Trigger after 6 hours",
+                "fr": "Déclencher après 6 heures"
+              }
+            },
+            {
+              "value": "720",
+              "label": {
+                "en": "Trigger after 12 hours",
+                "fr": "Déclencher après 12 heures"
+              }
+            },
+            {
+              "value": "1440",
+              "label": {
+                "en": "Trigger after 1 day",
+                "fr": "Déclencher après 1 jour"
+              }
+            },
+            {
+              "value": "10080",
+              "label": {
+                "en": "Trigger after 1 week",
+                "fr": "Déclencher après 1 semaine"
+              }
+            }
+          ],
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "cart_timer_innerText",
+          "label": {
+            "en": "Text",
+            "fr": "Texte"
+          },
+          "default": {
+            "en": "Your cart is reserved for XX minutes.",
+            "fr": "Votre panier est réservé pendant <br class='desktop__content'>XX minutes."
+          },
+          "info": {
+            "en": "Replace timer with XX",
+            "fr": "Remplacer le timer par XX"
+          }
+        },
+        {
+          "type": "color",
+          "id": "cart_timer_color1",
+          "label": {
+            "en": "Text color",
+            "fr": "Couleur du texte"
+          },
+          "default": "#262626"
+        },
+        {
+          "type": "color",
+          "id": "cart_timer_color2",
+          "label": {
+            "en": "Timer color",
+            "fr": "Couleur du compteur"
+          },
+          "default": "#ff0000"
+        }
+      ]
+    },
+    {
+      "type": "custom",
+      "name": {
+        "en": "Custom content",
+        "fr": "Contenu custom"
+      },
+      "limit": 2,
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_content",
+          "label": {
+            "en": "Content",
+            "fr": "Contenu"
+          },
+          "default": {
+            "en": "<svg style=\"\nfill:DarkCyan;\nwidth:14px;\nheight:14px;\nmargin-right:6px;\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 60.5 60.4\"><path d=\"M30.3 0C13.6 0 0 13.5 0 30.3 0 47 13.6 60.5 30.3 60.5 47 60.5 60.5 47 60.5 30.3 60.5 13.5 47 0 30.3 0zm-1.5 43.3l-2.1 2.3-2.1-2.4-11.7-13.5 3.8-4.1 9.5 7 20.7-17 3.9 4.1c0-.1-22 23.6-22 23.6z\"></path></svg>\nPriority Mail 2-day shipping",
+            "fr": "<svg style=\"\nfill:DarkCyan;\nwidth:14px;\nheight:14px;\nmargin-right:6px;\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 60.5 60.4\"><path d=\"M30.3 0C13.6 0 0 13.5 0 30.3 0 47 13.6 60.5 30.3 60.5 47 60.5 60.5 47 60.5 30.3 60.5 13.5 47 0 30.3 0zm-1.5 43.3l-2.1 2.3-2.1-2.4-11.7-13.5 3.8-4.1 9.5 7 20.7-17 3.9 4.1c0-.1-22 23.6-22 23.6z\"></path></svg>\nLivraison prioritaire en 2 jours"
+          }
+        },
+        {
+          "type": "color",
+          "id": "custom_content_color",
+          "label": {
+            "en": "Text color",
+            "fr": "Couleur texte"
+          },
+          "default": "#262626"
+        },
+        {
+          "type": "select",
+          "id": "block_pos",
+          "label": {
+            "en": "Position",
+            "fr": "Emplacement"
+          },
+          "options": [
+            {
+              "value": "top",
+              "label": {
+                "en": "Top",
+                "fr": "Haut"
+              }
+            },
+            {
+              "value": "bottom",
+              "label": {
+                "en": "Bottom",
+                "fr": "Bas"
+              }
+            }
+          ],
+          "default": "bottom"
+        }
+      ]
+    },
+    {
+      "type": "attribute",
+      "name": {
+        "en": "Cart attribute",
+        "fr": "Cart attribute"
+      },
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "textarea",
+          "id": "options",
+          "label": "Options"
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "You can also select a collection (up to 50 products) that will only generate the cart attribute if there is at least one matching item in cart.",
+            "fr": "Vous pouvez également sélectionner une collection (jusqu'à 50 produits) qui ne générera l'attribut panier que s'il y a au moins un article correspondant dans le panier."
+          }
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
+    },
+    {
+      "type": "navigation",
+      "name": {
+        "en": "Header & navigation",
+        "fr": "Header & navigation"
+      },
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": {
+            "en": "Header",
+            "fr": "Header"
+          }
+        },
+        {
+          "type": "text",
+          "id": "header_text",
+          "label": {
+            "en": "Your cart",
+            "fr": "Votre panier"
+          },
+          "default": {
+            "en": "Your cart",
+            "fr": "Votre panier"
+          }
+        },
+        {
+          "type": "color",
+          "id": "header_color",
+          "label": {
+            "en": "Header color",
+            "fr": "Couleur du header"
+          },
+          "default": "#373c47"
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Stepper",
+            "fr": "Barre d'étapes"
+          }
+        },
+        {
+          "type": "checkbox",
+          "id": "stepper_enable",
+          "label": {
+            "en": "Enable stepper",
+            "fr": "Afficher le stepper"
+          }
+        },
+        {
+          "type": "text",
+          "id": "stepper_step1_text",
+          "label": {
+            "en": "Step 1 text",
+            "fr": "Texte étape 1"
+          },
+          "default": "Panier"
+        },
+        {
+          "type": "text",
+          "id": "stepper_step2_text",
+          "label": {
+            "en": "Step 2 text",
+            "fr": "Texte étape 2"
+          },
+          "default": "Informations"
+        },
+        {
+          "type": "text",
+          "id": "stepper_step3_text",
+          "label": {
+            "en": "Step 3 text",
+            "fr": "Texte étape 3"
+          },
+          "default": "Livraison"
+        },
+        {
+          "type": "text",
+          "id": "stepper_step4_text",
+          "label": {
+            "en": "Step 4 text",
+            "fr": "Texte étape 4"
+          },
+          "default": "Paiement"
+        },
+        {
+          "type": "color",
+          "id": "stepper_main_color",
+          "label": {
+            "en": "Main color",
+            "fr": "Couleur principale"
+          },
+          "default": "#737373"
+        },
+        {
+          "type": "color",
+          "id": "stepper_secondary_color",
+          "label": {
+            "en": "Secondary color",
+            "fr": "Couleur secondaire"
+          },
+          "default": "#101010"
+        },
+        {
+          "type": "color",
+          "id": "stepper_bg_color_desktop",
+          "label": {
+            "en": "Background color (desktop)",
+            "fr": "Couleur de fond (bureau)"
+          },
+          "default": "#f9f9f9"
+        },
+        {
+          "type": "color",
+          "id": "stepper_bg_color_mobile",
+          "label": {
+            "en": "Background color (mobile/drawer)",
+            "fr": "Couleur de fond (mobile/drawer)"
+          },
+          "default": "#f9f9f9"
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Continue shopping",
+            "fr": "Retour boutique"
+          }
+        },
+        {
+          "type": "text",
+          "id": "continue_shopping_text",
+          "label": {
+            "en": "Back to shop",
+            "fr": "Retour sur la boutique"
+          },
+          "default": {
+            "en": "Continue shopping",
+            "fr": "Continuer mes achats"
+          }
+        },
+        {
+          "type": "color",
+          "id": "continue_shopping_color",
+          "label": {
+            "en": "Text color",
+            "fr": "Couleur du texte"
+          },
+          "default": "#333333"
+        },
+        {
+          "type": "url",
+          "id": "continue_shopping_url",
+          "label": {
+            "en": "Page link (page)",
+            "fr": "Page de redirection (page)"
+          },
+          "default": "/collections/all"
+        }
+      ]
+    },
+    {
+      "type": "announce",
+      "name": {
+        "en": "Announcement bar",
+        "fr": "Message d'annonce"
+      },
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "enable",
+          "label": {
+            "en": "Enable",
+            "fr": "Activer le message d'annonce"
+          }
+        },
+        {
+          "type": "color",
+          "id": "message_bgcolor",
+          "label": {
+            "en": "Background color",
+            "fr": "Couleur de fond"
+          },
+          "default": "#202020"
+        },
+        {
+          "type": "color",
+          "id": "message_color",
+          "label": {
+            "en": "Color",
+            "fr": "Couleur du texte"
+          },
+          "default": "#fff"
+        },
+        {
+          "type": "richtext",
+          "id": "message_text",
+          "label": {
+            "en": "Text",
+            "fr": "Texte"
+          },
+          "info": {
+            "en": "Maj + Enter to skip one line",
+            "fr": "Maj + Entrer pour sauter une ligne"
+          }
+        }
+      ]
+    },
+    {
+      "type": "offer",
+      "name": {
+        "en": "Product & Delivery offers",
+        "fr": "Offres livraion & produit"
+      },
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "threshold_type",
+          "label": {
+            "en": "Upsell by price threshold",
+            "fr": "Upsell par seuil de prix"
+          },
+          "options": [
+            {
+              "value": "disable",
+              "label": {
+                "en": "Disable",
+                "fr": "Désactiver"
+              }
+            },
+            {
+              "value": "shipping",
+              "label": {
+                "en": "Shipping discount",
+                "fr": "Promotion livraison"
+              }
+            },
+            {
+              "value": "product",
+              "label": {
+                "en": "Product upsell",
+                "fr": "Produit upsell"
+              }
+            },
+            {
+              "value": "both",
+              "label": {
+                "en": "Shipping discount & Product upsell",
+                "fr": "Promotion livraison & produit"
+              }
+            }
+          ],
+          "default": "disable"
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Main settings",
+            "fr": "Paramètres principaux"
+          }
+        },
+        {
+          "type": "select",
+          "id": "mobile_order",
+          "label": {
+            "en": "Mobile position",
+            "fr": "Position mobile"
+          },
+          "options": [
+            {
+              "value": "1",
+              "label": {
+                "en": "Top",
+                "fr": "Haut"
+              }
+            },
+            {
+              "value": "2",
+              "label": {
+                "en": "Bottom",
+                "fr": "Bas"
+              }
+            }
+          ],
+          "default": "1"
+        },
+        {
+          "type": "color",
+          "id": "upsell_bar_color_1",
+          "label": {
+            "en": "Bar color n°1",
+            "fr": "Couleur n°1 barre"
+          },
+          "default": "#65BE9B"
+        },
+        {
+          "type": "color",
+          "id": "upsell_bar_color_2",
+          "label": {
+            "en": "Bar color n°2",
+            "fr": "Couleur n°2 barre"
+          },
+          "default": "#008B8B"
+        },
+        {
+          "type": "richtext",
+          "id": "qualify_text",
+          "label": {
+            "en": "Congratulations text",
+            "fr": "Texte de Félicitations"
+          },
+          "default": {
+            "en": "<p>🎉  Congrats! Your offer has been applied.</p>",
+            "fr": "<p>🎉  Félicitations, la promotion a été appliquée.</p>"
+          }
+        },
+        {
+          "type": "text",
+          "id": "info_text",
+          "label": {
+            "en": "Offer infos",
+            "fr": "Informations sur l'offre"
+          },
+          "default": {
+            "en": "Mistery box - worth $30",
+            "fr": "Boîte mystère - valeur de 30€"
+          }
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Shipping discount",
+            "fr": "Promotion livraison"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "Single price threshold allowed. You must also configure the shipping threshold in your [admin](/admin/settings/shipping).",
+            "fr": "Un seuil de prix autorisé. Vous devez également configurer le seuil de livraison dans votre [admin](/admin/settings/shipping)."
+          }
+        },
+        {
+          "type": "range",
+          "id": "shipping_threshold_value",
+          "min": 0,
+          "max": 500,
+          "step": 5,
+          "unit": "€/$",
+          "label": {
+            "en": "Price threshold",
+            "fr": "Seuil de prix"
+          },
+          "default": 30
+        },
+        {
+          "type": "richtext",
+          "id": "shipping_text",
+          "label": {
+            "en": "Initial text",
+            "fr": "Texte initial"
+          },
+          "default": {
+            "en": "<p>Spend XX more for <b>free shipping</b></p>",
+            "fr": "<p>Plus que XX pour obtenir la <b>livraison offerte</b></p>"
+          },
+          "info": {
+            "en": "XX = goal to threshold, YY = threshold amount",
+            "fr": "XX = somme restante, YY = montant du seuil"
+          }
+        },
+        {
+          "type": "text",
+          "id": "shipping_icon",
+          "label": {
+            "en": "Shipping icon",
+            "fr": "Icône livraison"
+          },
+          "default": "📦",
+          "info": {
+            "en": "[Get more icons](https://html-css-js.com/html/character-codes/icons/)",
+            "fr": "[Plus d'icônes](https://html-css-js.com/html/character-codes/icons/)"
+          }
+        },
+        {
+          "type": "text",
+          "id": "delivery_price_text_before",
+          "label": {
+            "en": "Standard delivery price",
+            "fr": "Prix livraison standard"
+          },
+          "default": {
+            "en": "4.99",
+            "fr": "4.99"
+          },
+          "info": {
+            "en": "To show a price, include two decimals and exclude currency symbol",
+            "fr": "Pour afficher un prix, inclure 2 décimales et exclure le symbole de la devise"
+          }
+        },
+        {
+          "type": "text",
+          "id": "delivery_price_text_after",
+          "label": {
+            "en": "Discounted delivery price",
+            "fr": "Prix livraison discounté"
+          },
+          "default": {
+            "en": "Free",
+            "fr": "Gratuite"
+          },
+          "info": {
+            "en": "To show a price, include two decimals and exclude currency symbol",
+            "fr": "Pour afficher un prix, inclure 2 décimales et exclure le symbole de la devise"
+          }
+        },
+        {
+          "type": "header",
+          "content": {
+            "en": "Product upsell",
+            "fr": "Produit upsell"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "Enables you to add an item when a threshold is met.",
+            "fr": "Permet d'ajouter un produit quand un seuil de prix est atteint."
+          }
+        },
+        {
+          "type": "range",
+          "id": "product_threshold_value",
+          "min": 0,
+          "max": 500,
+          "step": 5,
+          "unit": "€/$",
+          "label": {
+            "en": "Price threshold",
+            "fr": "Seuil de prix"
+          },
+          "default": 60
+        },
+        {
+          "type": "richtext",
+          "id": "product_text",
+          "label": {
+            "en": "Initial text",
+            "fr": "Texte initial"
+          },
+          "default": {
+            "en": "<p>Spend XX more to receive your <b>free *product*</b></p>",
+            "fr": "<p>Plus que XX pour recevoir <b>*produit* gratuit</b></p>"
+          },
+          "info": {
+            "en": "XX = goal to threshold, YY = threshold amount",
+            "fr": "XX = somme restante, YY = montant du seuil"
+          }
+        },
+        {
+          "type": "text",
+          "id": "product_icon",
+          "label": {
+            "en": "Product icon",
+            "fr": "Icône produit"
+          },
+          "default": "🎁",
+          "info": {
+            "en": "[Get more icons](https://html-css-js.com/html/character-codes/icons/)",
+            "fr": "[Plus d'icônes](https://html-css-js.com/html/character-codes/icons/)"
+          }
+        },
+        {
+          "type": "product",
+          "id": "product_upsell",
+          "label": {
+            "en": "Upsell product",
+            "fr": "Produit upsell"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "You can add and customize a line item property when the product is added.",
+            "fr": "Vous pouvez ajouter et personnaliser une propriété lorsque le produit est ajouté."
+          }
+        },
+        {
+          "type": "text",
+          "id": "product_original_property",
+          "label": {
+            "en": "Promotional text (optional)",
+            "fr": "Texte promotionnel (optionnel)"
+          },
+          "default": {
+            "en": "Special offer: -100%",
+            "fr": "Offre spéciale : -100%"
+          },
+          "info": {
+            "en": "*Colons required. E.g. \"Discount : -50%\"",
+            "fr": "*Deux-points requis. Ex. \"Remise : -50%\""
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "You can hide free & discounted products from search engines [here](/admin/bulk?resource_name=Product&show=image%2Ctitle%2Cvariants&edit=metafields.seo.hidden%3Anumber) (add value 1 to hide)",
+            "fr": "Vous pouvez cacher les produits gratuits & disccountés des moteurs de recherche [ici](/admin/bulk?resource_name=Product&show=image%2Ctitle%2Cvariants&edit=metafields.seo.hidden%3Anumber) (ajouter la valeur 1 pour cacher)"
+          }
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_qty",
+          "label": {
+            "en": "Hide quantity selector",
+            "fr": "Cacher le sélecteur de quantités"
+          }
+        },
+        {
+          "type": "product",
+          "id": "product_upsell_original",
+          "label": {
+            "en": "Original upsell product",
+            "fr": "Produit upsell original"
+          },
+          "info": {
+            "en": "Item will redirect to the original non-discounted product (optional)",
+            "fr": "L'article redirigera vers le produit original non discounté (optionnel)"
+          }
+        }
+      ]
+    },
+    {
+      "type": "translations",
+      "name": {
+        "en": "Edit text & values",
+        "fr": "Chnager le texte et les valeurs"
+      },
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "product_text",
+          "label": {
+            "en": "Product",
+            "fr": "Produit"
+          },
+          "default": {
+            "en": "PRODUCT",
+            "fr": "PRODUIT"
+          }
+        },
+        {
+          "type": "text",
+          "id": "qty_text",
+          "label": {
+            "en": "Quantity",
+            "fr": "Quantité"
+          },
+          "default": {
+            "en": "QUANTITY",
+            "fr": "QUANTITÉ"
+          }
+        },
+        {
+          "type": "text",
+          "id": "price_text",
+          "label": {
+            "en": "Price",
+            "fr": "Prix"
+          },
+          "default": {
+            "en": "PRICE",
+            "fr": "PRIX"
+          }
+        },
+        {
+          "type": "text",
+          "id": "flash_text",
+          "label": {
+            "en": "Product info/scarcity text",
+            "fr": "Texte produit info/urgence"
+          },
+          "default": {
+            "en": "✔ In stock",
+            "fr": "✔ En stock"
+          }
+        },
+        {
+          "type": "paragraph",
+          "content": {
+            "en": "[Product info / scarcity text](/admin/bulk?resource_name=Product&edit=metafields.cart.cart_info%3Astring%2Cmetafields.cart.cart_info_blink== true %3Aboolean)",
+            "fr": "[Texte produit info / urgence](/admin/bulk?resource_name=Product&edit=metafields.cart.cart_info%3Astring%2Cmetafields.cart.cart_info_blink== true %3Aboolean)"
+          }
+        },
+        {
+          "type": "text",
+          "id": "subtotal_text",
+          "label": {
+            "en": "Subtotal",
+            "fr": "Sous-total"
+          },
+          "default": {
+            "en": "SUBTOTAL",
+            "fr": "SOUS-TOTAL"
+          }
+        },
+        {
+          "type": "text",
+          "id": "delivery_text",
+          "label": {
+            "en": "Delivery",
+            "fr": "Livraison"
+          },
+          "default": {
+            "en": "DELIVERY",
+            "fr": "LIVRAISON"
+          }
+        },
+        {
+          "type": "text",
+          "id": "delivery_price_text",
+          "label": {
+            "en": "Delivery price",
+            "fr": "Prix livraison"
+          },
+          "default": {
+            "en": "Free",
+            "fr": "Gratuite"
+          },
+          "info": {
+            "en": "To show a price, include two decimals and exclude currency symbol",
+            "fr": "Pour afficher un prix, inclure 2 décimales et exclure le symbole de la devise"
+          }
+        },
+        {
+          "type": "text",
+          "id": "total_text",
+          "label": {
+            "en": "Total text",
+            "fr": "Texte Total"
+          },
+          "default": "TOTAL"
+        },
+        {
+          "type": "text",
+          "id": "total_subtext",
+          "label": {
+            "en": "Total info. text",
+            "fr": "Texte info. Total"
+          },
+          "default": {
+            "en": "Tax Inclusive",
+            "fr": "Taxes incluses"
+          }
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": {
+            "en": "Button text",
+            "fr": "Texte bouton"
+          },
+          "default": {
+            "en": "Proceed to checkout",
+            "fr": "Passer la commande"
+          }
+        },
+        {
+          "type": "text",
+          "id": "promo_code",
+          "label": {
+            "en": "Discount code",
+            "fr": "Code promo"
+          },
+          "default": {
+            "en": "Discount code",
+            "fr": "Code promo"
+          }
+        },
+        {
+          "type": "text",
+          "id": "promofield_text",
+          "label": {
+            "en": "Discount applied at the next step",
+            "fr": "Remise calculée à la prochaine étape"
+          },
+          "default": {
+            "en": "Discount applied at the next step",
+            "fr": "Remise calculée à la prochaine étape"
+          }
+        },
+        {
+          "type": "text",
+          "id": "you_save",
+          "label": {
+            "en": "You save",
+            "fr": "Vous économisez"
+          },
+          "default": {
+            "en": "You save",
+            "fr": "Vous économisez"
+          }
+        },
+        {
+          "type": "text",
+          "id": "cart_notes",
+          "label": {
+            "en": "Order notes:",
+            "fr": "Instructions spéciales :"
+          },
+          "default": {
+            "en": "Order notes:",
+            "fr": "Instructions spéciales :"
+          }
+        },
+        {
+          "type": "text",
+          "id": "cart_notes_text",
+          "label": {
+            "en": "Insert special notes regarding your order",
+            "fr": "Écrivez quelque chose..."
+          },
+          "default": {
+            "en": "Insert special notes regarding your order",
+            "fr": "Écrivez quelque chose..."
+          }
+        },
+        {
+          "type": "richtext",
+          "id": "cart_terms_text",
+          "label": {
+            "en": "I have read and accepted the sales terms",
+            "fr": "J’ai lu et j’accepte les conditions de ventes"
+          },
+          "default": {
+            "en": "<p>I have read and accepted the sales terms</p>",
+            "fr": "<p>J’ai lu et j’accepte les conditions de ventes</p>"
+          }
+        },
+        {
+          "type": "text",
+          "id": "empty_cart",
+          "label": {
+            "en": "Your cart is empty.",
+            "fr": "Votre panier est vide."
+          },
+          "default": {
+            "en": "Your cart is empty.",
+            "fr": "Votre panier est vide."
+          }
+        },
+        {
+          "type": "text",
+          "id": "continue_shopping",
+          "label": {
+            "en": "Back to the Shop (empty cart)",
+            "fr": "Retour à la boutique (panier vide)"
+          },
+          "default": {
+            "en": "Back to the Shop.",
+            "fr": "Retour à la boutique."
+          }
+        },
+        {
+          "type": "text",
+          "id": "free_text",
+          "label": {
+            "en": "Free",
+            "fr": "Gratuit"
+          },
+          "default": {
+            "en": "Free",
+            "fr": "Gratuit"
+          }
+        },
+        {
+          "type": "text",
+          "id": "inventory_alert",
+          "label": {
+            "en": "Unavailable stocks alert",
+            "fr": "Alerte stocks indisponibles"
+          },
+          "default": {
+            "en": "Oops, limited stocks. You can't add more quantities.",
+            "fr": "Oups, stocks limités. Vous ne pouvez pas ajouter plus de quantités."
+          }
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "bg"
+      },
+      {
+        "type": "navigation"
+      },
+      {
+        "type": "announce"
+      },
+      {
+        "type": "offer"
+      },
+      {
+        "type": "savings"
+      },
+      {
+        "type": "timer"
+      },
+      {
+        "type": "translations",
+        "settings": {
+          "total_subtext": ""
+        }
+      },
+      {
+        "type": "badges"
+      },
+      {
+        "type": "custom"
+      }
+    ]
+  }
+}
+{%- endschema -%}
+
+{%- comment -%}
+  Powered by MaxDesign.
+  ⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS (article L. 111-1 du code de la propriété intellectuelle). Cette ressource ne peut pas être utilisée, diffusée ou exploitée sans l'approbation de ses auteurs. Pour plus d'informations, veuillez contacter admin@maxdesign.expert
+  ⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS (section L. 111-1 of the intellectual property code). This resource may not be used, distributed or exploited without the approval of its authors. For any information request, please contact admin@maxdesign.expert
+{%- endcomment -%}

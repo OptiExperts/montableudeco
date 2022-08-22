@@ -1,0 +1,137 @@
+{%- comment -%}
+⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS (article L. 111-1 du code de la propriété intellectuelle). Il est interdit de copier ou revendre cette section pour de l'usage commercial sans l'accord de l'auteur. Pour toute demande d'information, veuillez contacter maxime.crouin(at)gmail.com
+⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS (article L. 111-1 of the intellectual property code). It is forbidden to resell or duplicate this ressource for commercial use without permission of the author. For any information request, please contact maxime.crouin(at)gmail.com
+{%- endcomment -%}
+<!--
+⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS (article L. 111-1 du code de la propriété intellectuelle). Il est interdit de copier ou revendre cette section pour de l'usage commercial sans l'accord de l'auteur. Pour toute demande d'information, veuillez contacter maxime.crouin(at)gmail.com
+⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS (article L. 111-1 of the intellectual property code). It is forbidden to resell or duplicate this ressource for commercial use without permission of the author. For any information request, please contact maxime.crouin(at)gmail.com
+-->
+
+
+{% assign img_ratio = 1 | divided_by: section.settings.banner_img.aspect_ratio | times: 100 %}
+{% assign policy_name = handle | replace: '-', '_' %}
+{% assign policy = shop[policy_name] %}
+
+<style>  
+  /* css reset */
+  #shopify-section-{{ section.id }} {margin-bottom:0px}
+  /* top margin fix */
+  body .main-content.main-content, .main-content{padding-left:0!important;padding-right:0!important;padding-top:0!important;margin:0;max-width:none}
+  h3 {margin:20px 0 10px;}
+  /* top banner */ 
+  .policypage-cover{position:relative;margin-bottom:50px;display:flex;{% if section.settings.banner_color == true %}filter:grayscale(1){% endif %};align-items:center;background-image:url("{{ section.settings.banner_img | img_url: '900x' }}");background-position:0% {{section.settings.banner_img_mtop}}%;background-repeat:no-repeat;
+  {% if section.settings.banner_mfull %}height:0;padding-top:{{ img_ratio}}%;background-size:contain;{% else %}height:{{section.settings.banner_img_mheight}}px;background-size:cover;padding-top:0{% endif %}}
+  h1.entry-title{margin:0; width:90vw;text-align:center;color:#fff;font-size:2em;text-shadow:1px 1px 2px #000;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+
+  /* media queries */
+  @media (min-width:900px){
+    .policypage-cover{background-image:url("{{ section.settings.banner_img | img_url: '1500x' }}");background-position:0% {{section.settings.banner_img_dtop}}%;
+     {% if section.settings.banner_dfull %}height:0;padding-top:{{ img_ratio}}%;background-size:contain; {% else %}height:{{section.settings.banner_img_dheight}}px;background-size:cover;padding-top:0{% endif %}}
+     h1.entry-title {font-size:4.5em!important;}     
+  }
+</style>
+<div class="policypage-cover"> 
+  <h1 class="entry-title">{{ section.settings.title | default: policy.title }}</h1>  
+</div>
+
+{% schema %}
+ {
+    "name": "Banner settings",
+    "settings": [
+	 {
+        "type": "header",
+        "content": "©MaxDesign. All Rights Reserved."
+     },
+     {
+        "type": "paragraph",
+        "content": {
+          "en" : "It is forbidden to resell or duplicate this ressource without permission of the author. Thank you to [contact me](https://5euros.com/profil/maxdesign) for additional information.",
+          "fr" : "Il est interdit de copier ou revendre cette section sans l'accord de l'auteur. Pour toute demande d'information, veuillez [me contacter](https://5euros.com/profil/maxdesign). "
+        }
+     },
+	 {
+         "type":"header",
+         "content":"Paramètres bannière"
+      },
+      {
+         "type":"text",
+         "id":"title",
+         "label":"Texte de la bannière"
+      },
+      {
+         "type":"image_picker",
+         "id":"banner_img",
+         "label":"Image en bannière",
+         "info":"Utiliser une image panoramique pour un résultat optimal."
+      },
+      {
+         "type":"checkbox",
+         "id":"banner_color",
+         "label":"Bannière noire et blanche",
+         "default":true
+      },
+      {
+         "type":"paragraph",
+         "content":"-------- Paramètres bureau --------"
+      },
+      {
+         "type":"checkbox",
+         "id":"banner_dfull",
+         "label":"Image plein format",
+         "info":"Si décoché, vous pouvez utiliser les contrôles manuels suivants.",
+         "default":false
+      },
+      {
+         "type":"range",
+         "id":"banner_img_dheight",
+         "min":250,
+         "max":500,
+         "step":5,
+         "unit":"px",
+         "label":"Hauteur de la bannière",
+         "default":400
+      },
+      {
+         "type":"range",
+         "id":"banner_img_dtop",
+         "min":0,
+         "max":100,
+         "step":1,
+         "unit":"%",
+         "label":"Positionnement en hauteur",
+         "default":80
+      },
+      {
+         "type":"paragraph",
+         "content": "-------- Paramètres mobile ---------"
+      },
+      {
+         "type":"checkbox",
+         "id":"banner_mfull",
+         "label":"Image plein format",
+         "info":"Si décoché, vous pouvez utiliser les contrôles manuels suivants.",
+         "default":true
+      },
+      {
+         "type":"range",
+         "id":"banner_img_mheight",
+         "min":100,
+         "max":300,
+         "step":5,
+         "unit":"px",
+         "label":"Hauteur de la bannière",
+         "default":160
+      },
+      {
+         "type":"range",
+         "id":"banner_img_mtop",
+         "min":0,
+         "max":100,
+         "step":1,
+         "unit":"%",
+         "label":"Positionnement en hauteur",
+         "default":60
+      }
+  ]
+}
+{% endschema %}

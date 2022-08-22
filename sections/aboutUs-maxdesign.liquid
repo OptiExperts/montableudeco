@@ -1,0 +1,480 @@
+{% comment %}
+⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS. Il est interdit de copier ou revendre cette section pour de l'usage commercial sans l'accord de l'auteur. Pour toute demande d'information, veuillez me contacter : maxime.crouin@gmail.com
+⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS. It is forbidden to resell or duplicate this ressource for commercial use without permission of the author. Thank you to contact me: maxime.crouin@gmail.com
+{% endcomment %}
+<!--
+⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS. Il est interdit de copier ou revendre cette section pour de l'usage commercial sans l'accord de l'auteur. Pour toute demande d'information, veuillez me contacter : maxime.crouin@gmail.com / MaxDesign
+⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS. It is forbidden to resell or duplicate this ressource for commercial use without permission of the author. Thank you to contact me: maxime.crouin@gmail.com / MaxDesign
+-->
+
+{% assign img_ratio = 1 | divided_by: section.settings.banner_img.aspect_ratio | times: 100 %}
+{% for block in section.blocks %}{% if block.type == 'images' %}{% assign img_ratio_img1 = 1 | divided_by: block.settings.img1.aspect_ratio | times: 100 %}{% assign index_images = forloop.index0 %}{% endif %}{% endfor %}
+
+<style>
+  main.main-content, .main-content, .mono-produit-true .main-content, .content-for-layout, .wrapper{padding:0!important;margin:0;max-width:none}
+  #shopify-section-{{ section.id }} {margin:0; max-width:none;padding:0;font-size:0.9em;}
+  #shopify-section-{{ section.id }} * {box-sizing: border-box;}
+  #shopify-section-{{ section.id }} h3, #shopify-section-{{ section.id }} .h3{color:#1d1d1d;margin:20px 0 10px}
+  #shopify-section-{{ section.id }} h4, #shopify-section-{{ section.id }} .h4{font-size:1.3em;color:#1d1d1d;font-weight:400}
+  #shopify-section-{{ section.id }} .pagewidth{max-width:1280px;margin:0 auto;padding:0}
+  #shopify-section-{{ section.id }} .pagewidth p {color:{{section.settings.color_text}}!important;font-weight:normal;font-size:1em}
+  #shopify-section-{{ section.id }} .pagewidth h3 {color:{{section.settings.color_hn}}}
+  #shopify-section-{{ section.id }} div.blockquote__wrapper figcaption{border-radius:15px 15px 0 0;width:80%;margin:auto;border-style:dotted;border-width:2px;border-bottom:none;margin-top:5px}
+  @media screen and (max-width:480px){
+    #shopify-section-{{ section.id }} div.blockquote__wrapper figcaption,  #shopify-section-{{ section.id }} .boximage{width:100%!important}
+  }
+  @media screen and (max-width:750px){
+    #shopify-section-{{ section.id }} div.blockquote__wrapper figcaption{margin-top:30px}
+  }
+  #shopify-section-{{ section.id }} div.blockquote__wrapper blockquote{background:none;border:none;position:relative;padding:30px 35px 25px 35px;font-size:1em;font-weight:300;text-align:left;margin:0;line-height:1.6em;font-style:italic}
+  #shopify-section-{{ section.id }} div.blockquote__wrapper blockquote:before,  #shopify-section-{{ section.id }} div.blockquote__wrapper blockquote:after{content:"\201C";font-size:50px;opacity:.3;font-style:normal;font-family: inherit;}
+  #shopify-section-{{ section.id }} div.blockquote__wrapper blockquote:before{left:14px;top:20px;position:absolute;color:{{ section.settings.color_text }};}
+  #shopify-section-{{ section.id }} div.blockquote__wrapper blockquote:after{content:"\201D";right:14px;bottom:0;position:absolute;color:{{ section.settings.color_text }};}
+  #shopify-section-{{ section.id }} div.blockquote__wrapper .author{padding:10px 35px;float:right}
+  #shopify-section-{{ section.id }} div.blockquote__wrapper .author {opacity:.8;margin:0}
+  #shopify-section-{{ section.id }} div.blockquote__wrapper .author span, #shopify-section-{{ section.id }} div.blockquote__wrapper .author p{text-transform:none;padding-left:5px}
+  #shopify-section-{{ section.id }} .apropospage-cover{position:relative;display:flex;{% if section.settings.banner_color == true %}filter:grayscale(1){% endif %};align-items:center;background-image:url("{{ section.settings.banner_img | img_url: '900x' }}");background-position:0% {{section.settings.banner_img_mtop}}%;background-repeat:no-repeat;{% if section.settings.banner_mfull %}height:0;padding-top:{{ img_ratio}}%;background-size:contain;{% else %}height:{{section.settings.banner_img_mheight}}px;background-size:cover;padding-top:0{% endif %}}
+  #shopify-section-{{ section.id }} h1.entry-title{margin:0; width:90vw;text-align:center;color:#fff;font-size:2em;text-shadow:1px 1px 2px #000;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+  #shopify-section-{{ section.id }} .sidebar-box{text-align:left;border:none;position:relative;overflow:hidden;padding:0px 20px}
+  #shopify-section-{{ section.id }} .sidebar-box .read-more{position:absolute;bottom:0;left:0;width:100%;text-align:center;margin:0;padding:30px 0;background:linear-gradient(0deg,rgba(255,255,255,1) 10%,rgba(0,212,255,0) 100%)}
+  #shopify-section-{{ section.id }} .sidebar-box .button{background-color:{{ section.blocks[index_images].settings.color_scdbtn }};color:#fff;box-shadow:0px 0px 4px {{ section.blocks[index_images].settings.color_scdbtn | color_darken:15 }};padding:3px 10px;font-size:.9em;line-height:2;border-radius:50px}
+  #shopify-section-{{ section.id }} .btn-custom__wrapper {margin:40px auto}
+  #shopify-section-{{ section.id }} .btn-custom{cursor:pointer;margin:auto;display:block; color:#fff;border:none;font-size:16px;padding:12px 25px;transition:color 0.1s ease-in,background-color 0.1s ease-in}
+  #shopify-section-{{ section.id }} .btn-custom.two{margin:25px auto 50px;} 
+  #shopify-section-{{ section.id }} .flex-one--whole{width:100%;margin:30px auto}
+  #shopify-section-{{ section.id }} .flex-image img{padding:0 20px;width:100%}
+  /*page content */  
+  #shopify-section-{{ section.id }} .page_content {padding:0 20px;margin: 50px auto;}
+  /* media queries */
+  @media (min-width:900px){
+    #shopify-section-{{ section.id }} .apropospage-cover{background-image:url("{{ section.settings.banner_img | img_url: '1500x' }}");background-position:0% {{section.settings.banner_img_dtop}}%;
+      {% if section.settings.banner_dfull %}height:0;padding-top:{{ img_ratio}}%;background-size:contain; {% else %}height:{{section.settings.banner_img_dheight}}px;background-size:cover;padding-top:0{% endif %}}
+    #shopify-section-{{ section.id }} .pagewidth{padding:0 20px}
+    #shopify-section-{{ section.id }}  h1.entry-title{font-size:4.5em}
+    #shopify-section-{{ section.id }} .flex-one--whole.flex-special { {% if img_ratio_img1 > 60 %}width:60%; margin:auto {% elsif img_ratio_img1 > 30%}width:75%; margin:auto{% endif %}}
+    #shopify-section-{{ section.id }} .flex-one--whole{margin:0;}
+    #shopify-section-{{ section.id }} .flex-one--half{width:50%}
+    #shopify-section-{{ section.id }} .flex-one--third{width:33.3%}
+    #shopify-section-{{ section.id }} .flex-blocks{display:flex;margin:60px auto;}
+    #shopify-section-{{ section.id }} .btn-custom__wrapper{margin:60px auto;}
+    #shopify-section-{{ section.id }} .btn-custom.two{margin-top:80px;}
+    #shopify-section-{{ section.id }} .page_content {width:80%;margin: 60px auto;}
+  }
+</style>
+<div class="apropospage-cover"> 
+  <h1 class="entry-title">{{ section.settings.title }}</h1>  
+</div>
+<div class="pagewidth">
+  {% for block in section.blocks %}
+    {% if block.type == 'introduction' %}
+      <div class="blockquote__wrapper">
+        <figcaption style="border:none; margin-top:30px">
+          <blockquote style="text-align:left">
+            {{ block.settings.intro }}
+          </blockquote>
+          <div class="author">{{ block.settings.author }}</div>
+        </figcaption>
+        <div style="clear:both"></div>
+      </div>
+    {% elsif block.type == 'button' %}
+      {% unless block.settings.btn_text == blank %}
+        {% capture btn_brightness %}{{ block.settings.btn_color | color_brightness | round }}{% endcapture %}
+        {% assign btn_brightness = btn_brightness | plus:0 %}
+        {% if btn_brightness > 40 %}{% assign btn_color_hover = block.settings.btn_color | color_darken: 10 %}{% else %}{% assign btn_color_hover = block.settings.btn_color | color_lighten: 15 %}{% endif %}
+        <style>.btn-custom.btn-{{ block.id }}{background-color:{{ block.settings.btn_color }}}.btn-custom.btn-{{ block.id }}:hover{color:#fff;background-color:{{ btn_color_hover }}}</style>
+        <form class="btn-custom__wrapper" action="{{ block.settings.btn_destination}}">
+          <button type="submit" class="btn-custom btn-{{ block.id }}">{{ block.settings.btn_text }}</button>
+        </form>
+      {% endunless %}
+    {% elsif block.type == 'images' %}
+    	{% assign columns = block.settings.columns | plus: 0 %}
+        <div class="flex-blocks">
+        <div class="flex-one--whole {% if columns == 1 %}flex-special {% elsif columns == 2 %} flex-one--half {% elsif columns == 3 %} flex-one--third {% endif %}">
+          <div class="flex-image">
+            <img src="{{ block.settings.img1 | img_url: '1000x' }}">
+          </div>     
+          <div class="sidebar-box"  {% if block.settings.text1.size > 900 and block.settings.scdbtn_enable %}style="max-height:250px"{% endif %}>   
+            <h3>{{ block.settings.title1 }}</h3> 
+            {{ block.settings.text1 }} 
+            {% if block.settings.text1.size > 900 and block.settings.scdbtn_enable %}
+            <p class="read-more">
+              <a href="#" class="button" style="background-color:{{ block.settings.color_scdbtn }};box-shadow:0px 0px 4px {{ block.settings.color_scdbtn | color_darken:15 }}">
+                <strong>LIRE PLUS</strong>
+              </a>
+            </p>
+            {% endif %}
+          </div>
+        </div>
+        {% unless columns == 1 %}
+        <div class="flex-one--whole {% if columns == 2 %} flex-one--half {% elsif columns == 3 %} flex-one--third {% endif %}">
+          <div class="flex-image">
+            <img src="{{ block.settings.img2 | img_url: '1000x' }}">
+          </div>     
+          <div class="sidebar-box"  {% if block.settings.text2.size > 900 and block.settings.scdbtn_enable %}style="max-height:250px"{% endif %}>   
+            <h3>{{ block.settings.title2 }}</h3> 
+            {{ block.settings.text2 }} 
+            {% if block.settings.text2.size > 900 and block.settings.scdbtn_enable %}
+            <p class="read-more">
+              <a href="#" class="button" style="background-color:{{ block.settings.color_scdbtn }};box-shadow:0px 0px 4px {{ block.settings.color_scdbtn | color_darken:15 }}">
+                <strong>LIRE PLUS</strong>
+              </a>
+            </p>
+            {% endif %}
+          </div>
+        </div>
+        {% endunless %}
+        {% unless columns == 1 or columns == 2 %}
+        <div class="flex-one--whole {% if columns == 2 %} flex-one--half {% elsif columns == 3 %} flex-one--third {% endif %}">
+          <div class="flex-image">
+            <img src="{{ block.settings.img3 | img_url: '1000x' }}">
+          </div>     
+          <div class="sidebar-box" {% if block.settings.text3.size > 900 and block.settings.scdbtn_enable %}style="max-height:250px"{% endif %}>   
+            <h3>{{ block.settings.title3 }}</h3> 
+            {{ block.settings.text3 }} 
+            {% if block.settings.text3.size > 900 and block.settings.scdbtn_enable %}
+            <p class="read-more">
+              <a href="#" class="button" style="background-color:{{ block.settings.color_scdbtn }};box-shadow:0px 0px 4px {{ block.settings.color_scdbtn | color_darken:15 }}">
+                <strong>LIRE PLUS</strong>
+              </a>
+            </p>
+            {% endif %}
+          </div>
+        </div>
+        {% endunless %}
+      </div>
+    {% elsif block.type == 'page' %}
+  		{% assign divider = block.settings.divider %}
+  	  	<div class="page_content">
+          {% case block.settings.page_content %}
+          {% when 'part1' %}
+          {{ page.content | split: divider | first }}
+          {% when 'part2' %}
+          {{ page.content | split: divider | last }}
+          {% when 'all' %}
+          {{ page.content | remove: divider }}
+          {% endcase %}
+  		</div>
+  	{% endif %}
+  {% endfor %}
+ 
+</div>
+<script>
+ addEventListener("load", function () {
+    jQuery(function ($) {
+        var $el,$p, $ps, $up, totalHeight;
+        $(".sidebar-box .button").click(function () {
+            totalHeight = 0;
+            $el = $(this);
+            $p = $el.parent();
+            $up = $p.parent();
+            $ps = $up.find("h3, p:not('.read-more')");
+            var remaining = $(".sidebar-box .button").not(this);
+            remaining.each(function () {
+                $up.removeAttr("style");
+                $up.fadeIn();
+            });
+            $ps.each(function () {
+                totalHeight += $(this).outerHeight(!0);
+            });
+            $up.css({ height: $up.height(), "max-height": 9999 }).animate({ height: totalHeight });
+            $p.fadeOut();
+            return !1;
+        });
+    });
+});
+</script>
+  
+{% schema %}
+{
+   "name":"Section À Propos",
+   "settings":[
+      {
+         "type":"header",
+         "content":"©MaxDesign. All Rights Reserved."
+      },
+      {
+         "type":"paragraph",
+         "content":{
+            "en":"It is forbidden to resell or duplicate this ressource without permission of the author. Thank you to [contact me](https://5euros.com/profil/maxdesign) for additional information.",
+            "fr":"Il est interdit de copier ou revendre cette section sans l'accord de l'auteur. Pour toute demande d'information, veuillez [me contacter](https://5euros.com/profil/maxdesign). "
+         }
+      },
+	  {
+         "type":"header",
+         "content":"Paramètres principaux"
+      },	  	
+      {
+         "type":"color",
+         "id":"color_hn",
+         "label":"Couleur des titres"
+      },
+      {
+         "type":"color",
+         "id":"color_text",
+         "label":"Couleur du texte"
+      }, 
+	  {
+         "type":"header",
+         "content":"Paramètres bannière"
+      },
+      {
+         "type":"text",
+         "id":"title",
+         "label":"Texte de la bannière"
+      },
+      {
+         "type":"image_picker",
+         "id":"banner_img",
+         "label":"Image en bannière",
+         "info":"Utiliser une image panoramique pour un résultat optimal."
+      },
+      {
+         "type":"checkbox",
+         "id":"banner_color",
+         "label":"Bannière noire et blanche",
+         "default":true
+      },
+      {
+         "type":"paragraph",
+         "content":"-------- Paramètres bureau --------"
+      },
+      {
+         "type":"checkbox",
+         "id":"banner_dfull",
+         "label":"Image plein format",
+         "info":"Si décoché, vous pouvez utiliser les contrôles manuels suivants.",
+         "default":false
+      },
+      {
+         "type":"range",
+         "id":"banner_img_dheight",
+         "min":250,
+         "max":500,
+         "step":5,
+         "unit":"px",
+         "label":"Hauteur de la bannière",
+         "default":400
+      },
+      {
+         "type":"range",
+         "id":"banner_img_dtop",
+         "min":0,
+         "max":100,
+         "step":1,
+         "unit":"%",
+         "label":"Positionnement en hauteur",
+         "default":80
+      },
+      {
+         "type":"paragraph",
+         "content": "-------- Paramètres mobile ---------"
+      },
+      {
+         "type":"checkbox",
+         "id":"banner_mfull",
+         "label":"Image plein format",
+         "info":"Si décoché, vous pouvez utiliser les contrôles manuels suivants.",
+         "default":true
+      },
+      {
+         "type":"range",
+         "id":"banner_img_mheight",
+         "min":100,
+         "max":300,
+         "step":5,
+         "unit":"px",
+         "label":"Hauteur de la bannière",
+         "default":160
+      },
+      {
+         "type":"range",
+         "id":"banner_img_mtop",
+         "min":0,
+         "max":100,
+         "step":1,
+         "unit":"%",
+         "label":"Positionnement en hauteur",
+         "default":80
+      }
+   ],
+   "blocks":[
+      {
+         "type":"images",
+         "limit":3,
+         "name":"Images & textes",
+         "settings":[
+            {
+               "type":"paragraph",
+               "content":"Utiliser des images au même format pour un résultat optimal."
+            },
+			{
+             "type": "select",
+             "id": "columns",
+             "label": "Nombre de colonnes",
+             "options": [
+               {
+                 "value": "1",
+                 "label": "1"
+               },
+               {
+                 "value": "2",
+                 "label": "2"
+               },
+			   {
+                 "value": "3",
+                 "label": "3"
+               }
+             ],
+             "default":   "2"
+        	},
+			{ 
+              "type": "checkbox",
+              "id": "scdbtn_enable",
+              "label": "Activer les boutons 'lire plus'",
+			  "info":"Visibles si le texte est long"
+	  		},
+            {
+               "type":"color",
+               "id":"color_scdbtn",
+               "label":"Couleur boutons lire plus",
+               "default":"#2c2c2c"
+            },
+            {
+               "type":"image_picker",
+               "id":"img1",
+               "label":"Image 1"
+            },
+            {
+               "type":"text",
+               "id":"title1",
+               "label":"Titre de la section 1",
+               "default":"Lorem Ipsum"
+            },
+            {
+               "type":"richtext",
+               "id":"text1",
+               "label":"Texte de la section 1",
+               "default":"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>"
+            },
+            {
+               "type":"image_picker",
+               "id":"img2",
+               "label":"Image 2"
+            },
+            {
+               "type":"text",
+               "id":"title2",
+               "label":"Titre de la section 2",
+               "default":"Lorem ipsum"
+            },
+            {
+               "type":"richtext",
+               "id":"text2",
+               "label":"Texte de la section 2",
+			   "default":"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>"
+            },
+            {
+               "type":"image_picker",
+               "id":"img3",
+               "label":"Image 3"
+            },
+            {
+               "type":"text",
+               "id":"title3",
+               "label":"Titre de la section 3"
+            },
+            {
+               "type":"richtext",
+               "id":"text3",
+               "label":"Texte de la section 3"
+            }			 
+         ]
+      },
+      {
+         "type":"introduction",
+         "limit":1,
+         "name":"Texte introduction",
+         "settings":[
+            {
+               "type":"richtext",
+               "id":"intro",
+               "label":"Présentation de l'entreprise",
+               "info":"Maj + Entrée pour passer une ligne."
+            },
+            {
+               "type":"richtext",
+               "id":"author",
+               "label":"Signature",
+				"default": "<p>◈ XXXXX — Gérant</p>"
+            }
+         ]
+      },
+      {
+         "type":"button",
+         "limit":5,
+         "name":"Bouton ATC",
+         "settings":[
+            {
+               "type":"text",
+               "id":"btn_text",
+               "label":"Texte bouton",
+               "default":"Voir la sélection"
+            },
+            {
+               "type":"url",
+               "id":"btn_destination",
+               "label":"Page de destination"
+            },
+            {
+               "type":"color",
+               "id":"btn_color",
+               "label":"Couleur boutons principaux",
+               "default":"#202020"
+            }
+         ]
+      },
+	  {
+         "type":"page",
+         "limit":2,
+         "name":"Contenu de page",
+         "settings":[
+			{
+               "type": "paragraph",
+               "content": "Vous pouvez insérer du contenu directement depuis l'éditeur de description de la page \"À propos\"."
+       		},
+			{
+               "type": "paragraph",
+               "content": "Vous pouvez aussi séparer votre description en 2 blocs en insérant le mot-clé suivant dans la description."
+       		},
+            { 
+              "type": "text",
+              "id": "divider",
+              "label": "Mot-clé",
+			  "default": "---",
+			  "info":"Utiliser le mot clé de votre choix"
+	  		},
+            {
+             "type": "select",
+             "id": "page_content",
+             "label": "Contenu à afficher",
+             "options": [
+			   {
+                 "value": "all",
+                 "label": "Tout afficher"
+               },
+               {
+                 "value": "part1",
+                 "label": "Partie 1"
+               },
+               {
+                 "value": "part2",
+                 "label": "Partie 2"
+               }
+             ],
+             "default":   "all"
+        	}
+         ]
+      }
+   ]
+}
+{% endschema %}

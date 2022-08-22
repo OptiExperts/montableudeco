@@ -1,0 +1,323 @@
+{% comment %}
+⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS. Il est interdit de copier ou revendre cette section pour de l'usage commercial sans l'accord de l'auteur. Pour toute demande d'information, veuillez me contacter : maxime.crouin@gmail.com
+⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS. It is forbidden to resell or duplicate this ressource for commercial use without permission of the author. Thank you to contact me: maxime.crouin@gmail.com
+{% endcomment %}
+<!--
+⚠ FR : CONTENU PROTÉGÉ PAR LES DROITS D'AUTEURS. Il est interdit de copier ou revendre cette section pour de l'usage commercial sans l'accord de l'auteur. Pour toute demande d'information, veuillez me contacter : maxime.crouin@gmail.com / MaxDesign
+⚠ EN : CONTENT PROTECTED WITH AUTHOR COPYRIGHTS. It is forbidden to resell or duplicate this ressource for commercial use without permission of the author. Thank you to contact me: maxime.crouin@gmail.com / MaxDesign
+-->
+
+{% assign img_ratio = 1 | divided_by: section.settings.banner_img.aspect_ratio | times: 100 %}
+{% capture btn_brightness %}{{ section.settings.btn_bgcolor | color_brightness | round }}{% endcapture %}
+{% assign btn_brightness = btn_brightness | plus:0 %}
+{% if btn_brightness > 40 %}{% assign btn_color_hover = section.settings.btn_bgcolor | color_darken: 10 %}{% else %}{% assign btn_color_hover = section.settings.btn_bgcolor | color_lighten: 15 %}{% endif %}
+
+<style>
+  /* reset */
+  body .main-content.main-content, .main-content, .content-for-layout{padding:0!important;margin:0;max-width:none}
+  #shopify-section-{{ section.id }} {margin:0; max-width:none;padding:0;font-size:0.9em}
+  #shopify-section-{{ section.id }} a {color:inherit;}
+  #shopify-section-{{ section.id }} div, #shopify-section-{{ section.id }} span {box-sizing: border-box;}
+  /* contact form */
+  #shopify-section-{{ section.id }} textarea {float:left;width:100%;margin:5px 0 0 0;padding:15px;max-width:100%;min-height: 200px;border: 1px solid #cbcbcb;background-color:#fff}
+  #shopify-section-{{ section.id }} #contact-form input {width:100%;padding:15px;max-width:100%;margin:5px 0;border: 1px solid #cbcbcb;background-color:#fff} 
+  #shopify-section-{{ section.id }} #contact-form #Phone {width:100%;padding:15px;max-width:100%;margin-top:5px;float:left}
+  .flex-one--third a {text-decoration:underline}
+  
+  /* container and content styling */
+  #shopify-section-{{ section.id }} .active {background:none;}
+  #shopify-section-{{ section.id }} .pagewidth {max-width:1280px;margin:0 auto;padding:0 20px;text-align:left;padding:20px 0 40px}
+  #shopify-section-{{ section.id }} h1.entry-title{width:100%;text-align:center;color:#fff;font-size:2em!important;text-shadow:1px 1px 2px #000;margin:0}
+  #shopify-section-{{ section.id }} h3 {color:{{section.settings.color_hn}}!important;margin:20px 0 10px!important;padding:0 !important;line-height:1.3;font-size:1.3em}
+  #shopify-section-{{ section.id }} h4 {font-size:1em!important;color:#1d1d1d!important;padding:0!important;letter-spacing:0.05em;}
+  #shopify-section-{{ section.id }} p {color:{{section.settings.color_text}}!important;}
+  #shopify-section-{{ section.id }} ::-webkit-input-placeholder {/* Edge */color: #bdbdbd;}
+  #shopify-section-{{ section.id }} :-ms-input-placeholder {/* Internet Explorer 10-11 */color:#bdbdbd;}
+  #shopify-section-{{ section.id }} ::placeholder {color:#bdbdbd;}
+  #shopify-section-{{ section.id }} .contact-form{float:left;padding-right:0;margin:0;width:100%}
+  #shopify-section-{{ section.id }} .med-pad{padding:0 15px}
+  #shopify-section-{{ section.id }} .flex-one--whole{width:100%}
+  #shopify-section-{{ section.id }} .flex-one--half input {width:100%; padding:8px;}
+  #shopify-section-{{ section.id }} .btn--md {margin:20px 0 30px; width:auto;color:#fff;background-color:{{ section.settings.btn_bgcolor }};display: inline-block;position: relative;border: 0;font-size: 1em;font-weight: 700;letter-spacing: 2px;text-decoration: none;text-align: center;text-transform: uppercase;padding: 10px 50px;line-height: 2.2;vertical-align: middle;cursor: pointer;transition: outline 0.1s linear} 
+  #shopify-section-{{ section.id }} .btn--md:hover{background-color:{{ btn_color_hover }}}
+  
+  /* banner */
+  #shopify-section-{{ section.id }} .contactpage-cover{position:relative;display:flex;{% if section.settings.banner_color == true %}filter:grayscale(1){% endif %};align-items:center;background-image:url("{{ section.settings.banner_img | img_url: '900x' }}");background-position:0% {{section.settings.banner_img_mtop}}%;background-repeat:no-repeat;{% if section.settings.banner_mfull %}height:0;padding-top:{{ img_ratio}}%;background-size:contain;{% else %}height:{{section.settings.banner_img_mheight}}px;background-size:cover;padding-top:0{% endif %}}
+  #shopify-section-{{ section.id }} h1.entry-title{margin:0; width:90vw;text-align:center;color:#fff;font-size:2em;text-shadow:1px 1px 2px #000;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+  
+  /* accordion & faq styling */
+  .accordionX{margin:0 auto}
+  .accordionX li{display:none;margin:initial}
+  ul.accordionX{display:flex;flex-wrap:wrap;justify-content:space-around;margin-bottom:25px;padding:0}
+  ul.accordionX>div{width:100%;text-align:center}
+  .section-title-custom{background-color:#f2f2f2;outline:none;cursor:pointer;margin:4px 0;padding:10px 15px}
+  .section-title-custom:hover,.section-title-custom.infocus{box-shadow:0 0 4px 0 #a2a2a2;;-moz-box-shadow:0 0 4px 0 #a2a2a2;;transition:all 0.2s ease-in-out}
+  .section-title-custom + li{margin-top:12px!important}
+  .faq-title{margin:0;text-align:left;height:100%;line-height:normal}
+  .faq-title img{vertical-align:middle;margin-right:12px}
+  .faq-title span{display:table-cell;vertical-align:middle}
+  .faq-author{display:none}
+  
+  /* media queries */
+  @media (min-width:750px){
+   #shopify-section-{{ section.id }} .contactpage-cover{margin-top:0}
+  }
+  @media (min-width:900px){
+    #shopify-section-{{ section.id }} .pagewidth{padding:50px 0 50px}
+    #shopify-section-{{ section.id }} .contactpage-cover{background-image:url("{{ section.settings.banner_img | img_url: '1500x' }}");background-position:0% {{section.settings.banner_img_dtop}}%;{% if section.settings.banner_dfull %}height:0;padding-top:{{ img_ratio}}%;background-size:contain; {% else %}height:{{section.settings.banner_img_dheight}}px;background-size:cover;padding-top:0{% endif %}}
+    #shopify-section-{{ section.id }} h1.entry-title{font-size:4.5em!important}
+  }
+  @media (min-width:1200px){
+    #shopify-section-{{ section.id }} .btn--md  {margin:20px 0 0}
+    #shopify-section-{{ section.id }} .flex-blocks{display:flex}
+    #shopify-section-{{ section.id }} .flex-one--half{width:50%;float:left}
+    #shopify-section-{{ section.id }} .flex-one--third{width:33.3%;float:left;position:relative}
+    #shopify-section-{{ section.id }} .flex-two--thirds{width:66.6%;float:left}
+    #shopify-section-{{ section.id }} .border-left::before{content: '';background-color: #e7e7e7;height: calc(100% - 30px);width: 1px;top: 20px;position: absolute;display: block;left: 0;}
+    #shopify-section-{{ section.id }} .med-pad{padding:0 40px}
+    #shopify-section-{{ section.id }} .flex-one--half.pad-left {padding-left:5px;}
+    #shopify-section-{{ section.id }} .flex-one--half.pad-right {padding-right:5px;}   
+    .faq-title{display:table;text-align:center;margin:auto}
+    .faq-title img{margin:0 auto 10px}
+    .faq-title span{display:table-row}
+    .section-title-custom{margin:0 0 2%;padding:15px;border-radius:15px}
+  } 
+</style>
+<body>
+  <div class="contactpage-cover"> 
+    <h1 class="entry-title">{{ section.settings.title }}</h1>  
+  </div>
+  <div class="pagewidth flex-blocks maxdesign">
+    <div class="flex-{% if section.settings.show_column == false %}one--whole{% else %}two--thirds{% endif %} med-pad">
+      <h3 style="margin-bottom:1.2em !important"> {{ section.settings.title-left }}</h3>
+      <div class="contact-form">
+        {% form 'contact' %}
+        {% if form.posted_successfully? %}
+        <p class="form-success">
+          {{ 'contact.form.post_success' | t }}
+        </p>
+        {% endif %}
+        {{ form.errors | default_errors }}       
+        <div class="faq-contact">
+          {% if section.settings.show_faq == true %}
+          %% SAUVEGARDER POUR CHARGER LA FAQ %%
+          {% endif %}
+        </div>
+        <div id="contact-form">
+          <div>
+            <div class="flex-one--half pad-right">             
+              <input type="text" id="ContactFormName" name="contact[name]" placeholder="Nom" value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+            </div>
+            <div class="flex-one--half pad-left">            
+              <input type="email" id="ContactFormEmail" name="contact[email]" placeholder="Email" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+            </div>
+          </div>
+          {% if section.settings.show_phone %}
+          <input type="text" id="Phone" name="contact[Phone]" placeholder="Téléphone"/>
+          {% endif %}
+          <textarea class="textarea" rows="10" id="ContactFormMessage" name="contact[body]" placeholder="Message">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+          <button type="submit" class="btn--md" value="ENVOYER">ENVOYER</button>
+        </div>
+        {% endform %}
+      </div>
+    </div>
+    {% if section.settings.show_column == true %}
+    <div class="flex-one--third border-left med-pad">
+      {% for block in section.blocks %}
+      {% if forloop.first == true %}<div style="clear:both"></div>{% endif %}
+      <h3>{{ block.settings.title }}</h3>
+      {{ block.settings.text }}
+      {% endfor %}             
+    </div>
+    {% endif %}
+  </div>
+  <script>
+    addEventListener("load",function(){jQuery(function($){$('.section-title-custom').click(function(){$('.section-title-custom.infocus').not(this).removeClass('infocus');var answers=$(this).nextUntil(":not(li)");$('.accordionX .section-title-custom').last().nextUntil(':not(li)').slideUp("normal",function(){$(this).remove()}).fadeOut({duration:300,queue:!1});console.log(this,!($(this).hasClass("infocus")));if(!($(this).hasClass("infocus"))){answers.clone(!0,!0).insertAfter($('.accordionX .section-title-custom').last()).css('width','100%').slideDown()};$(this).toggleClass('infocus')})})})
+  </script>
+</body>
+
+{% schema %}
+{
+  "name": "Contact page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "©MaxDesign. All Rights Reserved."
+    },
+    {
+      "type": "paragraph",
+      "content": {
+        "en" : "It is forbidden to resell or duplicate this ressource without permission of the author. Thank you to [contact me](https://5euros.com/profil/maxdesign) for additional information.",
+        "fr" : "Il est interdit de copier ou revendre cette section sans l'accord de l'auteur. Pour toute demande d'information, veuillez [me contacter](https://5euros.com/profil/maxdesign). "
+      }
+    },
+	 {
+      "type": "header",
+      "content": "Paramètres principaux"
+    },
+	 {
+      "type": "text",
+      "id": "title-left",
+      "label": "Titre du formulaire",
+      "default": "◈ Vous avez des questions ?"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_faq",
+      "label": "Afficher la FAQ",
+      "info": "Enregistrer pour visualiser",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_column",
+      "label": "Afficher la colonne",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "Activer le champ téléphone"
+    },
+    {
+      "type": "color",
+      "id": "color_hn",
+      "label": "Couleur des titres"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Couleur du texte"
+    },
+	{
+      "type": "color",
+      "id": "btn_bgcolor",
+      "label": "Couleur du bouton",
+	  "default": "#000"
+    },
+     {
+         "type":"header",
+         "content":"Paramètres bannière"
+      },
+      {
+         "type":"text",
+         "id":"title",
+         "label":"Texte de la bannière"
+      },
+      {
+         "type":"image_picker",
+         "id":"banner_img",
+         "label":"Image en bannière",
+         "info":"Utiliser une image panoramique pour un résultat optimal."
+      },
+      {
+         "type":"checkbox",
+         "id":"banner_color",
+         "label":"Bannière noire et blanche",
+         "default":true
+      },
+      {
+         "type":"paragraph",
+         "content":"-------- Paramètres bureau --------"
+      },
+      {
+         "type":"checkbox",
+         "id":"banner_dfull",
+         "label":"Image plein format",
+         "info":"Si décoché, vous pouvez utiliser les contrôles manuels suivants.",
+         "default":false
+      },
+      {
+         "type":"range",
+         "id":"banner_img_dheight",
+         "min":250,
+         "max":500,
+         "step":5,
+         "unit":"px",
+         "label":"Hauteur de la bannière",
+         "default":400
+      },
+      {
+         "type":"range",
+         "id":"banner_img_dtop",
+         "min":0,
+         "max":100,
+         "step":1,
+         "unit":"%",
+         "label":"Positionnement en hauteur",
+         "default":60
+      },
+      {
+         "type":"paragraph",
+         "content": "-------- Paramètres mobile ---------"
+      },
+      {
+         "type":"checkbox",
+         "id":"banner_mfull",
+         "label":"Image plein format",
+         "info":"Si décoché, vous pouvez utiliser les contrôles manuels suivants.",
+         "default":true
+      },
+      {
+         "type":"range",
+         "id":"banner_img_mheight",
+         "min":100,
+         "max":300,
+         "step":5,
+         "unit":"px",
+         "label":"Hauteur de la bannière",
+         "default":160
+      },
+      {
+         "type":"range",
+         "id":"banner_img_mtop",
+         "min":0,
+         "max":100,
+         "step":1,
+         "unit":"%",
+         "label":"Positionnement en hauteur",
+         "default":80
+      }
+  ],
+  "blocks": [
+    {
+      "type": "contactrichtext",
+      "name": "Right section (richtext)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Titre de la section"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texte",
+          "default": "<p>Texte de la section</p>",
+          "info": "Maj + Entrée pour passer une ligne."
+        }
+      ]
+    },
+    {
+      "type": "contacthtml",
+      "name": "Right section (html)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "◈ Titre de la section"
+        },
+        {
+          "type": "html",
+          "id": "text",
+          "label": "Texte",
+          "default": "<p>Texte de la section</p>",
+          "info": "Maj + Entrée pour passer une ligne."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
