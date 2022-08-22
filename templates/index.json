@@ -160,20 +160,6 @@
         "use_alt_bg": false
       }
     },
-    "1655026793b257a89f": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Nouveautés du jour",
-        "collection": "tableau-deco-de-salon",
-        "show_vendor": false,
-        "enable_carousel": false,
-        "grid": 4,
-        "rows": 1,
-        "use_alt_bg": true,
-        "show_view_all": true,
-        "full_width": false
-      }
-    },
     "16590925758a886849": {
       "type": "image-with-text",
       "settings": {
@@ -282,7 +268,6 @@
     "16359276425da8ce46",
     "16359278676808bea5",
     "16359278867b92de38",
-    "1655026793b257a89f",
     "16590925758a886849",
     "1653576172595c120c",
     "16535768658b1605c8"
