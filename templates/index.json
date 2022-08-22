@@ -207,6 +207,7 @@
     },
     "1656601841df3ed6ad": {
       "type": "featured-collection",
+      "disabled": true,
       "settings": {
         "title": "Nos animaux",
         "collection": "tableau-animaux",
@@ -276,6 +277,7 @@
     },
     "1655633357b9bf48a8": {
       "type": "featured-collection",
+      "disabled": true,
       "settings": {
         "title": "Nos Célébrités",
         "collection": "star-cine-music",
