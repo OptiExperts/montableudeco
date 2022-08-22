@@ -65,7 +65,7 @@
 {%- endcomment -%}
 
 {%- if request.design_mode -%}
-  <script>
+  <script type="lazyload2">
     (function shopifyEditor() {
       document.addEventListener('shopify:section:load', editorChange);
       document.addEventListener('shopify:section:select', editorChange);

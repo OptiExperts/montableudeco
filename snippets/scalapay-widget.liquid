@@ -1,8 +1,8 @@
 {%- if enabled -%}
   {%- assign scalapay_max_amount = 1500 -%}
   {%- assign price_numeric = price | plus: 0 | divided_by: 100.00 -%}
-  <script src="https://cdn.scalapay.com/js/scalapay-widget/webcomponents-bundle.js"></script>
-  <script src="https://cdn.scalapay.com/js/scalapay-widget/scalapay-widget.js"></script>
+  <script type="lazyload2" data-src="https://cdn.scalapay.com/js/scalapay-widget/webcomponents-bundle.js"></script>
+  <script type="lazyload2" data-src="https://cdn.scalapay.com/js/scalapay-widget/scalapay-widget.js"></script>
   <div style="margin: 0 0 10px 0;min-height:20px;">
     <scalapay-widget
       amount="{{ price | plus: 0 | divided_by: 100.00 }}"
