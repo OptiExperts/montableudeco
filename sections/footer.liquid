@@ -51,7 +51,7 @@
                   {%- capture double_image_width -%}{{ block.settings.image_width | times: 2 }}x{%- endcapture -%}
                   <div class="rimage-outer-wrapper" style="width: {{ block.settings.image_width }}px">
                     <div class="rimage-wrapper lazyload--placeholder" style="padding-top:{{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%">
-                      <img class="rimage__image lazyload fade-in" data-src="{{ block.settings.image | img_url: double_image_width }}" alt="{{ shop.name | escape }}" />
+                      <img class="rimage__image lazyload fade-in lazy2 data-src="{{ block.settings.image | img_url: double_image_width }}" alt="{{ shop.name | escape }}" />
                     </div>
                   </div>
                 </span>

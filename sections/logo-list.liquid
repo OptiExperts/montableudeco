@@ -32,7 +32,7 @@
                 <div class="rimage-outer-wrapper" style="max-width: {{ block.settings.image.width }}px">
                   <div class="rimage-wrapper lazyload--placeholder" style="padding-top: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%">
                     {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
-                    <img class="rimage__image lazyload fade-in"
+                    <img class="rimage__image lazyload fade-in lazy2"
                       data-src="{{ img_url }}"
                       data-widths="[{{ block.settings.image_width }}, {{ block.settings.image_width | times: 2}}]"
                       data-aspectratio="{{ block.settings.image.aspect_ratio }}"
