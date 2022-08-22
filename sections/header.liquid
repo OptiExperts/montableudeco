@@ -60,7 +60,7 @@
         <a class="logo__link" href="{{ routes.root_url }}" title="{{ shop.name }}">
           {%- if section.settings.logo != blank -%}
             {%- capture img_size -%}{{ section.settings.logo_img_width_int | times: 2 }}x{%- endcapture -%}
-            <img class="logo__image" src="{{ section.settings.logo | img_url: img_size }}" alt="{{ section.settings.logo.alt | escape }}" itemprop="logo" width="{{ section.settings.logo.width }}" height="{{ section.settings.logo.height }}" />
+            <img class="logo__image lazy2" data-src="{{ section.settings.logo | img_url: img_size }}" alt="{{ section.settings.logo.alt | escape }}" itemprop="logo" width="{{ section.settings.logo.width }}" height="{{ section.settings.logo.height }}" />
 
             {%- if section.settings.enable_transparent and template.name == 'index' and section.settings.transparent_logo != blank -%}
               <img class="logo__image-transparent lazy2" data-src="{{ section.settings.transparent_logo | img_url: img_size }}" alt="{{ section.settings.transparent_logo.alt | escape }}" itemprop="logo" width="{{ section.settings.transparent_logo.width }}" height="{{ section.settings.transparent_logo.height }}" />
