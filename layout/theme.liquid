@@ -77,7 +77,7 @@
 
     {% render 'social-meta-tags' %}
 
-    <link rel="stylesheet" href="{{ 'styles.css' | asset_url }}">
+    
 
     <script type="lazyload2">
       window.theme = window.theme || {};
@@ -224,7 +224,10 @@
 
     {% render 'gsf-conversion-pixels' %}
 
-    {% include 'otRegion' %}            
+    {% include 'otRegion' %}      
+    
+    <link rel="stylesheet" href="{{ 'styles.css' | asset_url }}">
+    
                         </head>
 
   <body class="template-{{ template | split: '.' | first | handle }}
