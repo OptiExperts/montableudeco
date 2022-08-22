@@ -68,7 +68,7 @@
     bcpo.$('head').append('<style>#cb-sticky { display: none !important; }</style>');
     }
     </script>
-
+    <link rel="preload" href="{{ 'styles.css' | asset_url }}">
     {% render 'head-tag' %}
 
     <title>
@@ -77,19 +77,7 @@
 
     {% render 'social-meta-tags' %}
 
-    {% if template contains 'index' %}
-    {%- render '__home-css' -%}
-    {% elsif template contains 'product' %}
-    {%- render '__product-css' -%}
-    {% elsif template contains 'collection' %}
-    {%- render '__collection-css' -%}
-    {% else %}
-    {{ 'styles.css' | asset_url | stylesheet_tag }}
-    {% endif %}
-
-
     <link rel="stylesheet" data-href="{{ 'styles.css' | asset_url }}">
-
 
     <script type="lazyload2">
       window.theme = window.theme || {};
