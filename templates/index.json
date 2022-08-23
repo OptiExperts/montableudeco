@@ -191,6 +191,20 @@
         "use_alt_bg": false
       }
     },
+    "1661280720ddbcc03d": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "L'univers Marvel Dc Comics",
+        "collection": "tableau-marvel-dc-comics",
+        "show_vendor": false,
+        "enable_carousel": true,
+        "grid": 4,
+        "rows": 1,
+        "use_alt_bg": true,
+        "show_view_all": true,
+        "full_width": true
+      }
+    },
     "1653576172595c120c": {
       "type": "slideshow",
       "blocks": {
@@ -284,6 +298,7 @@
     "16359278867b92de38",
     "16612804896b0bc794",
     "16590925758a886849",
+    "1661280720ddbcc03d",
     "1653576172595c120c",
     "16535768658b1605c8"
   ]
