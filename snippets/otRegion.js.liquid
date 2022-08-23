@@ -352,7 +352,7 @@ function otInitialElement(res) {
   let link = document.createElement('link');
   link.type = 'text/css';
   link.rel = 'stylesheet';
-  link.href = `${otRegionRootLink}/assets/css/region.css?v=${ver}`;
+  // link.href = `${otRegionRootLink}/assets/css/region.css?v=${ver}`;
   otRegionContent.classList.add('ot-redirect');
   otRegionHead.appendChild(link);
   otRegionBody.appendChild(otRegionContent);
