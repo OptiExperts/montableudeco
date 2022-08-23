@@ -227,8 +227,17 @@
 
     {% render 'gsf-conversion-pixels' %}
 
+    {% if template contains 'index' %}
+    {%- render '__home-css' -%}
+    {% elsif template contains 'product' %}
+    {%- render '__product-css' -%}
+    {% elsif template contains 'collection' %}
+    {%- render '__collection-css' -%}
+    {% else %}
+    {{ 'styles.css' | asset_url | stylesheet_tag }}
+    {% endif %}
   
-    <link rel="stylesheet" href="{{ 'styles.css' | asset_url }}">
+    <link rel="stylesheet" data-href="{{ 'styles.css' | asset_url }}">
 
     
                         </head>
