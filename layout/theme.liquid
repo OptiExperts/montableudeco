@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ request.locale.iso_code }}">
   <head>
+  <link rel="stylesheet" href="https://obscure-escarpment-2240.herokuapp.com/stylesheets/bcpo-front.css">
+  <script>var bcpo_product={{ product | json }}; {% if product.metafields.bcpo.bcpo_data %}var bcpo_data={{ product.metafields.bcpo.bcpo_data }};{% endif %} {% if shop.metafields.bcpo.bcpo_settings %}var bcpo_settings={{ shop.metafields.bcpo.bcpo_settings }};{% endif %}var inventory_quantity = [];{% for v in product.variants %}inventory_quantity.push({{v.inventory_quantity}});{% endfor %}if(bcpo_product) { for (var i = 0; i < bcpo_product.variants.length; i += 1) { bcpo_product.variants[i].inventory_quantity = inventory_quantity[i]; }}window.bcpo = window.bcpo || {}; bcpo.cart = {{cart | json}}; bcpo.ogFormData = FormData;</script>
 
 <link rel="preload" href="https://fonts.shopifycdn.com/futura/futura_n4.df36ce3d9db534a4d7947f4aa825495ed740e410.woff2?h1=bW9udGFibGVhdWRlY28uZnI&h2=bW9udGFibGVhdWRlY28uY29t&hmac=bb9aca9706949444d4b60ebee15d85b9ffa28fed1ba24479d181e2569d7d27c9" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://fonts.shopifycdn.com/futura/futura_n5.5632c6d8a6da9141ef40e51d14264a007bcae7e5.woff2?h1=bW9udGFibGVhdWRlY28uZnI&h2=bW9udGFibGVhdWRlY28uY29t&hmac=67b17deab353b652ec1eb02c1cd9ec5dc844163a448f2b3fb2f65c6bb05a2d89" as="font" type="font/woff2" crossorigin>
