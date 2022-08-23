@@ -120,7 +120,7 @@
         "height": "adapt",
         "height_desktop": 200,
         "height_mobile": 340,
-        "full_width": false,
+        "full_width": true,
         "mobile_overlay_under": true,
         "overlay_style": "box",
         "slide_transition": "zoom",
