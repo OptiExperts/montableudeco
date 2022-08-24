@@ -120,7 +120,7 @@
         "height": "adapt",
         "height_desktop": 200,
         "height_mobile": 340,
-        "full_width": false,
+        "full_width": true,
         "mobile_overlay_under": true,
         "overlay_style": "box",
         "slide_transition": "zoom",
@@ -135,12 +135,12 @@
         "title": "La sélection de nos clients",
         "collection": "les-meilleures-ventes",
         "show_vendor": false,
-        "enable_carousel": false,
+        "enable_carousel": true,
         "grid": 4,
         "rows": 1,
         "use_alt_bg": false,
         "show_view_all": true,
-        "full_width": false
+        "full_width": true
       }
     },
     "16359278867b92de38": {
@@ -160,6 +160,20 @@
         "use_alt_bg": false
       }
     },
+    "16612804896b0bc794": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Les nouveautés du jour",
+        "collection": "tableau-deco-de-salon",
+        "show_vendor": false,
+        "enable_carousel": true,
+        "grid": 4,
+        "rows": 1,
+        "use_alt_bg": true,
+        "show_view_all": true,
+        "full_width": true
+      }
+    },
     "16590925758a886849": {
       "type": "image-with-text",
       "settings": {
@@ -175,6 +189,34 @@
         "image_position": "left",
         "text_alignment": "left",
         "use_alt_bg": false
+      }
+    },
+    "1661280720ddbcc03d": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "L'univers Marvel Dc Comics",
+        "collection": "tableau-marvel-dc-comics",
+        "show_vendor": false,
+        "enable_carousel": true,
+        "grid": 4,
+        "rows": 1,
+        "use_alt_bg": true,
+        "show_view_all": true,
+        "full_width": true
+      }
+    },
+    "1661280813ba654d1e": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Nos animaux",
+        "collection": "tableau-animaux",
+        "show_vendor": false,
+        "enable_carousel": true,
+        "grid": 4,
+        "rows": 1,
+        "use_alt_bg": true,
+        "show_view_all": true,
+        "full_width": true
       }
     },
     "1653576172595c120c": {
@@ -268,7 +310,10 @@
     "16359276425da8ce46",
     "16359278676808bea5",
     "16359278867b92de38",
+    "16612804896b0bc794",
     "16590925758a886849",
+    "1661280720ddbcc03d",
+    "1661280813ba654d1e",
     "1653576172595c120c",
     "16535768658b1605c8"
   ]
