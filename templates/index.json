@@ -120,7 +120,7 @@
         "height": "adapt",
         "height_desktop": 200,
         "height_mobile": 340,
-        "full_width": true,
+        "full_width": false,
         "mobile_overlay_under": true,
         "overlay_style": "box",
         "slide_transition": "zoom",
@@ -140,7 +140,7 @@
         "rows": 1,
         "use_alt_bg": false,
         "show_view_all": true,
-        "full_width": true
+        "full_width": false
       }
     },
     "16359278867b92de38": {
@@ -171,7 +171,7 @@
         "rows": 1,
         "use_alt_bg": true,
         "show_view_all": true,
-        "full_width": true
+        "full_width": false
       }
     },
     "16590925758a886849": {
@@ -202,7 +202,7 @@
         "rows": 1,
         "use_alt_bg": true,
         "show_view_all": true,
-        "full_width": true
+        "full_width": false
       }
     },
     "1661280813ba654d1e": {
@@ -216,7 +216,7 @@
         "rows": 1,
         "use_alt_bg": true,
         "show_view_all": true,
-        "full_width": true
+        "full_width": false
       }
     },
     "1653576172595c120c": {
