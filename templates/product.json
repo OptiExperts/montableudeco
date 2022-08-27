@@ -82,6 +82,7 @@
         },
         "a22c4c2c-7cd9-438f-bd66-847ba3026c11": {
           "type": "image",
+          "disabled": true,
           "settings": {
             "image": "shopify:\/\/shop_images\/confiance.jpg",
             "image_width": 700,
@@ -91,6 +92,7 @@
         },
         "fe35c863-c63b-40d5-8175-b8c620bb2c47": {
           "type": "richtext",
+          "disabled": true,
           "settings": {
             "richtext": "<p><strong>Nos garanties :<\/strong><\/p><p>✅Impression de qualité <strong>FineArt<\/strong><\/p><p>✅<strong>Livraison gratuite<\/strong> sous 3 à 6 jours UPS et Colissimo France, Europe<\/p><p>✅<strong>Tableau livré monté<\/strong>, il suffit de l’accrocher - Système d'accroche offert.<\/p><p>✅Service client réactif <strong>7\/7<\/strong><\/p>",
             "icon": "award",
