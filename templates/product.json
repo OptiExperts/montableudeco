@@ -243,6 +243,24 @@
         "autoplay_speed": 7
       }
     },
+    "166168936242faf645": {
+      "type": "image-with-text",
+      "disabled": true,
+      "settings": {
+        "image": "shopify:\/\/shop_images\/tableau-deco-salon-1-min.jpg",
+        "image_width": 700,
+        "subheading": "",
+        "title": "Tableau sur toile de qualité supérieure",
+        "use_h1": false,
+        "text": "<p>Un rendu des <strong>couleurs optimal<\/strong>. Une toile imperméable et résistante aux UV. Notre <strong>technologie d’impression haute définition<\/strong> permet des tirages d’une <strong>qualité digne d’un musée.<\/strong><\/p>",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "primary",
+        "image_position": "left",
+        "text_alignment": "left",
+        "use_alt_bg": false
+      }
+    },
     "165378278673b81f03": {
       "type": "testimonials",
       "blocks": {
@@ -445,6 +463,7 @@
     "main",
     "16577294900c535fec",
     "1653783347bd3d0662",
+    "166168936242faf645",
     "165378278673b81f03",
     "16537833540151151b",
     "recommendations"
