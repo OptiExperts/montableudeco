@@ -61,6 +61,15 @@
             "show_pickup_availability": true
           }
         },
+        "7ba47814-d177-4c17-b6fb-2f2eba3d6357": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/bien-min.jpg",
+            "image_width": 700,
+            "url": "",
+            "show_in_quickbuy": false
+          }
+        },
         "7a21d491-5344-44a5-9647-f8ac111a7d57": {
           "type": "image",
           "disabled": true,
@@ -73,6 +82,7 @@
         },
         "008f6a2f-7fea-4a99-8aa8-64bc06a4d320": {
           "type": "image",
+          "disabled": true,
           "settings": {
             "image": "shopify:\/\/shop_images\/badge-confiance.webp",
             "image_width": 510,
@@ -142,6 +152,7 @@
         "divider",
         "variant_picker",
         "buy_buttons",
+        "7ba47814-d177-4c17-b6fb-2f2eba3d6357",
         "7a21d491-5344-44a5-9647-f8ac111a7d57",
         "008f6a2f-7fea-4a99-8aa8-64bc06a4d320",
         "a22c4c2c-7cd9-438f-bd66-847ba3026c11",
