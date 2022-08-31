@@ -1154,7 +1154,7 @@
           "logo_img_width_int": 195,
           "mobile_logo_img_width_int": 70,
           "enable_sticky": true,
-          "enable_transparent": true,
+          "enable_transparent": false,
           "transparent_color": "#000000",
           "transparent_logo": "shopify:\/\/shop_images\/TransparentMonTableauDeco_01.png",
           "menu_linklist": "main-menu",
