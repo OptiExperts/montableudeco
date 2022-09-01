@@ -1058,7 +1058,7 @@
           "1478526632861": {
             "type": "announcement",
             "settings": {
-              "text": "<p>📦 LIVRAISON GRATUITE 3 À 6 JOURS FRANCE & EUROPE<\/p>"
+              "text": "<p>📦 LIVRAISON GRATUITE 3 À 7 JOURS FRANCE & EUROPE<\/p>"
             }
           },
           "1478526632860": {
@@ -1173,13 +1173,36 @@
       },
       "store-messages": {
         "type": "store-messages",
+        "blocks": {
+          "7d277797-673d-42aa-b577-4516ce048d69": {
+            "type": "message",
+            "settings": {
+              "heading": "OFFRE DE BIENVENUE SPÉCIAL RENTRÉE",
+              "subheading": "-20% SUR LA TOTALITÉ DE VOTRE COMMANDE",
+              "link_url": ""
+            }
+          },
+          "b7d00553-a1c0-40fd-9e59-326946a8662e": {
+            "type": "message",
+            "disabled": true,
+            "settings": {
+              "heading": "Store message",
+              "subheading": "Add important information here",
+              "link_url": ""
+            }
+          }
+        },
+        "block_order": [
+          "7d277797-673d-42aa-b577-4516ce048d69",
+          "b7d00553-a1c0-40fd-9e59-326946a8662e"
+        ],
         "settings": {
           "head_not_home_only": false,
           "head_not_col_bg": "#f4f6f8",
           "head_not_col_txt1": "#171717",
           "head_not_col_txt2": "#4c4c4b",
-          "head_not_mob_show": false,
-          "head_not_mob_text": "Add important information here",
+          "head_not_mob_show": true,
+          "head_not_mob_text": "OFFRE DE BIENVENUE -20% SUR LA TOTALITÉ DE VOTRE COMMANDE",
           "head_not_mob_url": ""
         }
       },
