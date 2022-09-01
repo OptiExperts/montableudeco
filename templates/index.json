@@ -13,7 +13,7 @@
             "slide_link": "",
             "subheading": "Sublimez votre décoration intérieur",
             "title": "Un tableau déco moderne et original",
-            "title_size": 30,
+            "title_size": 26,
             "title_size_mobile": 22,
             "text": "",
             "enlarge_text": false,
@@ -117,8 +117,8 @@
         "09ff5d69-46b1-4149-b517-309ce13563b5"
       ],
       "settings": {
-        "height": "fixed",
-        "height_desktop": 200,
+        "height": "adapt",
+        "height_desktop": 800,
         "height_mobile": 500,
         "full_width": false,
         "mobile_overlay_under": true,
