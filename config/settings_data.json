@@ -1141,9 +1141,9 @@
         "settings": {
           "logo": "shopify:\/\/shop_images\/TransparentMonTableauDeco_01.png",
           "logo_img_width_int": 170,
-          "mobile_logo_img_width_int": 70,
+          "mobile_logo_img_width_int": 110,
           "enable_sticky": true,
-          "enable_transparent": false,
+          "enable_transparent": true,
           "transparent_color": "#000000",
           "transparent_logo": "shopify:\/\/shop_images\/TransparentMonTableauDeco_01.png",
           "menu_linklist": "main-menu",
@@ -1190,7 +1190,7 @@
           "head_not_col_bg": "#0a00ff",
           "head_not_col_txt1": "#ffffff",
           "head_not_col_txt2": "#ffffff",
-          "head_not_mob_show": true,
+          "head_not_mob_show": false,
           "head_not_mob_text": "OFFRE DE BIENVENUE -20% SUR LA TOTALITÉ DE VOTRE COMMANDE",
           "head_not_mob_url": ""
         }

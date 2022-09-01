@@ -119,7 +119,7 @@
       "settings": {
         "height": "adapt",
         "height_desktop": 800,
-        "height_mobile": 500,
+        "height_mobile": 400,
         "full_width": false,
         "mobile_overlay_under": true,
         "overlay_style": "box",
