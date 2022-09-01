@@ -16,7 +16,7 @@
             "title_size": 30,
             "title_size_mobile": 22,
             "text": "",
-            "enlarge_text": true,
+            "enlarge_text": false,
             "button_label_1": "Tableau Moderne 3D OR",
             "button_url_1": "shopify:\/\/collections\/tableau-moderne",
             "button_label_2": "",
@@ -117,9 +117,9 @@
         "09ff5d69-46b1-4149-b517-309ce13563b5"
       ],
       "settings": {
-        "height": "adapt",
+        "height": "fixed",
         "height_desktop": 200,
-        "height_mobile": 340,
+        "height_mobile": 500,
         "full_width": false,
         "mobile_overlay_under": true,
         "overlay_style": "box",
