@@ -1133,25 +1133,14 @@
               "image_position": "right",
               "text_alignment": "center"
             }
-          },
-          "3c161c13-4161-4adc-8483-9df50b9acdd0": {
-            "type": "menu-promotion-small",
-            "disabled": true,
-            "settings": {
-              "dropdown_link_title": "Animaux",
-              "image": "shopify:\/\/shop_images\/Open_plan_industrial_style_living_room-min.jpg",
-              "title": "",
-              "link_url": ""
-            }
           }
         },
         "block_order": [
-          "5f7a4187-832f-429c-9bf1-074b8525967b",
-          "3c161c13-4161-4adc-8483-9df50b9acdd0"
+          "5f7a4187-832f-429c-9bf1-074b8525967b"
         ],
         "settings": {
           "logo": "shopify:\/\/shop_images\/TransparentMonTableauDeco_01.png",
-          "logo_img_width_int": 195,
+          "logo_img_width_int": 170,
           "mobile_logo_img_width_int": 70,
           "enable_sticky": true,
           "enable_transparent": false,
@@ -1198,9 +1187,9 @@
         ],
         "settings": {
           "head_not_home_only": false,
-          "head_not_col_bg": "#f4f6f8",
-          "head_not_col_txt1": "#171717",
-          "head_not_col_txt2": "#4c4c4b",
+          "head_not_col_bg": "#0a00ff",
+          "head_not_col_txt1": "#ffffff",
+          "head_not_col_txt2": "#ffffff",
           "head_not_mob_show": true,
           "head_not_mob_text": "OFFRE DE BIENVENUE -20% SUR LA TOTALITÉ DE VOTRE COMMANDE",
           "head_not_mob_url": ""
