@@ -176,6 +176,7 @@
     },
     "16577294900c535fec": {
       "type": "image-with-text",
+      "disabled": true,
       "settings": {
         "image": "shopify:\/\/shop_images\/1024_5euros_-_Lumen_-_Commande_CharlyMand_-_BC2200000ED357_-_Mon_Tableau_Deco_--min.jpg",
         "image_2": "shopify:\/\/shop_images\/225euros_-_Lumen_-_Commande_CharlyMand_-_BC2200000F2F90_-_Mon_Tableau_Deco-min.jpg",
@@ -271,6 +272,73 @@
         "image_position": "left",
         "text_alignment": "left",
         "use_alt_bg": false
+      }
+    },
+    "166216927278e926c1": {
+      "type": "custom-row",
+      "blocks": {
+        "1662169271d160facb-0": {
+          "type": "image",
+          "settings": {
+            "width": "half",
+            "image": "shopify:\/\/shop_images\/5euros_-_Lumen_-_Commande_CharlyMand_-_BC2200000ED357_-_Mon_Tableau_Deco.jpg",
+            "image_position": "center center",
+            "height": "adapt",
+            "height_desktop": 600,
+            "height_mobile": 500,
+            "subheading": "",
+            "title": "",
+            "text": "",
+            "enlarge_text": false,
+            "button_label": "",
+            "image_link": "",
+            "text_alignment": "center center",
+            "mobile_overlay_under": false,
+            "overlay_style": "shadow"
+          }
+        },
+        "4b3800f5-3339-4455-a946-06bbbba64224": {
+          "type": "image",
+          "settings": {
+            "width": "half",
+            "image": "shopify:\/\/shop_images\/225euros_-_Lumen_-_Commande_CharlyMand_-_BC2200000F2F90_-_Mon_Tableau_Deco-min.jpg",
+            "image_position": "center center",
+            "height": "adapt",
+            "height_desktop": 600,
+            "height_mobile": 500,
+            "subheading": "",
+            "title": "",
+            "text": "",
+            "enlarge_text": false,
+            "button_label": "",
+            "image_link": "",
+            "text_alignment": "center center",
+            "mobile_overlay_under": false,
+            "overlay_style": "shadow"
+          }
+        },
+        "1662169271d160facb-1": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "width": "half",
+            "subheading": "",
+            "title": "Welcome",
+            "text": "<p>Use this text to share information about your store with your customers.<\/p><p>Describe products, share announcements, or welcome customers to your store.<\/p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "primary",
+            "text_alignment": "center"
+          }
+        }
+      },
+      "block_order": [
+        "1662169271d160facb-0",
+        "4b3800f5-3339-4455-a946-06bbbba64224",
+        "1662169271d160facb-1"
+      ],
+      "settings": {
+        "alignment": "middle"
       }
     },
     "165378278673b81f03": {
@@ -469,73 +537,6 @@
         "show_vendor": false,
         "grid": 4
       }
-    },
-    "166216927278e926c1": {
-      "type": "custom-row",
-      "blocks": {
-        "1662169271d160facb-0": {
-          "type": "image",
-          "settings": {
-            "width": "half",
-            "image": "shopify:\/\/shop_images\/5euros_-_Lumen_-_Commande_CharlyMand_-_BC2200000ED357_-_Mon_Tableau_Deco.jpg",
-            "image_position": "center center",
-            "height": "adapt",
-            "height_desktop": 600,
-            "height_mobile": 500,
-            "subheading": "Subheading",
-            "title": "Tell your story",
-            "text": "<p>Pair text with an image to tell a story<\/p>",
-            "enlarge_text": false,
-            "button_label": "",
-            "image_link": "",
-            "text_alignment": "center center",
-            "mobile_overlay_under": false,
-            "overlay_style": "shadow"
-          }
-        },
-        "4b3800f5-3339-4455-a946-06bbbba64224": {
-          "type": "image",
-          "settings": {
-            "width": "half",
-            "image": "shopify:\/\/shop_images\/225euros_-_Lumen_-_Commande_CharlyMand_-_BC2200000F2F90_-_Mon_Tableau_Deco-min.jpg",
-            "image_position": "center center",
-            "height": "adapt",
-            "height_desktop": 600,
-            "height_mobile": 500,
-            "subheading": "Subheading",
-            "title": "Tell your story",
-            "text": "<p>Pair text with an image to tell a story<\/p>",
-            "enlarge_text": false,
-            "button_label": "",
-            "image_link": "",
-            "text_alignment": "center center",
-            "mobile_overlay_under": false,
-            "overlay_style": "shadow"
-          }
-        },
-        "1662169271d160facb-1": {
-          "type": "text",
-          "disabled": true,
-          "settings": {
-            "width": "half",
-            "subheading": "",
-            "title": "Welcome",
-            "text": "<p>Use this text to share information about your store with your customers.<\/p><p>Describe products, share announcements, or welcome customers to your store.<\/p>",
-            "button_label": "",
-            "button_link": "",
-            "button_style": "primary",
-            "text_alignment": "center"
-          }
-        }
-      },
-      "block_order": [
-        "1662169271d160facb-0",
-        "4b3800f5-3339-4455-a946-06bbbba64224",
-        "1662169271d160facb-1"
-      ],
-      "settings": {
-        "alignment": "middle"
-      }
     }
   },
   "order": [
@@ -543,9 +544,9 @@
     "16577294900c535fec",
     "1653783347bd3d0662",
     "166168936242faf645",
+    "166216927278e926c1",
     "165378278673b81f03",
     "16537833540151151b",
-    "recommendations",
-    "166216927278e926c1"
+    "recommendations"
   ]
 }
