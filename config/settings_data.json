@@ -2190,12 +2190,6 @@
         "settings": {
         }
       },
-      "3475573022091160205": {
-        "type": "shopify:\/\/apps\/blockify-ip-block\/blocks\/app-embed\/2e3e0ba5-0e70-447a-9ec5-3bf76b5ef12e",
-        "disabled": false,
-        "settings": {
-        }
-      },
       "855628211100114053": {
         "type": "shopify:\/\/apps\/klaviyo-email-marketing-sms\/blocks\/klaviyo-onsite-embed\/2632fe16-c075-4321-a88b-50b567f42507",
         "disabled": false,
@@ -2204,7 +2198,13 @@
       },
       "12927039508388447060": {
         "type": "shopify:\/\/apps\/cozy-antitheft\/blocks\/Cozy_Antitheft_Script_1.0.0\/39dc4a5c-91ab-47a6-8307-32bae6f45721",
-        "disabled": false,
+        "disabled": true,
+        "settings": {
+        }
+      },
+      "3475573022091160205": {
+        "type": "shopify:\/\/apps\/blockify-ip-block\/blocks\/app-embed\/2e3e0ba5-0e70-447a-9ec5-3bf76b5ef12e",
+        "disabled": true,
         "settings": {
         }
       }
