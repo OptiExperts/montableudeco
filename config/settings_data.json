@@ -1344,7 +1344,7 @@
             "type": "badge",
             "settings": {
               "title": "Livraison gratuite",
-              "subtitle": "<p>Expédition 24\/48h chez vous<\/p><p> sous 3 à 5 jours<\/p>",
+              "subtitle": "",
               "url": "",
               "svg": "shipping_truck_minimal_2",
               "customsvg": ""
