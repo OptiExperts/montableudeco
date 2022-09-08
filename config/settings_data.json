@@ -1140,7 +1140,7 @@
         ],
         "settings": {
           "logo": "shopify:\/\/shop_images\/TransparentMonTableauDeco_01.png",
-          "logo_img_width_int": 170,
+          "logo_img_width_int": 120,
           "mobile_logo_img_width_int": 110,
           "enable_sticky": true,
           "enable_transparent": true,
