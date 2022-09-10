@@ -3,6 +3,27 @@
     "16359276425da8ce46": {
       "type": "slideshow",
       "blocks": {
+        "09a40e92-8087-4edf-b2df-525dbd2b96fb": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/untitled-untitled_2_-min_e1cbb12a-585f-420a-8aa6-a54eae21a6e0.jpg",
+            "mobile_image": "shopify:\/\/shop_images\/2untitled_15_-min.jpg",
+            "image_position": "center center",
+            "mobile_image_position": "center center",
+            "slide_link": "",
+            "subheading": "CE DIMANCHE DERNIER JOUR POUR PROFITEZ DE-20% SUR VOTRE COMMANDE",
+            "title": "Un plaisir déco unique et original",
+            "title_size": 32,
+            "title_size_mobile": 26,
+            "text": "<p>-20% ENTRER LE CODE : <strong>BIENVENUE<\/strong><\/p>",
+            "enlarge_text": true,
+            "button_label_1": "",
+            "button_url_1": "",
+            "button_label_2": "",
+            "button_url_2": "",
+            "text_alignment": "center center"
+          }
+        },
         "52915dba-da63-47c4-bc99-74942b6a7154": {
           "type": "image",
           "settings": {
@@ -107,36 +128,15 @@
             "button_url_2": "",
             "text_alignment": "bottom left"
           }
-        },
-        "09a40e92-8087-4edf-b2df-525dbd2b96fb": {
-          "type": "image",
-          "settings": {
-            "image": "shopify:\/\/shop_images\/untitled-untitled_2_-min_e1cbb12a-585f-420a-8aa6-a54eae21a6e0.jpg",
-            "mobile_image": "shopify:\/\/shop_images\/2untitled_15_-min.jpg",
-            "image_position": "center center",
-            "mobile_image_position": "center center",
-            "slide_link": "",
-            "subheading": "CE DIMANCHE DERNIER JOUR POUR PROFITEZ DE-20% SUR VOTRE COMMANDE",
-            "title": "Un plaisir déco unique et original",
-            "title_size": 32,
-            "title_size_mobile": 26,
-            "text": "<p>-20% ENTRER LE CODE : <strong>BIENVENUE<\/strong><\/p>",
-            "enlarge_text": true,
-            "button_label_1": "",
-            "button_url_1": "",
-            "button_label_2": "",
-            "button_url_2": "",
-            "text_alignment": "center center"
-          }
         }
       },
       "block_order": [
+        "09a40e92-8087-4edf-b2df-525dbd2b96fb",
         "52915dba-da63-47c4-bc99-74942b6a7154",
         "b3220199-77d0-43e1-be87-a2060a674054",
         "16359276425da8ce46-0",
         "94aa9913-3c5d-4723-af2d-40780dc4bfd0",
-        "09ff5d69-46b1-4149-b517-309ce13563b5",
-        "09a40e92-8087-4edf-b2df-525dbd2b96fb"
+        "09ff5d69-46b1-4149-b517-309ce13563b5"
       ],
       "settings": {
         "height": "adapt",
