@@ -1166,7 +1166,7 @@
           "7d277797-673d-42aa-b577-4516ce048d69": {
             "type": "message",
             "settings": {
-              "heading": "OFFRE DE BIENVENUE LES DERNIERS JOURS !",
+              "heading": "OFFRE DE BIENVENUE CE DIMANCHE DERNIER JOUR⏰",
               "subheading": "⭐-20% SUR LA TOTALITÉ DE VOTRE COMMANDE⭐",
               "link_url": ""
             }
@@ -1190,8 +1190,8 @@
           "head_not_col_bg": "#0a00ff",
           "head_not_col_txt1": "#ffffff",
           "head_not_col_txt2": "#ffffff",
-          "head_not_mob_show": false,
-          "head_not_mob_text": "💥 DERNIERS JOURS ! -20% SUR LA TOTALITÉ DE VOTRE COMMANDE",
+          "head_not_mob_show": true,
+          "head_not_mob_text": "💥CE DIMANCHE DERNIER JOURS! -20% SUR LA TOTALITÉ DE VOTRE COMMANDE",
           "head_not_mob_url": ""
         }
       },

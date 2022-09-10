@@ -33,6 +33,29 @@
             "enable_product_reviews_by_price": true
           }
         },
+        "cb5b991a-f9a6-4d79-8b91-66dfda5eaa69": {
+          "type": "text",
+          "settings": {
+            "text": "CE DIMANCHE 11  SEPTEMBRE       DERNIER JOUR POUR PROFITEZ DE -20% SUR VOTRE COMMANDE",
+            "icon": "clock",
+            "icon_size": "small",
+            "enable_box": true,
+            "box_color": "#000000",
+            "show_in_quickbuy": false
+          }
+        },
+        "fe35c863-c63b-40d5-8175-b8c620bb2c47": {
+          "type": "richtext",
+          "disabled": true,
+          "settings": {
+            "richtext": "<p><strong>Nos garanties :<\/strong><\/p><p>✅Impression de qualité <strong>FineArt<\/strong><\/p><p>✅<strong>Livraison gratuite<\/strong> sous 3 à 6 jours UPS et Colissimo France, Europe<\/p><p>✅<strong>Tableau livré monté<\/strong>, il suffit de l’accrocher - Système d'accroche offert.<\/p><p>✅Service client réactif <strong>7\/7<\/strong><\/p>",
+            "icon": "award",
+            "icon_size": "large",
+            "enable_box": false,
+            "box_color": "#e5f3ff",
+            "show_in_quickbuy": false
+          }
+        },
         "divider": {
           "type": "divider",
           "disabled": true,
@@ -100,18 +123,6 @@
             "show_in_quickbuy": false
           }
         },
-        "fe35c863-c63b-40d5-8175-b8c620bb2c47": {
-          "type": "richtext",
-          "disabled": true,
-          "settings": {
-            "richtext": "<p><strong>Nos garanties :<\/strong><\/p><p>✅Impression de qualité <strong>FineArt<\/strong><\/p><p>✅<strong>Livraison gratuite<\/strong> sous 3 à 6 jours UPS et Colissimo France, Europe<\/p><p>✅<strong>Tableau livré monté<\/strong>, il suffit de l’accrocher - Système d'accroche offert.<\/p><p>✅Service client réactif <strong>7\/7<\/strong><\/p>",
-            "icon": "award",
-            "icon_size": "large",
-            "enable_box": false,
-            "box_color": "#e5f3ff",
-            "show_in_quickbuy": false
-          }
-        },
         "description": {
           "type": "description",
           "settings": {
@@ -149,6 +160,8 @@
         "dfcc880f-3246-46dc-809d-61f91142291c",
         "d972269e-a041-437c-9112-f4a24c01f157",
         "price",
+        "cb5b991a-f9a6-4d79-8b91-66dfda5eaa69",
+        "fe35c863-c63b-40d5-8175-b8c620bb2c47",
         "divider",
         "variant_picker",
         "buy_buttons",
@@ -156,7 +169,6 @@
         "7a21d491-5344-44a5-9647-f8ac111a7d57",
         "008f6a2f-7fea-4a99-8aa8-64bc06a4d320",
         "a22c4c2c-7cd9-438f-bd66-847ba3026c11",
-        "fe35c863-c63b-40d5-8175-b8c620bb2c47",
         "description",
         "ebfc0848-b962-4b51-8127-a4392cefaf2a",
         "e422e5e4-0f2a-477a-9377-71626deaeaad"
