@@ -1191,7 +1191,7 @@
           "head_not_col_bg": "#0a00ff",
           "head_not_col_txt1": "#ffffff",
           "head_not_col_txt2": "#ffffff",
-          "head_not_mob_show": true,
+          "head_not_mob_show": false,
           "head_not_mob_text": "💥CE DIMANCHE DERNIER JOURS! -20% SUR LA TOTALITÉ DE VOTRE COMMANDE",
           "head_not_mob_url": ""
         }
