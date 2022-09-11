@@ -1165,6 +1165,7 @@
         "blocks": {
           "7d277797-673d-42aa-b577-4516ce048d69": {
             "type": "message",
+            "disabled": true,
             "settings": {
               "heading": "OFFRE DE BIENVENUE CE DIMANCHE DERNIER JOUR⏰",
               "subheading": "⭐-20% SUR LA TOTALITÉ DE VOTRE COMMANDE⭐",

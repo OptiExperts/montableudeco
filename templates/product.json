@@ -66,6 +66,7 @@
         },
         "cb5b991a-f9a6-4d79-8b91-66dfda5eaa69": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "CE DIMANCHE 11  SEPTEMBRE       DERNIER JOUR POUR PROFITEZ DE -20% SUR VOTRE COMMANDE",
             "icon": "clock",
@@ -86,6 +87,7 @@
         },
         "7ba47814-d177-4c17-b6fb-2f2eba3d6357": {
           "type": "image",
+          "disabled": true,
           "settings": {
             "image": "shopify:\/\/shop_images\/sffdf-min.jpg",
             "image_width": 700,
@@ -115,7 +117,6 @@
         },
         "a22c4c2c-7cd9-438f-bd66-847ba3026c11": {
           "type": "image",
-          "disabled": true,
           "settings": {
             "image": "shopify:\/\/shop_images\/confiance.jpg",
             "image_width": 700,
