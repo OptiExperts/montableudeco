@@ -3,6 +3,27 @@
     "16359276425da8ce46": {
       "type": "slideshow",
       "blocks": {
+        "16359276425da8ce46-0": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/ok_home.jpg",
+            "mobile_image": "shopify:\/\/shop_images\/ok_smart.jpg",
+            "image_position": "center left",
+            "mobile_image_position": "center center",
+            "slide_link": "",
+            "subheading": "L'idée cadeau parfaite",
+            "title": "Prénoms Famille cœur rouge",
+            "title_size": 30,
+            "title_size_mobile": 20,
+            "text": "",
+            "enlarge_text": true,
+            "button_label_1": "PERSONNALISÉ",
+            "button_url_1": "shopify:\/\/collections\/tableau-personnalise",
+            "button_label_2": "",
+            "button_url_2": "",
+            "text_alignment": "bottom left"
+          }
+        },
         "09a40e92-8087-4edf-b2df-525dbd2b96fb": {
           "type": "image",
           "disabled": true,
@@ -48,6 +69,7 @@
         },
         "b3220199-77d0-43e1-be87-a2060a674054": {
           "type": "image",
+          "disabled": true,
           "settings": {
             "image": "shopify:\/\/shop_images\/gaeisha-untitled-cerisier.jpg",
             "mobile_image": "shopify:\/\/shop_images\/1024.jpg",
@@ -62,27 +84,6 @@
             "enlarge_text": true,
             "button_label_1": "La Collection",
             "button_url_1": "shopify:\/\/collections\/tableau-japonais",
-            "button_label_2": "",
-            "button_url_2": "",
-            "text_alignment": "bottom left"
-          }
-        },
-        "16359276425da8ce46-0": {
-          "type": "image",
-          "settings": {
-            "image": "shopify:\/\/shop_images\/ok_home.jpg",
-            "mobile_image": "shopify:\/\/shop_images\/ok_smart.jpg",
-            "image_position": "center left",
-            "mobile_image_position": "center center",
-            "slide_link": "",
-            "subheading": "L'idée cadeau parfaite",
-            "title": "Prénoms Famille cœur rouge",
-            "title_size": 30,
-            "title_size_mobile": 20,
-            "text": "",
-            "enlarge_text": true,
-            "button_label_1": "PERSONNALISÉ",
-            "button_url_1": "shopify:\/\/collections\/tableau-personnalise",
             "button_label_2": "",
             "button_url_2": "",
             "text_alignment": "bottom left"
@@ -132,10 +133,10 @@
         }
       },
       "block_order": [
+        "16359276425da8ce46-0",
         "09a40e92-8087-4edf-b2df-525dbd2b96fb",
         "52915dba-da63-47c4-bc99-74942b6a7154",
         "b3220199-77d0-43e1-be87-a2060a674054",
-        "16359276425da8ce46-0",
         "94aa9913-3c5d-4723-af2d-40780dc4bfd0",
         "09ff5d69-46b1-4149-b517-309ce13563b5"
       ],
