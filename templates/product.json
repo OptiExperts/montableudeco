@@ -177,25 +177,6 @@
         "var_img_grouping_option": "Color,Colour,Couleur,Farbe"
       }
     },
-    "16577294900c535fec": {
-      "type": "image-with-text",
-      "disabled": true,
-      "settings": {
-        "image": "shopify:\/\/shop_images\/1024_5euros_-_Lumen_-_Commande_CharlyMand_-_BC2200000ED357_-_Mon_Tableau_Deco_--min.jpg",
-        "image_2": "shopify:\/\/shop_images\/tableau-street-art-jordan-air-la-deco-a-prix-grossiste-montableaudeco-38495564300521_1.jpg",
-        "image_width": 700,
-        "subheading": "",
-        "title": "",
-        "use_h1": false,
-        "text": "",
-        "button_label": "",
-        "button_link": "",
-        "button_style": "link",
-        "image_position": "left",
-        "text_alignment": "left",
-        "use_alt_bg": false
-      }
-    },
     "1653783347bd3d0662": {
       "type": "slideshow",
       "disabled": true,
@@ -544,7 +525,6 @@
   },
   "order": [
     "main",
-    "16577294900c535fec",
     "1653783347bd3d0662",
     "166168936242faf645",
     "166216927278e926c1",
