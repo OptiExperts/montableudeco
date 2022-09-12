@@ -85,20 +85,10 @@
             "show_pickup_availability": true
           }
         },
-        "7ba47814-d177-4c17-b6fb-2f2eba3d6357": {
-          "type": "image",
-          "disabled": true,
-          "settings": {
-            "image": "shopify:\/\/shop_images\/sffdf-min.jpg",
-            "image_width": 700,
-            "url": "",
-            "show_in_quickbuy": false
-          }
-        },
         "7a21d491-5344-44a5-9647-f8ac111a7d57": {
           "type": "image",
           "settings": {
-            "image": "shopify:\/\/shop_images\/5euros_-_Lumen_-_Commande_CharlyMand_-_BC2200000F3CB5_-_Bande_reassurance-min.jpg",
+            "image": "shopify:\/\/shop_images\/5euros_-_Lumen_-_Commande_CharlyMand_-_BC2200000F3CB5_-_Bande_reassurance_V3-min.jpg",
             "image_width": 500,
             "url": "",
             "show_in_quickbuy": false
@@ -166,7 +156,6 @@
         "variant_picker",
         "cb5b991a-f9a6-4d79-8b91-66dfda5eaa69",
         "buy_buttons",
-        "7ba47814-d177-4c17-b6fb-2f2eba3d6357",
         "7a21d491-5344-44a5-9647-f8ac111a7d57",
         "008f6a2f-7fea-4a99-8aa8-64bc06a4d320",
         "a22c4c2c-7cd9-438f-bd66-847ba3026c11",
