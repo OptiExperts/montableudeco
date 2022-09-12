@@ -19,6 +19,7 @@
         },
         "d972269e-a041-437c-9112-f4a24c01f157": {
           "type": "image",
+          "disabled": true,
           "settings": {
             "image": "shopify:\/\/shop_images\/banner-scalapay-web-fr.jpg",
             "image_width": 420,
