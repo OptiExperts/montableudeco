@@ -169,6 +169,7 @@
     },
     "1662997073be564979": {
       "type": "image-with-text-overlay",
+      "disabled": true,
       "settings": {
         "image": "shopify:\/\/shop_images\/5euros_-_Lumen_-_Commande_CharlyMand_-_BC2200000F3CB5_-_Bannirere_Trustpilot-min.jpg",
         "image_position": "center center",
