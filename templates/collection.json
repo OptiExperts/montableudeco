@@ -1,1 +1,115 @@
-{"sections":{"16550281218a9a43db":{"type":"trustBanner-maxdesign","disabled":true,"blocks":{"16550281215019a77e-0":{"type":"badge","settings":{"title":"Main Title Here","subtitle":"<p>This is the subtitle. It shows on mouse hover.<\/p>","url":"","svg":"payment","customsvg":""}},"aad6e3d2-7ef3-49a6-85a4-993ef20c4ffd":{"type":"badge","settings":{"title":"Main Title Here","subtitle":"<p>This is the subtitle. It shows on mouse hover.<\/p>","url":"","svg":"payment","customsvg":""}},"3b3c0ca0-5392-4acd-b237-4a0638e5d88e":{"type":"badge","settings":{"title":"Main Title Here","subtitle":"<p>This is the subtitle. It shows on mouse hover.<\/p>","url":"","svg":"payment","customsvg":""}}},"block_order":["16550281215019a77e-0","aad6e3d2-7ef3-49a6-85a4-993ef20c4ffd","3b3c0ca0-5392-4acd-b237-4a0638e5d88e"],"settings":{"show_badges":true,"max_width":2000,"bg_padding":0,"show_badges_contour":false,"stroke_width":0.5,"stroke_dash_size":0,"stroke_gap_size":4,"badges_bg_color":"#f3f3f3","badges_main_color":"#a6a6a6","badges_secondary_color":"#323232","badges_stroke_color":"#000000","badges_title_color":"","badges_subtitle_color":"","slider_mobile":false,"show_dots":false,"slider_speed":3.5,"badges_size_desk":80,"font_size_desk":15,"banner_style_desktop":"horizontal","justify_content_desk":"center","show_always_subtitles_desktop":"normal","badges_space_footer_top":0,"badges_space_footer":0,"badges_size_mobile":70,"font_size_mobile":15,"banner_style_mobile":"horizontal","justify_content_mobile":"center","show_always_subtitles_mobile":"normal","badges_space_footer_top_mobile":0,"badges_space_footer_mobile":0,"custom_css":""}},"main":{"type":"main-collection","settings":{"show_image_behind_heading":true,"heading_image_height":"small","overlay_style":"full image-overlay--bg-shadow","coll_num_per_page_int":48,"grid":4,"show_vendor":false,"show_total":false,"coll_desc_pos":"below","enable_filtering":false,"collapse_tag_sidebar_by_default":false,"collapse_filters_method":"all","show_filter_counts":false,"show_disabled_filters":false,"ajax_products":false,"enable_sticky_filter":false,"filter_two_columns":false,"coll_show_sort":true,"coll_show_feat":false,"enable_subcoll":true,"subcoll_menu":"main-menu","subcoll_style":"buttons","subcoll_gall_shape":"sq","image_position":"center center","subcoll_gall_enable_margin":false,"subcoll_gall_full_width":false,"subcoll_gall_overlay_style":"no_background","subcoll_gall_text_alignment":"center center","subcoll_gall_mobile_layout":"1"}}},"order":["16550281218a9a43db","main"]}
+{
+  "sections": {
+    "16550281218a9a43db": {
+      "type": "trustBanner-maxdesign",
+      "disabled": true,
+      "blocks": {
+        "16550281215019a77e-0": {
+          "type": "badge",
+          "settings": {
+            "title": "Main Title Here",
+            "subtitle": "<p>This is the subtitle. It shows on mouse hover.<\/p>",
+            "url": "",
+            "svg": "payment",
+            "customsvg": ""
+          }
+        },
+        "aad6e3d2-7ef3-49a6-85a4-993ef20c4ffd": {
+          "type": "badge",
+          "settings": {
+            "title": "Main Title Here",
+            "subtitle": "<p>This is the subtitle. It shows on mouse hover.<\/p>",
+            "url": "",
+            "svg": "payment",
+            "customsvg": ""
+          }
+        },
+        "3b3c0ca0-5392-4acd-b237-4a0638e5d88e": {
+          "type": "badge",
+          "settings": {
+            "title": "Main Title Here",
+            "subtitle": "<p>This is the subtitle. It shows on mouse hover.<\/p>",
+            "url": "",
+            "svg": "payment",
+            "customsvg": ""
+          }
+        }
+      },
+      "block_order": [
+        "16550281215019a77e-0",
+        "aad6e3d2-7ef3-49a6-85a4-993ef20c4ffd",
+        "3b3c0ca0-5392-4acd-b237-4a0638e5d88e"
+      ],
+      "settings": {
+        "show_badges": true,
+        "max_width": 2000,
+        "bg_padding": 0,
+        "show_badges_contour": false,
+        "stroke_width": 0.5,
+        "stroke_dash_size": 0,
+        "stroke_gap_size": 4,
+        "badges_bg_color": "#f3f3f3",
+        "badges_main_color": "#a6a6a6",
+        "badges_secondary_color": "#323232",
+        "badges_stroke_color": "#000000",
+        "badges_title_color": "",
+        "badges_subtitle_color": "",
+        "slider_mobile": false,
+        "show_dots": false,
+        "slider_speed": 3.5,
+        "badges_size_desk": 80,
+        "font_size_desk": 15,
+        "banner_style_desktop": "horizontal",
+        "justify_content_desk": "center",
+        "show_always_subtitles_desktop": "normal",
+        "badges_space_footer_top": 0,
+        "badges_space_footer": 0,
+        "badges_size_mobile": 70,
+        "font_size_mobile": 15,
+        "banner_style_mobile": "horizontal",
+        "justify_content_mobile": "center",
+        "show_always_subtitles_mobile": "normal",
+        "badges_space_footer_top_mobile": 0,
+        "badges_space_footer_mobile": 0,
+        "custom_css": ""
+      }
+    },
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "show_image_behind_heading": true,
+        "heading_image_height": "huge",
+        "overlay_style": "box",
+        "coll_num_per_page_int": 48,
+        "grid": 4,
+        "show_vendor": false,
+        "show_total": false,
+        "coll_desc_pos": "below",
+        "enable_filtering": false,
+        "collapse_tag_sidebar_by_default": false,
+        "collapse_filters_method": "all",
+        "show_filter_counts": false,
+        "show_disabled_filters": false,
+        "ajax_products": false,
+        "enable_sticky_filter": false,
+        "filter_two_columns": false,
+        "coll_show_sort": true,
+        "coll_show_feat": false,
+        "enable_subcoll": true,
+        "subcoll_menu": "main-menu",
+        "subcoll_style": "buttons",
+        "subcoll_gall_shape": "sq",
+        "image_position": "center center",
+        "subcoll_gall_enable_margin": false,
+        "subcoll_gall_full_width": true,
+        "subcoll_gall_overlay_style": "no_background",
+        "subcoll_gall_text_alignment": "center center",
+        "subcoll_gall_mobile_layout": "1"
+      }
+    }
+  },
+  "order": [
+    "16550281218a9a43db",
+    "main"
+  ]
+}
