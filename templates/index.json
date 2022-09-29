@@ -211,7 +211,7 @@
         "enable_carousel": true,
         "grid": 4,
         "rows": 1,
-        "use_alt_bg": true,
+        "use_alt_bg": false,
         "show_view_all": true,
         "full_width": false
       }
@@ -242,7 +242,7 @@
         "enable_carousel": true,
         "grid": 4,
         "rows": 1,
-        "use_alt_bg": true,
+        "use_alt_bg": false,
         "show_view_all": true,
         "full_width": false
       }
@@ -256,7 +256,7 @@
         "enable_carousel": true,
         "grid": 4,
         "rows": 1,
-        "use_alt_bg": true,
+        "use_alt_bg": false,
         "show_view_all": true,
         "full_width": false
       }
