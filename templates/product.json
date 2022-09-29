@@ -325,6 +325,57 @@
         "alignment": "middle"
       }
     },
+    "1664458845bf01a82a": {
+      "type": "image-with-text",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/chassis-en-bois-main.jpg",
+        "image_width": 700,
+        "subheading": "Livré prêt à accrocher",
+        "title": "Toile tendue sur châssis",
+        "use_h1": false,
+        "text": "<p>Un rendu des <strong>couleurs optimal<\/strong>. Une toile imperméable et résistante aux UV. Notre excellente <strong>technologie d’impression haute définition<\/strong> permet des tirages d’une <strong>qualité digne d’un musée.<\/strong><\/p>",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "primary",
+        "image_position": "left",
+        "text_alignment": "left",
+        "use_alt_bg": true
+      }
+    },
+    "1664458906acd45901": {
+      "type": "image-with-text",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/tableau-cadre-flottant.jpg",
+        "image_width": 700,
+        "subheading": "Mettre en valeur son tableau",
+        "title": "Cadre Flottant",
+        "use_h1": false,
+        "text": "<p>Le cadre flottant est <strong>l’encadrement préféré des photographes<\/strong>, son design moderne permet de <strong>mettre en valeur le tableau.<\/strong><\/p><p>Votre tirage semble <strong>suspendu<\/strong> dans son cadre en lui donnant ainsi une vision directe et unique.<\/p>",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "primary",
+        "image_position": "right",
+        "text_alignment": "left",
+        "use_alt_bg": true
+      }
+    },
+    "1664459354bb5fb1d8": {
+      "type": "image-with-text",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/tableau-plexiglas-brillant.jpg",
+        "image_width": 700,
+        "subheading": "Une déco plus que parfaite",
+        "title": "Tableau Plexiglas",
+        "use_h1": false,
+        "text": "<p>Un <strong>fini glossy<\/strong> pour un <strong>design moderne.<\/strong> Optez pour une impression sur verre acrylique pour de <strong>belles couleurs vives<\/strong> et une <strong>excellente brillance.<\/strong> Le support Plexiglas est <strong>un atout absolu pour votre pièce. <\/strong>Il est super élégant et donne un aspect <strong>moderne et luxueux<\/strong><\/p>",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "primary",
+        "image_position": "left",
+        "text_alignment": "left",
+        "use_alt_bg": true
+      }
+    },
     "165378278673b81f03": {
       "type": "testimonials",
       "blocks": {
@@ -528,6 +579,9 @@
     "1653783347bd3d0662",
     "166168936242faf645",
     "166216927278e926c1",
+    "1664458845bf01a82a",
+    "1664458906acd45901",
+    "1664459354bb5fb1d8",
     "165378278673b81f03",
     "16537833540151151b",
     "recommendations"
