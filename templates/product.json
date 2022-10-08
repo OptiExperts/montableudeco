@@ -67,10 +67,9 @@
         },
         "cb5b991a-f9a6-4d79-8b91-66dfda5eaa69": {
           "type": "text",
-          "disabled": true,
           "settings": {
-            "text": "CE DIMANCHE 11  SEPTEMBRE       DERNIER JOUR POUR PROFITEZ DE -20% SUR VOTRE COMMANDE",
-            "icon": "clock",
+            "text": "Besoin d'aide ? Notre service client en direct 7\/7 de 10h à 20h",
+            "icon": "chat_bubble",
             "icon_size": "large",
             "enable_box": true,
             "box_color": "#dfe3e8",
