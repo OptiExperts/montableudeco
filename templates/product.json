@@ -68,7 +68,7 @@
         "cb5b991a-f9a6-4d79-8b91-66dfda5eaa69": {
           "type": "text",
           "settings": {
-            "text": "Besoin d'aide ? Notre service client en direct 7\/7 de 10h à 20h",
+            "text": "Besoin d'aide pour votre commande ? Notre service client en direct 7\/7 de 10h à 20h",
             "icon": "chat_bubble",
             "icon_size": "large",
             "enable_box": true,
