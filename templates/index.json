@@ -5,10 +5,9 @@
       "blocks": {
         "09a40e92-8087-4edf-b2df-525dbd2b96fb": {
           "type": "image",
-          "disabled": true,
           "settings": {
-            "image": "shopify:\/\/shop_images\/untitled-untitled-untitled-untitled-untitled_3_-min_fc74713a-5aa8-4c88-be95-5330dc940a7f.jpg",
-            "mobile_image": "shopify:\/\/shop_images\/untitled-untitled-untitled_19_-min.jpg",
+            "image": "shopify:\/\/shop_images\/CH0460x80_1_-60x80cm_tom_Ford-60x80cm_Gucci2.jpg",
+            "mobile_image": "shopify:\/\/shop_images\/60x80cm_Gucci2_1_-min.jpg",
             "image_position": "center center",
             "mobile_image_position": "center center",
             "slide_link": "",
@@ -52,7 +51,7 @@
             "image": "shopify:\/\/shop_images\/bvbvb.jpg",
             "mobile_image": "shopify:\/\/shop_images\/untitled-untitled-untitled_5.jpg",
             "image_position": "center center",
-            "mobile_image_position": "center center",
+            "mobile_image_position": "center top",
             "slide_link": "",
             "subheading": "Sublimez votre décoration intérieur",
             "title": "Un tableau déco moderne et original",
@@ -93,9 +92,9 @@
           "type": "image",
           "settings": {
             "image": "shopify:\/\/shop_images\/street_2048-min.jpg",
-            "mobile_image": "shopify:\/\/shop_images\/1024_jordan_2_-min.jpg",
+            "mobile_image": "shopify:\/\/shop_images\/tableau-street-art-jordan-air-la-deco-a-prix-grossiste-montableaudeco-38495564300521_1.jpg",
             "image_position": "center center",
-            "mobile_image_position": "center center",
+            "mobile_image_position": "right center",
             "slide_link": "",
             "subheading": "Originalité avec le Street art",
             "title": "Un tableau déco tendance",
@@ -112,6 +111,7 @@
         },
         "09ff5d69-46b1-4149-b517-309ce13563b5": {
           "type": "image",
+          "disabled": true,
           "settings": {
             "image": "shopify:\/\/shop_images\/2048x1024_cheval-min.jpg",
             "mobile_image": "shopify:\/\/shop_images\/Tableau_Cheval_Colore_3_Parties_2.jpg",
