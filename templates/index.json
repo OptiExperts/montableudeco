@@ -3,8 +3,30 @@
     "16359276425da8ce46": {
       "type": "slideshow",
       "blocks": {
+        "b3220199-77d0-43e1-be87-a2060a674054": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/A202_flyer_noel_ordi-2.jpg",
+            "mobile_image": "shopify:\/\/shop_images\/2A202_flyer_noel_port-2-_1.jpg",
+            "image_position": "center center",
+            "mobile_image_position": "center center",
+            "slide_link": "",
+            "subheading": "",
+            "title": "",
+            "title_size": 30,
+            "title_size_mobile": 20,
+            "text": "",
+            "enlarge_text": false,
+            "button_label_1": "",
+            "button_url_1": "",
+            "button_label_2": "",
+            "button_url_2": "",
+            "text_alignment": "bottom left"
+          }
+        },
         "09a40e92-8087-4edf-b2df-525dbd2b96fb": {
           "type": "image",
+          "disabled": true,
           "settings": {
             "image": "shopify:\/\/shop_images\/CH0460x80_1_-60x80cm_tom_Ford-60x80cm_Gucci2.jpg",
             "mobile_image": "shopify:\/\/shop_images\/60x80cm_Gucci2_1_-min.jpg",
@@ -26,6 +48,7 @@
         },
         "16359276425da8ce46-0": {
           "type": "image",
+          "disabled": true,
           "settings": {
             "image": "shopify:\/\/shop_images\/ok_home.jpg",
             "mobile_image": "shopify:\/\/shop_images\/untitled_17_-min.jpg",
@@ -47,6 +70,7 @@
         },
         "52915dba-da63-47c4-bc99-74942b6a7154": {
           "type": "image",
+          "disabled": true,
           "settings": {
             "image": "shopify:\/\/shop_images\/bvbvb.jpg",
             "mobile_image": "shopify:\/\/shop_images\/untitled-untitled-untitled_5.jpg",
@@ -66,30 +90,9 @@
             "text_alignment": "bottom left"
           }
         },
-        "b3220199-77d0-43e1-be87-a2060a674054": {
-          "type": "image",
-          "disabled": true,
-          "settings": {
-            "image": "shopify:\/\/shop_images\/gaeisha-untitled-cerisier.jpg",
-            "mobile_image": "shopify:\/\/shop_images\/1024.jpg",
-            "image_position": "center center",
-            "mobile_image_position": "center center",
-            "slide_link": "",
-            "subheading": "Nouvelle Collection AOUT",
-            "title": "Tendance Japon",
-            "title_size": 30,
-            "title_size_mobile": 20,
-            "text": "<p>Un tableau japonais pour une déco zen et moderne<\/p>",
-            "enlarge_text": true,
-            "button_label_1": "La Collection",
-            "button_url_1": "shopify:\/\/collections\/tableau-japonais",
-            "button_label_2": "",
-            "button_url_2": "",
-            "text_alignment": "bottom left"
-          }
-        },
         "94aa9913-3c5d-4723-af2d-40780dc4bfd0": {
           "type": "image",
+          "disabled": true,
           "settings": {
             "image": "shopify:\/\/shop_images\/street_2048-min.jpg",
             "mobile_image": "shopify:\/\/shop_images\/tableau-street-art-jordan-air-la-deco-a-prix-grossiste-montableaudeco-38495564300521_1.jpg",
@@ -133,10 +136,10 @@
         }
       },
       "block_order": [
+        "b3220199-77d0-43e1-be87-a2060a674054",
         "09a40e92-8087-4edf-b2df-525dbd2b96fb",
         "16359276425da8ce46-0",
         "52915dba-da63-47c4-bc99-74942b6a7154",
-        "b3220199-77d0-43e1-be87-a2060a674054",
         "94aa9913-3c5d-4723-af2d-40780dc4bfd0",
         "09ff5d69-46b1-4149-b517-309ce13563b5"
       ],
