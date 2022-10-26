@@ -1118,8 +1118,8 @@
             "type": "menu-promotion-large",
             "settings": {
               "dropdown_link_title": "Accueil",
-              "desktop_image": "shopify:\/\/shop_images\/Luxury_living_room_interior.jpg",
-              "mobile_image": "shopify:\/\/shop_images\/1024121PUB1.jpg",
+              "desktop_image": "shopify:\/\/shop_images\/A202_flyer_noel_ordi-2.jpg",
+              "mobile_image": "shopify:\/\/shop_images\/2A202_flyer_noel_port-2-_1.jpg",
               "enable_fade": true,
               "subheading": "BIENVENUE CHEZ MONTABLEAUDECO",
               "title": "L'originalité à petit prix",
@@ -1130,7 +1130,7 @@
               "button_2_label": "LES NOUVEAUTÉS",
               "button_2_link": "shopify:\/\/collections\/tableau-deco-de-salon",
               "button_2_style": "primary",
-              "image_position": "right",
+              "image_position": "left",
               "text_alignment": "center"
             }
           }
