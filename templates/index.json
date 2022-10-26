@@ -1,5 +1,34 @@
 {
   "sections": {
+    "d81c8729-383c-4a12-adc2-20eb99296e2c": {
+      "type": "image-with-text-overlay",
+      "disabled": true,
+      "settings": {
+        "image": "shopify:\/\/shop_images\/A202_flyer_noel_ordi-2.jpg",
+        "mobile_image": "shopify:\/\/shop_images\/2A202_flyer_noel_port-2-_1.jpg",
+        "image_position": "center center",
+        "mobile_image_position": "center center",
+        "height": "full",
+        "height_desktop": 620,
+        "height_mobile": 580,
+        "image_link": "",
+        "subheading": "",
+        "title": "",
+        "title_size": 84,
+        "title_size_mobile": 46,
+        "use_h1": false,
+        "text": "",
+        "enlarge_text": false,
+        "button_label_1": "",
+        "button_url_1": "",
+        "button_label_2": "",
+        "button_url_2": "",
+        "text_alignment": "center center",
+        "full_width": true,
+        "mobile_overlay_under": false,
+        "overlay_style": "shadow"
+      }
+    },
     "16359276425da8ce46": {
       "type": "slideshow",
       "blocks": {
@@ -146,12 +175,12 @@
       "settings": {
         "height": "adapt",
         "height_desktop": 800,
-        "height_mobile": 400,
+        "height_mobile": 680,
         "full_width": false,
-        "mobile_overlay_under": true,
-        "overlay_style": "box",
-        "slide_transition": "zoom",
-        "slide_navigation": "dots",
+        "mobile_overlay_under": false,
+        "overlay_style": "no_background",
+        "slide_transition": "instant",
+        "slide_navigation": "none",
         "autoplay": true,
         "autoplay_speed": 7
       }
@@ -380,6 +409,7 @@
     }
   },
   "order": [
+    "d81c8729-383c-4a12-adc2-20eb99296e2c",
     "16359276425da8ce46",
     "16359278676808bea5",
     "16359278867b92de38",
