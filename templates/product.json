@@ -95,8 +95,8 @@
         "cb5b991a-f9a6-4d79-8b91-66dfda5eaa69": {
           "type": "text",
           "settings": {
-            "text": "Besoin d'aide pour votre commande ? Notre service client en direct 7\/7 de 10h à 20h",
-            "icon": "chat_bubble",
+            "text": "Important durant la période des fêtes de noel notre activité est multiplié par 7. Nous vous remercions de passer vos commandes rapidement pour éviter les pénuries de stock.",
+            "icon": "star",
             "icon_size": "large",
             "enable_box": true,
             "box_color": "#dfe3e8",
