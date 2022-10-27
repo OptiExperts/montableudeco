@@ -197,7 +197,7 @@
         "enable_sticky_columns": false,
         "gallery_size": "medium",
         "gallery_layout": "carousel-under",
-        "enable_zoom": false,
+        "enable_zoom": true,
         "enable_video_looping": false,
         "enable_var_img_grouping": false,
         "var_img_grouping_option": "Color,Colour,Couleur,Farbe"
